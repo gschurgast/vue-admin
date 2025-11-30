@@ -1,0 +1,14 @@
+{
+    "resources": {
+        "book": {
+            "name": "كتاب",
+            "fields": {
+                "title": "العنوان",
+                "description": "الوصف",
+                "author": "المؤلف",
+                "publicationDate": "تاريخ النشر",
+                "reviews": "المراجعات"
+            }
+        }
+    }
+}

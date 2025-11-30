@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "主页",
+        "resources": "资源",
+        "search": "搜索",
+        "clear": "清除",
+        "apply": "应用",
+        "cancel": "取消",
+        "save": "保存",
+        "delete": "删除",
+        "edit": "编辑",
+        "create": "创建",
+        "close": "关闭",
+        "confirm": "确认",
+        "actions": "操作",
+        "loading": "加载中...",
+        "refresh": "刷新",
+        "showFilters": "显示筛选器",
+        "hideFilters": "隐藏筛选器",
+        "createNew": "创建新项"
+    },
+    "app": {
+        "title": "API平台管理",
+        "manageResources": "管理您的资源"
+    },
+    "navigation": {
+        "home": "主页",
+        "resources": "资源"
+    },
+    "resource": {
+        "list": "列表",
+        "create": "创建{resource}",
+        "edit": "编辑{resource}",
+        "delete": "删除{resource}",
+        "confirmDelete": "您确定要删除此{resource}吗？",
+        "itemsPerPage": "每页项目数",
+        "pageText": "{start}-{end} 共 {total}",
+        "noData": "无可用数据",
+        "searchFilters": "搜索筛选器",
+        "advancedSearch": "高级搜索"
+    },
+    "filter": {
+        "text": "搜索{field}",
+        "date": "筛选{field}",
+        "dateRange": "日期范围",
+        "from": "从",
+        "to": "到"
+    },
+    "field": {
+        "required": "此字段为必填项",
+        "select": "选择{field}",
+        "enterText": "输入{field}",
+        "selectDate": "选择日期"
+    },
+    "messages": {
+        "createSuccess": "{resource}创建成功",
+        "updateSuccess": "{resource}更新成功",
+        "deleteSuccess": "{resource}删除成功",
+        "error": "发生错误",
+        "loadingError": "加载数据时出错"
+    },
+    "boolean": {
+        "true": "是",
+        "false": "否"
+    },
+    "ai": {
+        "title": "AI助手",
+        "newConversation": "新对话",
+        "copy": "复制",
+        "thinking": "思考中...",
+        "placeholder": "随便问我...",
+        "error": "抱歉，遇到错误。请重试。",
+        "sendHint": "Shift+Enter发送"
+    }
+}

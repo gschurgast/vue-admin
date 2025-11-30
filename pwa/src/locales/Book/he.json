@@ -1,0 +1,14 @@
+{
+    "resources": {
+        "book": {
+            "name": "ספר",
+            "fields": {
+                "title": "כותרת",
+                "description": "תיאור",
+                "author": "מחבר",
+                "publicationDate": "תאריך פרסום",
+                "reviews": "ביקורות"
+            }
+        }
+    }
+}

@@ -1,0 +1,14 @@
+{
+    "resources": {
+        "book": {
+            "name": "Bok",
+            "fields": {
+                "title": "Titel",
+                "description": "Beskrivning",
+                "author": "Författare",
+                "publicationDate": "Publiceringsdatum",
+                "reviews": "Recensioner"
+            }
+        }
+    }
+}

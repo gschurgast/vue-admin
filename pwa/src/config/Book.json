@@ -1,0 +1,44 @@
+{
+    "filters": {
+        "fields": [
+            {
+                "title": ""
+            },
+            {
+                "publicationDate": "date-range"
+            }
+        ]
+    },
+    "list": {
+        "fields": [
+            {
+                "title": ""
+            },
+            {
+                "publicationDate": "CustomDateCell"
+            },
+            {
+                "description": ""
+            },
+            {
+                "author": ""
+            }
+        ]
+    },
+    "edit": {
+        "fields": [
+            {
+                "title": ""
+            },
+            {
+                "author": ""
+            },
+            {
+                "publicationDate": "DateField"
+            },
+            {
+                "description": ""
+            }
+        ]
+    }
+}

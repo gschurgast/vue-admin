@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "Hem",
+        "resources": "Resurser",
+        "search": "Sök",
+        "clear": "Rensa",
+        "apply": "Tillämpa",
+        "cancel": "Avbryt",
+        "save": "Spara",
+        "delete": "Radera",
+        "edit": "Redigera",
+        "create": "Skapa",
+        "close": "Stäng",
+        "confirm": "Bekräfta",
+        "actions": "Åtgärder",
+        "loading": "Laddar...",
+        "refresh": "Uppdatera",
+        "showFilters": "Visa filter",
+        "hideFilters": "Dölj filter",
+        "createNew": "Skapa ny"
+    },
+    "app": {
+        "title": "API Platform Admin",
+        "manageResources": "Hantera dina resurser"
+    },
+    "navigation": {
+        "home": "Hem",
+        "resources": "Resurser"
+    },
+    "resource": {
+        "list": "Lista",
+        "create": "Skapa {resource}",
+        "edit": "Redigera {resource}",
+        "delete": "Radera {resource}",
+        "confirmDelete": "Är du säker på att du vill radera denna {resource}?",
+        "itemsPerPage": "Objekt per sida",
+        "pageText": "{start}-{end} av {total}",
+        "noData": "Ingen data tillgänglig",
+        "searchFilters": "Sökfilter",
+        "advancedSearch": "Avancerad sökning"
+    },
+    "filter": {
+        "text": "Sök {field}",
+        "date": "Filtrera {field}",
+        "dateRange": "Datumintervall",
+        "from": "Från",
+        "to": "Till"
+    },
+    "field": {
+        "required": "Detta fält är obligatoriskt",
+        "select": "Välj {field}",
+        "enterText": "Ange {field}",
+        "selectDate": "Välj datum"
+    },
+    "messages": {
+        "createSuccess": "{resource} skapad",
+        "updateSuccess": "{resource} uppdaterad",
+        "deleteSuccess": "{resource} raderad",
+        "error": "Ett fel uppstod",
+        "loadingError": "Fel vid laddning av data"
+    },
+    "boolean": {
+        "true": "Ja",
+        "false": "Nej"
+    },
+    "ai": {
+        "title": "AI-assistent",
+        "newConversation": "Ny konversation",
+        "copy": "Kopiera",
+        "thinking": "Tänker...",
+        "placeholder": "Fråga mig vad som helst...",
+        "error": "Tyvärr uppstod ett fel. Försök igen.",
+        "sendHint": "Shift+Enter för att skicka"
+    }
+}

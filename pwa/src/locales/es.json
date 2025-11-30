@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "Inicio",
+        "resources": "Recursos",
+        "search": "Buscar",
+        "clear": "Limpiar",
+        "apply": "Aplicar",
+        "cancel": "Cancelar",
+        "save": "Guardar",
+        "delete": "Eliminar",
+        "edit": "Editar",
+        "create": "Crear",
+        "close": "Cerrar",
+        "confirm": "Confirmar",
+        "actions": "Acciones",
+        "loading": "Cargando...",
+        "refresh": "Actualizar",
+        "showFilters": "Mostrar filtros",
+        "hideFilters": "Ocultar filtros",
+        "createNew": "Crear nuevo"
+    },
+    "app": {
+        "title": "Admin API Platform",
+        "manageResources": "Administre sus recursos"
+    },
+    "navigation": {
+        "home": "Inicio",
+        "resources": "Recursos"
+    },
+    "resource": {
+        "list": "Lista",
+        "create": "Crear {resource}",
+        "edit": "Editar {resource}",
+        "delete": "Eliminar {resource}",
+        "confirmDelete": "¿Está seguro de que desea eliminar este {resource}?",
+        "itemsPerPage": "Elementos por página",
+        "pageText": "{start}-{end} de {total}",
+        "noData": "No hay datos disponibles",
+        "searchFilters": "Filtros de búsqueda",
+        "advancedSearch": "Búsqueda avanzada"
+    },
+    "filter": {
+        "text": "Buscar {field}",
+        "date": "Filtrar {field}",
+        "dateRange": "Rango de fechas",
+        "from": "Desde",
+        "to": "Hasta"
+    },
+    "field": {
+        "required": "Este campo es obligatorio",
+        "select": "Seleccionar {field}",
+        "enterText": "Ingresar {field}",
+        "selectDate": "Seleccionar fecha"
+    },
+    "messages": {
+        "createSuccess": "{resource} creado exitosamente",
+        "updateSuccess": "{resource} actualizado exitosamente",
+        "deleteSuccess": "{resource} eliminado exitosamente",
+        "error": "Ha ocurrido un error",
+        "loadingError": "Error al cargar los datos"
+    },
+    "boolean": {
+        "true": "Sí",
+        "false": "No"
+    },
+    "ai": {
+        "title": "Asistente IA",
+        "newConversation": "Nueva conversación",
+        "copy": "Copiar",
+        "thinking": "Pensando...",
+        "placeholder": "Pregúntame lo que quieras...",
+        "error": "Lo siento, ocurrió un error. Por favor inténtalo de nuevo.",
+        "sendHint": "Shift+Enter para enviar"
+    }
+}

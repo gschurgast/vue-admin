@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "ホーム",
+        "resources": "リソース",
+        "search": "検索",
+        "clear": "クリア",
+        "apply": "適用",
+        "cancel": "キャンセル",
+        "save": "保存",
+        "delete": "削除",
+        "edit": "編集",
+        "create": "作成",
+        "close": "閉じる",
+        "confirm": "確認",
+        "actions": "操作",
+        "loading": "読み込み中...",
+        "refresh": "更新",
+        "showFilters": "フィルターを表示",
+        "hideFilters": "フィルターを隠す",
+        "createNew": "新規作成"
+    },
+    "app": {
+        "title": "API Platform 管理",
+        "manageResources": "リソース管理"
+    },
+    "navigation": {
+        "home": "ホーム",
+        "resources": "リソース"
+    },
+    "resource": {
+        "list": "一覧",
+        "create": "{resource}を作成",
+        "edit": "{resource}を編集",
+        "delete": "{resource}を削除",
+        "confirmDelete": "この{resource}を削除してもよろしいですか？",
+        "itemsPerPage": "ページあたりの件数",
+        "pageText": "{total}件中 {start}-{end}",
+        "noData": "データがありません",
+        "searchFilters": "検索フィルター",
+        "advancedSearch": "詳細検索"
+    },
+    "filter": {
+        "text": "{field}を検索",
+        "date": "{field}でフィルタ",
+        "dateRange": "日付範囲",
+        "from": "開始",
+        "to": "終了"
+    },
+    "field": {
+        "required": "このフィールドは必須です",
+        "select": "{field}を選択",
+        "enterText": "{field}を入力",
+        "selectDate": "日付を選択"
+    },
+    "messages": {
+        "createSuccess": "{resource}を作成しました",
+        "updateSuccess": "{resource}を更新しました",
+        "deleteSuccess": "{resource}を削除しました",
+        "error": "エラーが発生しました",
+        "loadingError": "データの読み込み中にエラーが発生しました"
+    },
+    "boolean": {
+        "true": "はい",
+        "false": "いいえ"
+    },
+    "ai": {
+        "title": "AIアシスタント",
+        "newConversation": "新しい会話",
+        "copy": "コピー",
+        "thinking": "考え中...",
+        "placeholder": "何でも聞いてください...",
+        "error": "申し訳ありませんが、エラーが発生しました。もう一度お試しください。",
+        "sendHint": "Shift+Enterで送信"
+    }
+}

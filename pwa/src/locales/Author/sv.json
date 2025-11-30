@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "author": {
+            "name": "Författare",
+            "fields": {
+                "name": "Namn",
+                "bio": "Biografi",
+                "birthDate": "Födelsedatum",
+                "deathDate": "Dödsdatum",
+                "books": "Böcker",
+                "isAlive": "Liv"
+            }
+        }
+    }
+}

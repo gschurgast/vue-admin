@@ -1,0 +1,59 @@
+{
+    "filters": {
+        "fields": [
+            {
+                "name": ""
+            },
+            {
+                "birthDate": "date-range"
+            },
+            {
+                "deathDate": "date-range"
+            }
+        ]
+    },
+    "list": {
+        "fields": [
+            {
+                "name": ""
+            },
+            {
+                "bio": ""
+            },
+            {
+                "birthDate": "DateCell"
+            },
+            {
+                "deathDate": "DateCell"
+            },
+            {
+                "isAlive": "DeadOrAliveCell"
+            },
+            {
+                "nextMeeting": ""
+            }
+        ]
+    },
+    "edit": {
+        "fields": [
+            {
+                "name": ""
+            },
+            {
+                "bio": "RichTextField"
+            },
+            {
+                "birthDate": "DateField"
+            },
+            {
+                "deathDate": "DateField"
+            },
+            {
+                "isAlive": ""
+            },
+            {
+                "nextMeeting": ""
+            }
+        ]
+    }
+}

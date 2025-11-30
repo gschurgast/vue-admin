@@ -1,0 +1,40 @@
+services:
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    volumes:
+      - ./api:/app
+    ports:
+      - "8080:80"
+    environment:
+      SERVER_NAME: :80
+      APP_RUNTIME: Symfony\Component\Runtime\SymfonyRuntime
+      APP_SECRET: "ChangeMe123"
+      DATABASE_URL: "postgresql://app:ChangeMe123@database:5432/app?serverVersion=16&charset=utf8"
+    depends_on:
+      - database
+    tty: true
+
+  database:
+    image: postgres:16-alpine
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_PASSWORD: "ChangeMe123"
+      POSTGRES_USER: app
+    volumes:
+      - db-data:/var/lib/postgresql/data
+
+  pwa:
+    image: node:lts
+    working_dir: /app
+    volumes:
+      - ./pwa:/app
+    ports:
+      - "5173:5173"
+    command: npm run dev -- --host
+
+volumes:
+  db-data:

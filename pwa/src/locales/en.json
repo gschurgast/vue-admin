@@ -1,0 +1,80 @@
+{
+    "common": {
+        "home": "Home",
+        "resources": "Resources",
+        "search": "Search",
+        "clear": "Clear",
+        "apply": "Apply",
+        "cancel": "Cancel",
+        "save": "Save",
+        "delete": "Delete",
+        "edit": "Edit",
+        "create": "Create",
+        "close": "Close",
+        "confirm": "Confirm",
+        "actions": "Actions",
+        "loading": "Loading...",
+        "refresh": "Refresh",
+        "showFilters": "Show Filters",
+        "hideFilters": "Hide Filters",
+        "createNew": "Create New",
+        "goHome": "Go to Home"
+    },
+    "app": {
+        "title": "API Platform Admin",
+        "manageResources": "Manage your resources"
+    },
+    "navigation": {
+        "home": "Home",
+        "resources": "Resources"
+    },
+    "resource": {
+        "list": "List",
+        "create": "Create {resource}",
+        "edit": "Edit {resource}",
+        "delete": "Delete {resource}",
+        "confirmDelete": "Are you sure you want to delete this {resource}?",
+        "itemsPerPage": "Items per page",
+        "pageText": "{start}-{end} of {total}",
+        "noData": "No data available",
+        "searchFilters": "Search Filters",
+        "advancedSearch": "Advanced Search",
+        "notFound": {
+            "title": "Resource Not Found",
+            "message": "The resource \"{resource}\" does not exist."
+        }
+    },
+    "filter": {
+        "text": "Search {field}",
+        "date": "Filter {field}",
+        "dateRange": "Date Range",
+        "from": "From",
+        "to": "To"
+    },
+    "field": {
+        "required": "This field is required",
+        "select": "Select {field}",
+        "enterText": "Enter {field}",
+        "selectDate": "Select date"
+    },
+    "messages": {
+        "createSuccess": "{resource} created successfully",
+        "updateSuccess": "{resource} updated successfully",
+        "deleteSuccess": "{resource} deleted successfully",
+        "error": "An error occurred",
+        "loadingError": "Error loading data"
+    },
+    "boolean": {
+        "true": "Yes",
+        "false": "No"
+    },
+    "ai": {
+        "title": "AI Assistant",
+        "newConversation": "New conversation",
+        "copy": "Copy",
+        "thinking": "Thinking...",
+        "placeholder": "Ask me anything...",
+        "error": "Sorry, I encountered an error. Please try again.",
+        "sendHint": "Shift+Enter to send"
+    }
+}

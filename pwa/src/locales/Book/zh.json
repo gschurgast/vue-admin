@@ -1,0 +1,14 @@
+{
+    "resources": {
+        "book": {
+            "name": "书",
+            "fields": {
+                "title": "标题",
+                "description": "描述",
+                "author": "作者",
+                "publicationDate": "出版日期",
+                "reviews": "评论"
+            }
+        }
+    }
+}

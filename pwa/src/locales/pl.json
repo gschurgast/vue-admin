@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "Strona główna",
+        "resources": "Zasoby",
+        "search": "Szukaj",
+        "clear": "Wyczyść",
+        "apply": "Zastosuj",
+        "cancel": "Anuluj",
+        "save": "Zapisz",
+        "delete": "Usuń",
+        "edit": "Edytuj",
+        "create": "Utwórz",
+        "close": "Zamknij",
+        "confirm": "Potwierdź",
+        "actions": "Akcje",
+        "loading": "Ładowanie...",
+        "refresh": "Odśwież",
+        "showFilters": "Pokaż filtry",
+        "hideFilters": "Ukryj filtry",
+        "createNew": "Utwórz nowe"
+    },
+    "app": {
+        "title": "Panel administracyjny API Platform",
+        "manageResources": "Zarządzaj zasobami"
+    },
+    "navigation": {
+        "home": "Strona główna",
+        "resources": "Zasoby"
+    },
+    "resource": {
+        "list": "Lista",
+        "create": "Utwórz {resource}",
+        "edit": "Edytuj {resource}",
+        "delete": "Usuń {resource}",
+        "confirmDelete": "Czy na pewno chcesz usunąć {resource}?",
+        "itemsPerPage": "Elementów na stronę",
+        "pageText": "{start}-{end} z {total}",
+        "noData": "Brak danych",
+        "searchFilters": "Filtry wyszukiwania",
+        "advancedSearch": "Wyszukiwanie zaawansowane"
+    },
+    "filter": {
+        "text": "Szukaj {field}",
+        "date": "Filtruj {field}",
+        "dateRange": "Zakres dat",
+        "from": "Od",
+        "to": "Do"
+    },
+    "field": {
+        "required": "To pole jest wymagane",
+        "select": "Wybierz {field}",
+        "enterText": "Wpisz {field}",
+        "selectDate": "Wybierz datę"
+    },
+    "messages": {
+        "createSuccess": "Pomyślnie utworzono {resource}",
+        "updateSuccess": "Pomyślnie zaktualizowano {resource}",
+        "deleteSuccess": "Pomyślnie usunięto {resource}",
+        "error": "Wystąpił błąd",
+        "loadingError": "Błąd ładowania danych"
+    },
+    "boolean": {
+        "true": "Tak",
+        "false": "Nie"
+    },
+    "ai": {
+        "title": "Asystent AI",
+        "newConversation": "Nowa rozmowa",
+        "copy": "Kopiuj",
+        "thinking": "Myślę...",
+        "placeholder": "Zapytaj mnie o cokolwiek...",
+        "error": "Przepraszam, wystąpił błąd. Spróbuj ponownie.",
+        "sendHint": "Shift+Enter aby wysłać"
+    }
+}

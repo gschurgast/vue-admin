@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "Home",
+        "resources": "Risorse",
+        "search": "Cerca",
+        "clear": "Cancella",
+        "apply": "Applica",
+        "cancel": "Annulla",
+        "save": "Salva",
+        "delete": "Elimina",
+        "edit": "Modifica",
+        "create": "Crea",
+        "close": "Chiudi",
+        "confirm": "Conferma",
+        "actions": "Azioni",
+        "loading": "Caricamento...",
+        "refresh": "Aggiorna",
+        "showFilters": "Mostra filtri",
+        "hideFilters": "Nascondi filtri",
+        "createNew": "Crea nuovo"
+    },
+    "app": {
+        "title": "Admin API Platform",
+        "manageResources": "Gestisci le tue risorse"
+    },
+    "navigation": {
+        "home": "Home",
+        "resources": "Risorse"
+    },
+    "resource": {
+        "list": "Lista",
+        "create": "Crea {resource}",
+        "edit": "Modifica {resource}",
+        "delete": "Elimina {resource}",
+        "confirmDelete": "Sei sicuro di voler eliminare questo {resource}?",
+        "itemsPerPage": "Elementi per pagina",
+        "pageText": "{start}-{end} di {total}",
+        "noData": "Nessun dato disponibile",
+        "searchFilters": "Filtri di ricerca",
+        "advancedSearch": "Ricerca avanzata"
+    },
+    "filter": {
+        "text": "Cerca {field}",
+        "date": "Filtra {field}",
+        "dateRange": "Intervallo di date",
+        "from": "Da",
+        "to": "A"
+    },
+    "field": {
+        "required": "Questo campo è obbligatorio",
+        "select": "Seleziona {field}",
+        "enterText": "Inserisci {field}",
+        "selectDate": "Seleziona data"
+    },
+    "messages": {
+        "createSuccess": "{resource} creato con successo",
+        "updateSuccess": "{resource} aggiornato con successo",
+        "deleteSuccess": "{resource} eliminato con successo",
+        "error": "Si è verificato un errore",
+        "loadingError": "Errore durante il caricamento dei dati"
+    },
+    "boolean": {
+        "true": "Sì",
+        "false": "No"
+    },
+    "ai": {
+        "title": "Assistente IA",
+        "newConversation": "Nuova conversazione",
+        "copy": "Copia",
+        "thinking": "Pensando...",
+        "placeholder": "Chiedimi tutto...",
+        "error": "Spiacente, si è verificato un errore. Riprova per favore.",
+        "sendHint": "Shift+Invio per inviare"
+    }
+}

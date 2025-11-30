@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "Hjem",
+        "resources": "Ressourcer",
+        "search": "Søg",
+        "clear": "Ryd",
+        "apply": "Anvend",
+        "cancel": "Annuller",
+        "save": "Gem",
+        "delete": "Slet",
+        "edit": "Rediger",
+        "create": "Opret",
+        "close": "Luk",
+        "confirm": "Bekræft",
+        "actions": "Handlinger",
+        "loading": "Indlæser...",
+        "refresh": "Opdater",
+        "showFilters": "Vis filtre",
+        "hideFilters": "Skjul filtre",
+        "createNew": "Opret ny"
+    },
+    "app": {
+        "title": "API Platform Admin",
+        "manageResources": "Administrer dine ressourcer"
+    },
+    "navigation": {
+        "home": "Hjem",
+        "resources": "Ressourcer"
+    },
+    "resource": {
+        "list": "Liste",
+        "create": "Opret {resource}",
+        "edit": "Rediger {resource}",
+        "delete": "Slet {resource}",
+        "confirmDelete": "Er du sikker på, at du vil slette denne {resource}?",
+        "itemsPerPage": "Elementer pr. side",
+        "pageText": "{start}-{end} af {total}",
+        "noData": "Ingen data tilgængelig",
+        "searchFilters": "Søgefiltre",
+        "advancedSearch": "Avanceret søgning"
+    },
+    "filter": {
+        "text": "Søg {field}",
+        "date": "Filtrer {field}",
+        "dateRange": "Datointerval",
+        "from": "Fra",
+        "to": "Til"
+    },
+    "field": {
+        "required": "Dette felt er påkrævet",
+        "select": "Vælg {field}",
+        "enterText": "Indtast {field}",
+        "selectDate": "Vælg dato"
+    },
+    "messages": {
+        "createSuccess": "{resource} oprettet",
+        "updateSuccess": "{resource} opdateret",
+        "deleteSuccess": "{resource} slettet",
+        "error": "Der opstod en fejl",
+        "loadingError": "Fejl ved indlæsning af data"
+    },
+    "boolean": {
+        "true": "Ja",
+        "false": "Nej"
+    },
+    "ai": {
+        "title": "AI Assistent",
+        "newConversation": "Ny samtale",
+        "copy": "Kopier",
+        "thinking": "Tænker...",
+        "placeholder": "Spørg mig om alt...",
+        "error": "Beklager, der opstod en fejl. Prøv igen.",
+        "sendHint": "Shift+Enter for at sende"
+    }
+}

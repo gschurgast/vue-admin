@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "author": {
+            "name": "作者",
+            "fields": {
+                "name": "姓名",
+                "bio": "传记",
+                "birthDate": "出生日期",
+                "deathDate": "死亡日期",
+                "books": "书籍",
+                "isAlive": "是否活着"
+            }
+        }
+    }
+}

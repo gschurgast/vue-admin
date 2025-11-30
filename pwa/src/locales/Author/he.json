@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "author": {
+            "name": "מחבר",
+            "fields": {
+                "name": "שם",
+                "bio": "ביוגרפיה",
+                "birthDate": "תאריך לידה",
+                "deathDate": "תאריך מוות",
+                "books": "ספרים",
+                "isAlive": "האם חי"
+            }
+        }
+    }
+}

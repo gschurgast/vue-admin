@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "Startseite",
+        "resources": "Ressourcen",
+        "search": "Suchen",
+        "clear": "Löschen",
+        "apply": "Anwenden",
+        "cancel": "Abbrechen",
+        "save": "Speichern",
+        "delete": "Löschen",
+        "edit": "Bearbeiten",
+        "create": "Erstellen",
+        "close": "Schließen",
+        "confirm": "Bestätigen",
+        "actions": "Aktionen",
+        "loading": "Laden...",
+        "refresh": "Aktualisieren",
+        "showFilters": "Filter anzeigen",
+        "hideFilters": "Filter ausblenden",
+        "createNew": "Neu erstellen"
+    },
+    "app": {
+        "title": "API Platform Admin",
+        "manageResources": "Verwalten Sie Ihre Ressourcen"
+    },
+    "navigation": {
+        "home": "Startseite",
+        "resources": "Ressourcen"
+    },
+    "resource": {
+        "list": "Liste",
+        "create": "{resource} erstellen",
+        "edit": "{resource} bearbeiten",
+        "delete": "{resource} löschen",
+        "confirmDelete": "Sind Sie sicher, dass Sie diese {resource} löschen möchten?",
+        "itemsPerPage": "Einträge pro Seite",
+        "pageText": "{start}-{end} von {total}",
+        "noData": "Keine Daten verfügbar",
+        "searchFilters": "Suchfilter",
+        "advancedSearch": "Erweiterte Suche"
+    },
+    "filter": {
+        "text": "{field} suchen",
+        "date": "{field} filtern",
+        "dateRange": "Datumsbereich",
+        "from": "Von",
+        "to": "Bis"
+    },
+    "field": {
+        "required": "Dieses Feld ist erforderlich",
+        "select": "{field} auswählen",
+        "enterText": "{field} eingeben",
+        "selectDate": "Datum auswählen"
+    },
+    "messages": {
+        "createSuccess": "{resource} erfolgreich erstellt",
+        "updateSuccess": "{resource} erfolgreich aktualisiert",
+        "deleteSuccess": "{resource} erfolgreich gelöscht",
+        "error": "Ein Fehler ist aufgetreten",
+        "loadingError": "Fehler beim Laden der Daten"
+    },
+    "boolean": {
+        "true": "Ja",
+        "false": "Nein"
+    },
+    "ai": {
+        "title": "KI-Assistent",
+        "newConversation": "Neue Konversation",
+        "copy": "Kopieren",
+        "thinking": "Denkt nach...",
+        "placeholder": "Frag mich alles...",
+        "error": "Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+        "sendHint": "Shift+Enter zum Senden"
+    }
+}

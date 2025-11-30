@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API Test</title>
+</head>
+
+<body>
+    <h1>API Platform Schema Test</h1>
+    <button onclick="testAPI()">Fetch Schema</button>
+    <pre id="output"></pre>
+
+    <script>
+        async function testAPI() {
+            const output = document.getElementById('output');
+            try {
+                const response = await fetch('http://localhost:8080/api/docs.jsonld');
+                const data = await response.json();
+                output.textContent = JSON.stringify(data, null, 2);
+
+                console.log('Supported Classes:', data.supportedClass);
+                if (data.supportedClass) {
+                    data.supportedClass.forEach(cls => {
+                        console.log('Class:', cls['@id'], cls.title);
+                    });
+                }
+            } catch (error) {
+                output.textContent = 'Error: ' + error.message;
+                console.error(error);
+            }
+        }
+    </script>
+</body>
+
+</html>

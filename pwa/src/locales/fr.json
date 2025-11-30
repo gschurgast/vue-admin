@@ -1,0 +1,80 @@
+{
+    "common": {
+        "home": "Accueil",
+        "resources": "Ressources",
+        "search": "Rechercher",
+        "clear": "Effacer",
+        "apply": "Appliquer",
+        "cancel": "Annuler",
+        "save": "Enregistrer",
+        "delete": "Supprimer",
+        "edit": "Modifier",
+        "create": "Créer",
+        "close": "Fermer",
+        "confirm": "Confirmer",
+        "actions": "Actions",
+        "loading": "Chargement...",
+        "refresh": "Actualiser",
+        "showFilters": "Afficher les filtres",
+        "hideFilters": "Masquer les filtres",
+        "createNew": "Créer nouveau",
+        "goHome": "Aller à l'accueil"
+    },
+    "app": {
+        "title": "Admin API Platform",
+        "manageResources": "Gérez vos ressources"
+    },
+    "navigation": {
+        "home": "Accueil",
+        "resources": "Ressources"
+    },
+    "resource": {
+        "list": "Liste",
+        "create": "Créer {resource}",
+        "edit": "Modifier {resource}",
+        "delete": "Supprimer {resource}",
+        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce {resource} ?",
+        "itemsPerPage": "Éléments par page",
+        "pageText": "{start}-{end} sur {total}",
+        "noData": "Aucune donnée disponible",
+        "searchFilters": "Filtres de recherche",
+        "advancedSearch": "Recherche avancée",
+        "notFound": {
+            "title": "Ressource non trouvée",
+            "message": "La ressource \"{resource}\" n'existe pas."
+        }
+    },
+    "filter": {
+        "text": "Rechercher {field}",
+        "date": "Filtrer {field}",
+        "dateRange": "Plage de dates",
+        "from": "De",
+        "to": "À"
+    },
+    "field": {
+        "required": "Ce champ est requis",
+        "select": "Sélectionner {field}",
+        "enterText": "Saisir {field}",
+        "selectDate": "Sélectionner une date"
+    },
+    "messages": {
+        "createSuccess": "{resource} créé avec succès",
+        "updateSuccess": "{resource} mis à jour avec succès",
+        "deleteSuccess": "{resource} supprimé avec succès",
+        "error": "Une erreur s'est produite",
+        "loadingError": "Erreur lors du chargement des données"
+    },
+    "boolean": {
+        "true": "Oui",
+        "false": "Non"
+    },
+    "ai": {
+        "title": "Assistant IA",
+        "newConversation": "Nouvelle conversation",
+        "copy": "Copier",
+        "thinking": "Réfléchit...",
+        "placeholder": "Posez-moi une question...",
+        "error": "Désolé, une erreur s'est produite. Veuillez réessayer.",
+        "sendHint": "Shift+Entrée pour envoyer"
+    }
+}

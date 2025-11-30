@@ -1,0 +1,14 @@
+{
+    "resources": {
+        "book": {
+            "name": "本",
+            "fields": {
+                "title": "タイトル",
+                "description": "説明",
+                "author": "著者",
+                "publicationDate": "出版日",
+                "reviews": "レビュー"
+            }
+        }
+    }
+}

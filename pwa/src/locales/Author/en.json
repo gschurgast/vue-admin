@@ -1,0 +1,16 @@
+{
+    "resources": {
+        "author": {
+            "name": "Author",
+            "fields": {
+                "name": "Name",
+                "bio": "Biography",
+                "birthDate": "Birth Date",
+                "deathDate": "Death Date",
+                "books": "Books",
+                "isAlive": "Is Alive",
+                "next_meeting": "Next Meeting"
+            }
+        }
+    }
+}

@@ -1,0 +1,75 @@
+{
+    "common": {
+        "home": "בית",
+        "resources": "משאבים",
+        "search": "חיפוש",
+        "clear": "נקה",
+        "apply": "החל",
+        "cancel": "ביטול",
+        "save": "שמור",
+        "delete": "מחק",
+        "edit": "ערוך",
+        "create": "צור",
+        "close": "סגור",
+        "confirm": "אשר",
+        "actions": "פעולות",
+        "loading": "טוען...",
+        "refresh": "רענן",
+        "showFilters": "הצג מסננים",
+        "hideFilters": "הסתר מסננים",
+        "createNew": "צור חדש"
+    },
+    "app": {
+        "title": "ניהול פלטפורמת API",
+        "manageResources": "נהל את המשאבים שלך"
+    },
+    "navigation": {
+        "home": "בית",
+        "resources": "משאבים"
+    },
+    "resource": {
+        "list": "רשימה",
+        "create": "צור {resource}",
+        "edit": "ערוך {resource}",
+        "delete": "מחק {resource}",
+        "confirmDelete": "האם אתה בטוח שברצונך למחוק {resource} זה?",
+        "itemsPerPage": "פריטים בעמוד",
+        "pageText": "{start}-{end} מתוך {total}",
+        "noData": "אין נתונים זמינים",
+        "searchFilters": "מסנני חיפוש",
+        "advancedSearch": "חיפוש מתקדם"
+    },
+    "filter": {
+        "text": "חפש {field}",
+        "date": "סנן {field}",
+        "dateRange": "טווח תאריכים",
+        "from": "מ",
+        "to": "עד"
+    },
+    "field": {
+        "required": "שדה זה נדרש",
+        "select": "בחר {field}",
+        "enterText": "הזן {field}",
+        "selectDate": "בחר תאריך"
+    },
+    "messages": {
+        "createSuccess": "{resource} נוצר בהצלחה",
+        "updateSuccess": "{resource} עודכן בהצלחה",
+        "deleteSuccess": "{resource} נמחק בהצלחה",
+        "error": "אירעה שגיאה",
+        "loadingError": "שגיאה בטעינת נתונים"
+    },
+    "boolean": {
+        "true": "כן",
+        "false": "לא"
+    },
+    "ai": {
+        "title": "עוזר AI",
+        "newConversation": "שיחה חדשה",
+        "copy": "העתק",
+        "thinking": "חושב...",
+        "placeholder": "שאל אותי כל דבר...",
+        "error": "מצטער, אירעה שגיאה. אנא נסה שוב.",
+        "sendHint": "Shift+Enter לשליחה"
+    }
+}

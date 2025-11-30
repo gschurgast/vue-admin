@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "book": {
+            "name": "Book",
+            "fields": {
+                "name": "Name",
+                "title": "Title",
+                "description": "Description",
+                "author": "Author",
+                "publicationDate": "Publication Date",
+                "reviews": "Reviews"
+            }
+        }
+    }
+}
