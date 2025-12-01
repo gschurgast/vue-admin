@@ -1,8 +1,59 @@
-import axios from 'axios'
+import axios, { type AxiosInstance } from 'axios'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8080'
+interface HydraOperation {
+    method: string
+    returns: string
+    [key: string]: any
+}
+
+interface HydraProperty {
+    property: {
+        '@type': string
+        range?: string | { 'owl:equivalentClass': { 'owl:allValuesFrom': { '@id': string } } }[]
+        supportedOperation?: HydraOperation[]
+        [key: string]: any
+    }
+    [key: string]: any
+}
+
+interface EnhancedProperty extends HydraProperty {
+    isRelation: boolean
+    relatedResource: string | null
+}
+
+export interface Resource {
+    name: string
+    title: string
+    description: string
+    properties: EnhancedProperty[]
+    operations: HydraOperation[]
+    collectionOperations: HydraOperation[]
+}
+
+interface HydraClass {
+    '@id': string
+    title?: string
+    description?: string
+    supportedProperty?: HydraProperty[]
+    supportedOperation?: HydraOperation[]
+}
+
+interface HydraSchema {
+    supportedClass: HydraClass[]
+    [key: string]: any
+}
+
+interface ListResponse<T = any> {
+    data: T[]
+    total: number
+}
 
 class ApiPlatformService {
+    public client: AxiosInstance
+    public schema: HydraSchema | null
+    public resources: Map<string, Resource>
+    private fetchPromise: Promise<HydraSchema> | null
+
     constructor() {
         this.client = axios.create({
             baseURL: import.meta.env.VITE_API_URL || 'http://localhost:8080',
@@ -16,7 +67,7 @@ class ApiPlatformService {
         this.fetchPromise = null // Track ongoing fetch to prevent duplicates
     }
 
-    async fetchSchema() {
+    async fetchSchema(): Promise<HydraSchema> {
         if (this.schema) return this.schema
 
         // If already fetching, return the same promise
@@ -31,9 +82,9 @@ class ApiPlatformService {
                 this.schema = response.data
 
                 // Parse resources from Hydra documentation
-                if (this.schema.supportedClass) {
+                if (this.schema && this.schema.supportedClass) {
                     // First pass: create resources map
-                    this.schema.supportedClass.forEach(resource => {
+                    this.schema.supportedClass.forEach((resource: HydraClass) => {
                         // Skip built-in Hydra/API Platform classes
                         if (resource['@id'].startsWith('http://') ||
                             resource['@id'].includes('Entrypoint') ||
@@ -45,9 +96,9 @@ class ApiPlatformService {
                         const resourceName = resource['@id'].replace('#', '')
 
                         // Enhance properties with relation detection
-                        const enhancedProperties = (resource.supportedProperty || []).map(prop => {
+                        const enhancedProperties: EnhancedProperty[] = (resource.supportedProperty || []).map((prop: HydraProperty) => {
                             const isRelation = prop.property?.['@type'] === 'Link'
-                            const relatedResource = isRelation ? prop.property.range?.replace('#', '') : null
+                            const relatedResource = isRelation && typeof prop.property.range === 'string' ? prop.property.range.replace('#', '') : null
 
                             return {
                                 ...prop,
@@ -67,19 +118,19 @@ class ApiPlatformService {
                     })
 
                     // Second pass: parse Entrypoint for collection operations
-                    const entrypoint = this.schema.supportedClass.find(r => r['@id'].includes('Entrypoint'))
+                    const entrypoint = this.schema.supportedClass.find((r: HydraClass) => r['@id'].includes('Entrypoint'))
                     if (entrypoint && entrypoint.supportedProperty) {
-                        entrypoint.supportedProperty.forEach(prop => {
+                        entrypoint.supportedProperty.forEach((prop: HydraProperty) => {
                             const operations = prop.property?.supportedOperation || []
 
                             // Try to find the related resource
                             // 1. Check range if it's a direct link (simple case)
                             // 2. Check owl:allValuesFrom if it's a collection (complex case)
-                            let relatedResourceName = null
+                            let relatedResourceName: string | null = null
 
                             const range = prop.property?.range
                             if (Array.isArray(range)) {
-                                const collectionRange = range.find(r => r['owl:equivalentClass'])
+                                const collectionRange = range.find((r: any) => r['owl:equivalentClass'])
                                 if (collectionRange) {
                                     const resourceId = collectionRange['owl:equivalentClass']?.['owl:allValuesFrom']?.['@id']
                                     if (resourceId) {
@@ -92,11 +143,17 @@ class ApiPlatformService {
 
                             if (relatedResourceName && this.resources.has(relatedResourceName)) {
                                 const resource = this.resources.get(relatedResourceName)
-                                resource.collectionOperations = operations
-                                this.resources.set(relatedResourceName, resource)
+                                if (resource) {
+                                    resource.collectionOperations = operations
+                                    this.resources.set(relatedResourceName, resource)
+                                }
                             }
                         })
                     }
+                }
+
+                if (!this.schema) {
+                    throw new Error('Schema not found')
                 }
 
                 return this.schema
@@ -111,15 +168,15 @@ class ApiPlatformService {
         return this.fetchPromise
     }
 
-    getResources() {
+    getResources(): Resource[] {
         return Array.from(this.resources.values())
     }
 
-    getResource(name) {
+    getResource(name: string): Resource | undefined {
         return this.resources.get(name)
     }
 
-    getResourcePath(resourceName) {
+    getResourcePath(resourceName: string): string {
         // Convert PascalCase to snake_case (e.g. ChatMessage -> chat_message)
         const snakeCaseName = resourceName
             .replace(/[A-Z]/g, (letter, index) => index === 0 ? letter.toLowerCase() : `_${letter.toLowerCase()}`)
@@ -127,7 +184,7 @@ class ApiPlatformService {
         return `/api/${snakeCaseName}s`
     }
 
-    async getList(resourcePath, params = {}) {
+    async getList(resourcePath: string, params: any = {}): Promise<ListResponse> {
         const { page = 1, itemsPerPage = 30, ...filters } = params
 
         try {
@@ -149,7 +206,7 @@ class ApiPlatformService {
         }
     }
 
-    async getOne(resourcePath, id) {
+    async getOne(resourcePath: string, id: string | number): Promise<any> {
         try {
             const response = await this.client.get(`${resourcePath}/${id}`)
             return response.data
@@ -159,7 +216,7 @@ class ApiPlatformService {
         }
     }
 
-    async create(resourcePath, data) {
+    async create(resourcePath: string, data: any): Promise<any> {
         try {
             const response = await this.client.post(resourcePath, data, {
                 headers: {
@@ -173,7 +230,7 @@ class ApiPlatformService {
         }
     }
 
-    async update(resourcePath, id, data) {
+    async update(resourcePath: string, id: string | number, data: any): Promise<any> {
         try {
             const response = await this.client.patch(`${resourcePath}/${id}`, data, {
                 headers: {
@@ -187,7 +244,7 @@ class ApiPlatformService {
         }
     }
 
-    async delete(resourcePath, id) {
+    async delete(resourcePath: string, id: string | number): Promise<boolean> {
         try {
             await this.client.delete(`${resourcePath}/${id}`)
             return true
@@ -197,22 +254,22 @@ class ApiPlatformService {
         }
     }
 
-    getOperations(resourceName) {
+    getOperations(resourceName: string): HydraOperation[] {
         const resource = this.getResource(resourceName)
         return resource ? resource.operations : []
     }
 
-    getCollectionOperations(resourceName) {
+    getCollectionOperations(resourceName: string): HydraOperation[] {
         const resource = this.getResource(resourceName)
         return resource ? (resource.collectionOperations || []) : []
     }
 
-    hasCollectionOperation(resourceName, method) {
+    hasCollectionOperation(resourceName: string, method: string): boolean {
         const operations = this.getCollectionOperations(resourceName)
         return operations.some(op => op.method === method)
     }
 
-    hasItemOperation(resourceName, method) {
+    hasItemOperation(resourceName: string, method: string): boolean {
         const operations = this.getOperations(resourceName)
         return operations.some(op => {
             // Check for method match

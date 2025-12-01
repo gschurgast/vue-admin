@@ -1,14 +1,14 @@
 <template>
   <div>
-    <v-alert type="success" class="mb-4" variant="tonal">
+    <v-alert type="info" class="mb-4" variant="tonal">
       <template v-slot:prepend>
         <v-icon>mdi-check-circle</v-icon>
       </template>
-      Custom Author List Loaded from <strong>components/author/list/MyCustomList.vue</strong>
+      Custom Author List
     </v-alert>
 
     <v-row>
-      <v-col cols="6">
+      <v-col cols="8">
         <ResourceList
       :items="items"
       :headers="headers"
@@ -17,16 +17,18 @@
       :custom-components="customComponents"
       :relation-data="relationData"
       :relations-loaded="relationsLoaded"
+      :resource-name="resourceName"
+      @view="handleView"
       @edit="handleEdit"
       @delete="handleDelete"
     />
       </v-col>
-      <v-col cols="6">
-        dsds
+      <v-col cols="4">
+        Infos complémentaires
       </v-col>
     </v-row>
-    
-    
+
+
   </div>
 </template>
 
@@ -41,18 +43,25 @@ interface Props {
   customComponents?: Record<string, any>
   relationData?: Record<string, any>
   relationsLoaded?: boolean
+  resourceName?: string
 }
 
 withDefaults(defineProps<Props>(), {
   customComponents: () => ({}),
   relationData: () => ({}),
-  relationsLoaded: false
+  relationsLoaded: false,
+  resourceName: ''
 })
 
 const emit = defineEmits<{
+  'view': [item: any]
   'edit': [item: any]
   'delete': [item: any]
 }>()
+
+function handleView(item: any) {
+  emit('view', item)
+}
 
 function handleEdit(item: any) {
   emit('edit', item)

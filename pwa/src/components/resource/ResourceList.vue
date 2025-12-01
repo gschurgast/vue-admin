@@ -12,6 +12,13 @@
         <!-- Actions column -->
         <template v-if="header.key === 'actions'">
           <v-btn
+            v-if="canView"
+            icon="mdi-eye"
+            variant="text"
+            size="small"
+            @click="handleView(item)"
+          />
+          <v-btn
             v-if="canEdit"
             icon="mdi-pencil"
             variant="text"
@@ -95,9 +102,15 @@ const props = withDefaults(defineProps<Props>(), {
 })
 
 const emit = defineEmits<{
+  'view': [item: any]
   'edit': [item: any]
   'delete': [item: any]
 }>()
+
+const canView = computed(() => {
+  if (!props.resourceName) return true
+  return apiPlatform.hasItemOperation(props.resourceName, 'GET')
+})
 
 const canEdit = computed(() => {
   if (!props.resourceName) return true
@@ -108,6 +121,10 @@ const canDelete = computed(() => {
   if (!props.resourceName) return true
   return apiPlatform.hasItemOperation(props.resourceName, 'DELETE')
 })
+
+function handleView(item: any) {
+  emit('view', item)
+}
 
 function handleEdit(item: any) {
   emit('edit', item)

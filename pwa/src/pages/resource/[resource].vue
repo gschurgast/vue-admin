@@ -63,25 +63,11 @@
         :relation-data="relationData"
         :relations-loaded="relationsLoaded"
         :resource-name="resourceName"
+        @view="showItem"
         @edit="editItem"
         @delete="confirmDelete"
     />
    </template>
-
-   <!-- Create/Edit Dialog -->
-   <ResourceCreate
-       v-model="showCreateDialog"
-       :form-data="formData"
-       :fields="editableFields"
-       :resource-title="resourceTitle"
-       :is-edit="!!editingItem"
-       :custom-components="customComponents"
-       :relation-data="relationData"
-       :loading-relations="loadingRelations"
-       :field-errors="fieldErrors"
-       @save="saveItem"
-       @close="closeDialog"
-   />
 
    <!-- Delete Confirmation Dialog -->
    <ResourceDelete
@@ -105,7 +91,7 @@
 
 <script setup lang="ts">
 import {ref, computed, onMounted, watch, shallowRef, markRaw} from 'vue'
-import {useRoute} from 'vue-router'
+import {useRoute, useRouter} from 'vue-router'
 import {useI18n} from 'vue-i18n'
 import apiPlatform from '../../services/apiPlatform'
 import {loadResourceMessages} from '../../plugins/i18n'
@@ -114,16 +100,16 @@ import {useResourcesStore} from '../../stores/resources'
 // Resource components
 import ResourceFilter from '../../components/resource/ResourceFilter.vue'
 import ResourceList from '../../components/resource/ResourceList.vue'
-import ResourceCreate from '../../components/resource/ResourceCreate.vue'
 import ResourceDelete from '../../components/resource/ResourceDelete.vue'
 import ResourceNotFound from '../../components/common/ResourceNotFound.vue'
 
 const route = useRoute()
+const router = useRouter()
 const resourcesStore = useResourcesStore()
 const {t, locale} = useI18n()
 
 // Custom component cache
-const customComponents = ref({})
+const customComponents = ref<Record<string, any>>({})
 
 // Helper to get fields from config (supports object with fields property)
 function getConfigFields(config: any) {
@@ -145,7 +131,7 @@ function normalizeConfigItem(item: any) {
 }
 
 // Function to load custom component dynamically
-async function loadCustomComponent(componentName, type = 'list') {
+async function loadCustomComponent(componentName: string, type = 'list') {
  const cacheKey = `${type}/${componentName}`
 
  if (customComponents.value[cacheKey]) {
@@ -170,16 +156,12 @@ const resourceName = computed(() => {
 const items = ref([])
 const loading = ref(false)
 const itemsPerPage = ref(10)
-const showCreateDialog = ref(false)
 const showDeleteDialog = ref(false)
-const editingItem = ref(null)
 const itemToDelete = ref(null)
-const formData = ref({})
-const fieldErrors = ref<Record<string, string[]>>({})
 const showSearchForm = ref(false)
-const searchFilters = ref({})
-const relationData = ref({})
-const loadingRelations = ref({})
+const searchFilters = ref<Record<string, any>>({})
+const relationData = ref<Record<string, any>>({})
+const loadingRelations = ref<Record<string, boolean>>({})
 const relationsLoaded = ref(false)
 const initialLoadDone = ref(false)
 const resourceConfig = ref<any>(null)
@@ -207,7 +189,7 @@ async function loadResourceConfig() {
   resourceConfig.value = config.default || config
 
   // Pre-load any custom components specified in the config
-  const componentsToLoad = []
+  const componentsToLoad: Promise<any>[] = []
   
   // Reset to default components
   ListComponent.value = ResourceList
@@ -454,7 +436,7 @@ const editableFields = computed(() => {
 
       return true
      })
-     .map(prop => {
+     .map((prop: any) => {
       const range = prop.property?.range
       let type = 'string'
 
@@ -487,7 +469,7 @@ const editableFields = computed(() => {
  if (resourceConfig.value?.edit) {
   const configFields = getConfigFields(resourceConfig.value.edit)
   fields = configFields
-      .map(configItem => {
+      .map((configItem: any) => {
        const normalized = normalizeConfigItem(configItem)
        if (!normalized) return undefined
        
@@ -509,8 +491,8 @@ const editableFields = computed(() => {
 const relationFields = computed(() => {
  if (!resource.value) return []
  return resource.value.properties
-     .filter(prop => prop.isRelation)
-     .map(prop => prop.property?.label || prop.title)
+     .filter((prop: any) => prop.isRelation)
+     .map((prop: any) => prop.property?.label || prop.title)
 })
 
 
@@ -662,34 +644,16 @@ function clearSearch() {
 }
 
 function createItem() {
- editingItem.value = null
- formData.value = {}
- fieldErrors.value = {}
- showCreateDialog.value = true
+  router.push(`/edit/${resourceName.value}/new`)
+}
+
+function showItem(item) {
+  router.push(`/show/${resourceName.value}/${item.id}`)
 }
 
 function editItem(item) {
- editingItem.value = item
- formData.value = {...item}
-
- // Convert relation objects to IRIs
- editableFields.value.forEach(field => {
-  if (field.isRelation && formData.value[field.name]) {
-   if (typeof formData.value[field.name] === 'object') {
-    formData.value[field.name] = formData.value[field.name]['@id']
-   }
-  }
- })
-
- showCreateDialog.value = true
+  router.push(`/edit/${resourceName.value}/${item.id}`)
 }
-
-// Watch for dialog closing to reset state
-watch(showCreateDialog, (newValue) => {
- if (!newValue) {
-  closeDialog()
- }
-})
 
 function confirmDelete(item) {
  itemToDelete.value = item
@@ -705,65 +669,6 @@ async function deleteItem() {
  } catch (error) {
   showSnackbar('Failed to delete item', 'error')
  }
-}
-
-async function saveItem(data: any) {
- try {
-  // Clear previous errors
-  fieldErrors.value = {}
-
-  // Use data from event payload if available, otherwise fallback to formData.value
-  const dataToSave = data || formData.value
-
-  console.log('Saving item with data:', dataToSave)
-  if (editingItem.value) {
-   await apiPlatform.update(resourcePath.value, editingItem.value.id, dataToSave)
-   showSnackbar(t('messages.updateSuccess', {resource: resourceTitle.value}))
-  } else {
-   console.log('Creating new item at:', resourcePath.value)
-   await apiPlatform.create(resourcePath.value, dataToSave)
-   showSnackbar(t('messages.createSuccess', {resource: resourceTitle.value}))
-  }
-  closeDialog()
-  loadData()
- } catch (error: any) {
-  console.error('Failed to save item:', error)
-  console.error('Error response:', error.response?.data)
-
-  // Extract validation errors from API response
-  let errorMessage = t('messages.error')
-  if (error.response?.data?.violations) {
-   // API Platform validation errors
-   const violations = error.response.data.violations
-
-   // Map violations to field errors
-   violations.forEach((violation: any) => {
-    const fieldName = violation.propertyPath
-    if (fieldName) {
-     if (!fieldErrors.value[fieldName]) {
-      fieldErrors.value[fieldName] = []
-     }
-     fieldErrors.value[fieldName].push(violation.message)
-    }
-   })
-
-   errorMessage = violations.map((v: any) => v.message).join(', ')
-  } else if (error.response?.data?.['hydra:description']) {
-   // Hydra error format
-   errorMessage = error.response.data['hydra:description']
-  } else if (error.response?.status === 500) {
-   errorMessage = 'Server error. Please check all required fields are filled.'
-  }
-
-  showSnackbar(errorMessage, 'error')
- }
-}
-
-function closeDialog() {
- showCreateDialog.value = false
- editingItem.value = null
- formData.value = {}
- fieldErrors.value = {}
 }
 
 function formatDate(date) {

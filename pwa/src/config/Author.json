@@ -13,6 +13,7 @@
         ]
     },
     "list": {
+        "component": "AuthorList",
         "fields": [
             {
                 "name": ""
@@ -35,6 +36,7 @@
         ]
     },
     "edit": {
+        "component": "AuthorEdit",
         "fields": [
             {
                 "name": ""
@@ -50,6 +52,29 @@
             },
             {
                 "isAlive": ""
+            },
+            {
+                "nextMeeting": ""
+            }
+        ]
+    },
+    "show": {
+        "component": "AuthorShow",
+        "fields": [
+            {
+                "name": ""
+            },
+            {
+                "bio": ""
+            },
+            {
+                "birthDate": "DateCell"
+            },
+            {
+                "deathDate": "DateCell"
+            },
+            {
+                "isAlive": "DeadOrAliveCell"
             },
             {
                 "nextMeeting": ""

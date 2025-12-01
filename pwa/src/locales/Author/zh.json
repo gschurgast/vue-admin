@@ -8,7 +8,8 @@
                 "birthDate": "出生日期",
                 "deathDate": "死亡日期",
                 "books": "书籍",
-                "isAlive": "是否活着"
+                "isAlive": "是否活着",
+                "nextMeeting": "下次会议"
             }
         }
     }

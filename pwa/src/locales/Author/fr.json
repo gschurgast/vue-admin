@@ -9,7 +9,7 @@
                 "deathDate": "Date de mort",
                 "books": "Livres",
                 "isAlive": "Est en vie",
-                "next_meeting": "Prochaine réunion"
+                "nextMeeting": "Prochaine réunion"
             }
         }
     }

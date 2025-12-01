@@ -117,6 +117,14 @@ onMounted(() => {
 
    <template v-slot:append>
 
+    <!-- Chat Bot Button -->
+    <v-btn icon density="compact" size="small" class="mr-2" @click="chatDrawer = !chatDrawer">
+     <v-icon>mdi-robot</v-icon>
+     <v-tooltip activator="parent" location="bottom">
+      AI Assistant
+     </v-tooltip>
+    </v-btn>
+
     <!-- Notification Bell -->
     <v-btn icon density="compact" size="small" class="mr-2">
      <v-badge
@@ -149,21 +157,6 @@ onMounted(() => {
   
   <!-- Chat Drawer -->
   <ChatBot v-model="chatDrawer" />
-  
-  <!-- Floating Chat Button -->
-  <v-btn
-    icon
-    size="large"
-    color="primary"
-    class="chat-fab"
-    @click="chatDrawer = !chatDrawer"
-    elevation="6"
-  >
-    <v-icon size="large">mdi-robot</v-icon>
-    <v-tooltip activator="parent" location="left">
-      AI Assistant
-    </v-tooltip>
-  </v-btn>
 
   <v-main>
    <router-view/>
@@ -171,11 +164,4 @@ onMounted(() => {
  </v-app>
 </template>
 
-<style scoped>
-.chat-fab {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  z-index: 1000;
-}
-</style>
+

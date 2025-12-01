@@ -18,7 +18,10 @@
         "showFilters": "Afficher les filtres",
         "hideFilters": "Masquer les filtres",
         "createNew": "Créer nouveau",
-        "goHome": "Aller à l'accueil"
+        "goHome": "Aller à l'accueil",
+        "back": "Retour",
+        "yes": "Oui",
+        "no": "Non"
     },
     "app": {
         "title": "Admin API Platform",
@@ -32,6 +35,7 @@
         "list": "Liste",
         "create": "Créer {resource}",
         "edit": "Modifier {resource}",
+        "show": "Voir {resource}",
         "delete": "Supprimer {resource}",
         "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce {resource} ?",
         "itemsPerPage": "Éléments par page",

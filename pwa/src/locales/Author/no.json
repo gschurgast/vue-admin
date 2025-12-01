@@ -8,7 +8,8 @@
                 "birthDate": "Fødselsdato",
                 "deathDate": "Død",
                 "books": "Bøker",
-                "isAlive": "Liv"
+                "isAlive": "Liv",
+                "nextMeeting": "Næste møte"
             }
         }
     }

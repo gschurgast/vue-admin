@@ -18,7 +18,10 @@
         "showFilters": "Show Filters",
         "hideFilters": "Hide Filters",
         "createNew": "Create New",
-        "goHome": "Go to Home"
+        "goHome": "Go to Home",
+        "back": "Back",
+        "yes": "Yes",
+        "no": "No"
     },
     "app": {
         "title": "API Platform Admin",
@@ -32,6 +35,7 @@
         "list": "List",
         "create": "Create {resource}",
         "edit": "Edit {resource}",
+        "show": "View {resource}",
         "delete": "Delete {resource}",
         "confirmDelete": "Are you sure you want to delete this {resource}?",
         "itemsPerPage": "Items per page",

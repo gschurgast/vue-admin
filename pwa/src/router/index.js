@@ -13,6 +13,16 @@ const router = createRouter({
             path: '/resource/:resource',
             name: 'resource',
             component: () => import('../pages/resource/[resource].vue')
+        },
+        {
+            path: '/edit/:resource/:id',
+            name: 'edit',
+            component: () => import('../pages/edit/[resource]/[id].vue')
+        },
+        {
+            path: '/show/:resource/:id',
+            name: 'show',
+            component: () => import('../pages/show/[resource]/[id].vue')
         }
     ]
 })

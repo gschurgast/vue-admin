@@ -8,7 +8,8 @@
                 "birthDate": "Data Urodzenia",
                 "deathDate": "Data śmierci",
                 "books": "Książki",
-                "isAlive": "Czy żyje"
+                "isAlive": "Czy żyje",
+                "nextMeeting": "Następne spotkanie"
             }
         }
     }

@@ -8,7 +8,8 @@
                 "birthDate": "תאריך לידה",
                 "deathDate": "תאריך מוות",
                 "books": "ספרים",
-                "isAlive": "האם חי"
+                "isAlive": "האם חי",
+                "nextMeeting": "הפגישה הבאה"
             }
         }
     }

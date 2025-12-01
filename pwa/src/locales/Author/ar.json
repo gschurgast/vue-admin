@@ -7,7 +7,9 @@
                 "bio": "السيرة الذاتية",
                 "birthDate": "تاريخ الميلاد",
                 "deathDate": "تاريخ الوفاة",
-                "books": "الكتب"
+                "books": "الكتب",
+                "isAlive": "-",
+                "nextMeeting": ""
             }
         }
     }
