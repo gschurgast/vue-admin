@@ -1,0 +1,54 @@
+{
+    "list": {
+        "fields": [
+            {
+                "email": ""
+            },
+            {
+                "firstName": ""
+            },
+            {
+                "lastName": ""
+            },
+            {
+                "roles": ""
+            }
+        ]
+    },
+    "edit": {
+        "component": "UserEdit",
+        "fields": [
+            {
+                "firstName": ""
+            },
+            {
+                "lastName": ""
+            },
+            {
+                "email": ""
+            },
+            {
+                "picture": "PictureField"
+            }
+        ]
+    },
+    "show": {
+        "fields": [
+            {
+                "email": ""
+            },
+            {
+                "firstName": ""
+            },
+            {
+                "lastName": ""
+            },
+            {
+                "roles": ""
+            },
+            {
+                "picture": "PictureCell"
+            }
+        ]
+    }
+}

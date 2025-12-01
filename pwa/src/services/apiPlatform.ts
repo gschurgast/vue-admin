@@ -53,6 +53,7 @@ class ApiPlatformService {
     public schema: HydraSchema | null
     public resources: Map<string, Resource>
     private fetchPromise: Promise<HydraSchema> | null
+    private onUnauthorized: (() => void) | null = null
 
     constructor() {
         this.client = axios.create({
@@ -65,14 +66,103 @@ class ApiPlatformService {
         this.schema = null
         this.resources = new Map()
         this.fetchPromise = null // Track ongoing fetch to prevent duplicates
+
+        // Add request interceptor to include auth token
+        this.client.interceptors.request.use(
+            (config) => {
+                const token = localStorage.getItem('auth_token')
+                if (token) {
+                    config.headers.Authorization = `Bearer ${token}`
+                }
+                return config
+            },
+            (error) => Promise.reject(error)
+        )
+
+        // Add response interceptor to handle 401 errors
+        this.client.interceptors.response.use(
+            (response) => response,
+            (error) => {
+                if (error.response?.status === 401) {
+                    localStorage.removeItem('auth_token')
+                    localStorage.removeItem('auth_user')
+                    if (this.onUnauthorized) {
+                        this.onUnauthorized()
+                    }
+                }
+                return Promise.reject(error)
+            }
+        )
     }
 
-    async fetchSchema(): Promise<HydraSchema> {
-        if (this.schema) return this.schema
+    setOnUnauthorized(callback: () => void) {
+        this.onUnauthorized = callback
+    }
+
+    async login(email: string, password: string): Promise<{ token: string }> {
+        const response = await this.client.post('/api/login', { email, password })
+        const token = response.data.token
+        localStorage.setItem('auth_token', token)
+        return { token }
+    }
+
+    logout() {
+        localStorage.removeItem('auth_token')
+        localStorage.removeItem('auth_user')
+        // Reset schema to force refetch after login
+        this.schema = null
+        this.resources.clear()
+    }
+
+    isAuthenticated(): boolean {
+        return !!localStorage.getItem('auth_token')
+    }
+
+    getToken(): string | null {
+        return localStorage.getItem('auth_token')
+    }
+
+    async getUser(userId: number): Promise<any> {
+        const response = await this.client.get(`/api/users/${userId}`)
+        return response.data
+    }
+
+    async updateUser(userId: number, data: { firstName?: string; lastName?: string; email?: string }): Promise<any> {
+        const response = await this.client.patch(`/api/users/${userId}`, data, {
+            headers: {
+                'Content-Type': 'application/merge-patch+json'
+            }
+        })
+        return response.data
+    }
+
+    async uploadUserPicture(userId: number, file: File): Promise<any> {
+        const formData = new FormData()
+        formData.append('picture', file)
+        const response = await this.client.post(`/api/users/${userId}/picture`, formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        })
+        return response.data
+    }
+
+    async deleteUserPicture(userId: number): Promise<void> {
+        await this.client.delete(`/api/users/${userId}/picture`)
+    }
+
+    async fetchSchema(force = false): Promise<HydraSchema> {
+        if (!force && this.schema) return this.schema
 
         // If already fetching, return the same promise
         if (this.fetchPromise) {
             return this.fetchPromise
+        }
+
+        // Clear existing data when forcing
+        if (force) {
+            this.schema = null
+            this.resources.clear()
         }
 
         this.fetchPromise = (async () => {

@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} de {total}",
         "noData": "Nenhum dado disponível",
         "searchFilters": "Filtros de pesquisa",
-        "advancedSearch": "Pesquisa avançada"
+        "advancedSearch": "Pesquisa avançada",
+        "notFound": {
+            "title": "Recurso não encontrado",
+            "message": "O recurso \"{resource}\" não existe."
+        },
+        "forbidden": {
+            "title": "Acesso negado",
+            "message": "Você não tem permissão para acessar \"{resource}\"."
+        }
     },
     "filter": {
         "text": "Pesquisar {field}",
@@ -71,5 +79,31 @@
         "placeholder": "Pergunte-me qualquer coisa...",
         "error": "Desculpe, ocorreu um erro. Por favor, tente novamente.",
         "sendHint": "Shift+Enter para enviar"
+    },
+    "help": {
+        "noResourceDoc": "Nenhuma documentação específica disponível para {resource}. Exibindo ajuda geral."
+    },
+    "auth": {
+        "login": "Entrar",
+        "logout": "Sair",
+        "email": "Email",
+        "password": "Senha",
+        "signIn": "Entrar",
+        "invalidEmail": "Endereço de email inválido",
+        "invalidCredentials": "Credenciais inválidas"
+    },
+    "account": {
+        "title": "Minha Conta",
+        "firstName": "Nome",
+        "lastName": "Sobrenome",
+        "email": "Email",
+        "changePicture": "Alterar foto",
+        "saveSuccess": "Perfil atualizado com sucesso",
+        "fileTooLarge": "Arquivo muito grande. Tamanho máximo: 5 MB",
+        "changePassword": "Alterar senha",
+        "newPassword": "Nova senha",
+        "confirmPassword": "Confirmar senha",
+        "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+        "passwordMismatch": "As senhas não coincidem"
     }
 }

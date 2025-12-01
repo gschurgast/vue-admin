@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "user": {
+            "name": "משתמש",
+            "fields": {
+                "email": "אימייל",
+                "roles": "תפקידים",
+                "firstName": "שם פרטי",
+                "lastName": "שם משפחה",
+                "picture": "תמונה",
+                "plainPassword": "סיסמה"
+            }
+        }
+    }
+}

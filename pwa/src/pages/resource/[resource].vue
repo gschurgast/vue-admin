@@ -37,8 +37,14 @@
        :resource-name="resourceName"
    />
 
-   <!-- Main content - only show if resource exists -->
-   <template v-if="resource">
+   <!-- 403 Error for forbidden resource -->
+   <ResourceForbidden
+       v-else-if="isForbidden"
+       :resource-name="resourceName"
+   />
+
+   <!-- Main content - only show if resource exists and not forbidden -->
+   <template v-if="resource && !isForbidden">
     <!-- Search Form -->
     <component
         :is="FilterComponent"
@@ -102,6 +108,7 @@ import ResourceFilter from '../../components/resource/ResourceFilter.vue'
 import ResourceList from '../../components/resource/ResourceList.vue'
 import ResourceDelete from '../../components/resource/ResourceDelete.vue'
 import ResourceNotFound from '../../components/common/ResourceNotFound.vue'
+import ResourceForbidden from '../../components/common/ResourceForbidden.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -166,6 +173,7 @@ const relationsLoaded = ref(false)
 const initialLoadDone = ref(false)
 const resourceConfig = ref<any>(null)
 const resourceMessagesLoaded = ref(false)
+const isForbidden = ref(false)
 
 // Dynamic components for List and Filter
 const ListComponent = shallowRef(ResourceList)
@@ -176,6 +184,7 @@ watch(resourceName, () => {
  if (initialLoadDone.value) {
   resourceMessagesLoaded.value = false
   resourceConfig.value = null
+  isForbidden.value = false
  }
 }, {flush: 'sync'})
 
@@ -583,6 +592,7 @@ async function loadData(searchFilters = {}) {
  if (!resource.value) return
 
  loading.value = true
+ isForbidden.value = false
  try {
   const params = {
    page: 1,
@@ -594,8 +604,12 @@ async function loadData(searchFilters = {}) {
 
   // Load relations after items are loaded
   await loadRelations()
- } catch (error) {
-  showSnackbar('Failed to load data', 'error')
+ } catch (error: any) {
+  if (error.response?.status === 403) {
+   isForbidden.value = true
+  } else {
+   showSnackbar('Failed to load data', 'error')
+  }
  } finally {
   loading.value = false
  }

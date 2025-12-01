@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} מתוך {total}",
         "noData": "אין נתונים זמינים",
         "searchFilters": "מסנני חיפוש",
-        "advancedSearch": "חיפוש מתקדם"
+        "advancedSearch": "חיפוש מתקדם",
+        "notFound": {
+            "title": "משאב לא נמצא",
+            "message": "המשאב \"{resource}\" לא קיים."
+        },
+        "forbidden": {
+            "title": "הגישה נדחתה",
+            "message": "אין לך הרשאה לגשת ל\"{resource}\"."
+        }
     },
     "filter": {
         "text": "חפש {field}",
@@ -71,5 +79,31 @@
         "placeholder": "שאל אותי כל דבר...",
         "error": "מצטער, אירעה שגיאה. אנא נסה שוב.",
         "sendHint": "Shift+Enter לשליחה"
+    },
+    "help": {
+        "noResourceDoc": "אין תיעוד ספציפי עבור {resource}. מציג עזרה כללית."
+    },
+    "auth": {
+        "login": "התחברות",
+        "logout": "התנתקות",
+        "email": "אימייל",
+        "password": "סיסמה",
+        "signIn": "כניסה",
+        "invalidEmail": "כתובת אימייל לא חוקית",
+        "invalidCredentials": "פרטי התחברות שגויים"
+    },
+    "account": {
+        "title": "החשבון שלי",
+        "firstName": "שם פרטי",
+        "lastName": "שם משפחה",
+        "email": "אימייל",
+        "changePicture": "שנה תמונה",
+        "saveSuccess": "הפרופיל עודכן",
+        "fileTooLarge": "הקובץ גדול מדי. גודל מקסימלי: 5 MB",
+        "changePassword": "שנה סיסמה",
+        "newPassword": "סיסמה חדשה",
+        "confirmPassword": "אשר סיסמה",
+        "passwordMinLength": "הסיסמה חייבת להכיל לפחות 6 תווים",
+        "passwordMismatch": "הסיסמאות אינן תואמות"
     }
 }

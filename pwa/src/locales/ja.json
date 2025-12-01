@@ -37,7 +37,15 @@
         "pageText": "{total}件中 {start}-{end}",
         "noData": "データがありません",
         "searchFilters": "検索フィルター",
-        "advancedSearch": "詳細検索"
+        "advancedSearch": "詳細検索",
+        "notFound": {
+            "title": "リソースが見つかりません",
+            "message": "リソース「{resource}」は存在しません。"
+        },
+        "forbidden": {
+            "title": "アクセスが拒否されました",
+            "message": "「{resource}」にアクセスする権限がありません。"
+        }
     },
     "filter": {
         "text": "{field}を検索",
@@ -71,5 +79,31 @@
         "placeholder": "何でも聞いてください...",
         "error": "申し訳ありませんが、エラーが発生しました。もう一度お試しください。",
         "sendHint": "Shift+Enterで送信"
+    },
+    "help": {
+        "noResourceDoc": "{resource}の専用ドキュメントはありません。一般ヘルプを表示しています。"
+    },
+    "auth": {
+        "login": "ログイン",
+        "logout": "ログアウト",
+        "email": "メールアドレス",
+        "password": "パスワード",
+        "signIn": "サインイン",
+        "invalidEmail": "無効なメールアドレス",
+        "invalidCredentials": "無効な認証情報"
+    },
+    "account": {
+        "title": "マイアカウント",
+        "firstName": "名",
+        "lastName": "姓",
+        "email": "メールアドレス",
+        "changePicture": "写真を変更",
+        "saveSuccess": "プロフィールを更新しました",
+        "fileTooLarge": "ファイルが大きすぎます。最大サイズ：5 MB",
+        "changePassword": "パスワードを変更",
+        "newPassword": "新しいパスワード",
+        "confirmPassword": "パスワードを確認",
+        "passwordMinLength": "パスワードは6文字以上必要です",
+        "passwordMismatch": "パスワードが一致しません"
     }
 }

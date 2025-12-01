@@ -23,7 +23,7 @@ class ChatService
             $messages = [
                 [
                     'role' => 'system',
-                    'content' => 'You are a helpful assistant for the Antigravity application. Help users with their questions about managing resources like Authors and Books.'
+                    'content' => 'You are a helpful assistant. Help users with their questions'
                 ]
             ];
 

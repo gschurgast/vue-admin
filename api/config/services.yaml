@@ -23,5 +23,13 @@ services:
         arguments:
             $openaiApiKey: '%env(OPENAI_API_KEY)%'
 
+    App\State\UserProcessor:
+        arguments:
+            $projectDir: '%kernel.project_dir%'
+
+    App\EventListener\JwtCreatedListener:
+        tags:
+            - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
 
 

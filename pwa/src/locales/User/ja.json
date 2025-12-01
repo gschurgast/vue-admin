@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "user": {
+            "name": "ユーザー",
+            "fields": {
+                "email": "メールアドレス",
+                "roles": "ロール",
+                "firstName": "名",
+                "lastName": "姓",
+                "picture": "写真",
+                "plainPassword": "パスワード"
+            }
+        }
+    }
+}

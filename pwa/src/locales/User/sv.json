@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "user": {
+            "name": "Användare",
+            "fields": {
+                "email": "E-post",
+                "roles": "Roller",
+                "firstName": "Förnamn",
+                "lastName": "Efternamn",
+                "picture": "Bild",
+                "plainPassword": "Lösenord"
+            }
+        }
+    }
+}

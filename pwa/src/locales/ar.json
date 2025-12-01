@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} من {total}",
         "noData": "لا توجد بيانات متاحة",
         "searchFilters": "مرشحات البحث",
-        "advancedSearch": "بحث متقدم"
+        "advancedSearch": "بحث متقدم",
+        "notFound": {
+            "title": "المورد غير موجود",
+            "message": "المورد \"{resource}\" غير موجود."
+        },
+        "forbidden": {
+            "title": "تم رفض الوصول",
+            "message": "ليس لديك إذن للوصول إلى \"{resource}\"."
+        }
     },
     "filter": {
         "text": "بحث {field}",
@@ -71,5 +79,31 @@
         "placeholder": "اسألني أي شيء...",
         "error": "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.",
         "sendHint": "Shift+Enter للإرسال"
+    },
+    "help": {
+        "noResourceDoc": "لا يوجد توثيق خاص لـ {resource}. عرض المساعدة العامة."
+    },
+    "auth": {
+        "login": "تسجيل الدخول",
+        "logout": "تسجيل الخروج",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "signIn": "دخول",
+        "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+        "invalidCredentials": "بيانات اعتماد غير صالحة"
+    },
+    "account": {
+        "title": "حسابي",
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "email": "البريد الإلكتروني",
+        "changePicture": "تغيير الصورة",
+        "saveSuccess": "تم تحديث الملف الشخصي",
+        "fileTooLarge": "الملف كبير جداً. الحد الأقصى: 5 ميجابايت",
+        "changePassword": "تغيير كلمة المرور",
+        "newPassword": "كلمة المرور الجديدة",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+        "passwordMismatch": "كلمات المرور غير متطابقة"
     }
 }

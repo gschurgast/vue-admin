@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} 共 {total}",
         "noData": "无可用数据",
         "searchFilters": "搜索筛选器",
-        "advancedSearch": "高级搜索"
+        "advancedSearch": "高级搜索",
+        "notFound": {
+            "title": "资源未找到",
+            "message": "资源"{resource}"不存在。"
+        },
+        "forbidden": {
+            "title": "访问被拒绝",
+            "message": "您没有权限访问"{resource}"。"
+        }
     },
     "filter": {
         "text": "搜索{field}",
@@ -71,5 +79,31 @@
         "placeholder": "随便问我...",
         "error": "抱歉，遇到错误。请重试。",
         "sendHint": "Shift+Enter发送"
+    },
+    "help": {
+        "noResourceDoc": "{resource}没有特定文档。显示通用帮助。"
+    },
+    "auth": {
+        "login": "登录",
+        "logout": "退出",
+        "email": "电子邮件",
+        "password": "密码",
+        "signIn": "登录",
+        "invalidEmail": "无效的电子邮件地址",
+        "invalidCredentials": "无效的凭据"
+    },
+    "account": {
+        "title": "我的账户",
+        "firstName": "名",
+        "lastName": "姓",
+        "email": "电子邮件",
+        "changePicture": "更换头像",
+        "saveSuccess": "个人资料已更新",
+        "fileTooLarge": "文件过大。最大尺寸：5 MB",
+        "changePassword": "修改密码",
+        "newPassword": "新密码",
+        "confirmPassword": "确认密码",
+        "passwordMinLength": "密码至少需要6个字符",
+        "passwordMismatch": "密码不匹配"
     }
 }

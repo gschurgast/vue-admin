@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "user": {
+            "name": "مستخدم",
+            "fields": {
+                "email": "البريد الإلكتروني",
+                "roles": "الأدوار",
+                "firstName": "الاسم الأول",
+                "lastName": "اسم العائلة",
+                "picture": "الصورة",
+                "plainPassword": "كلمة المرور"
+            }
+        }
+    }
+}

@@ -32,6 +32,17 @@
         {{ error }}
       </div>
       <div v-else>
+        <!-- Alert when no resource-specific documentation exists -->
+        <v-alert
+          v-if="noResourceDoc && props.resourceName"
+          type="info"
+          variant="tonal"
+          density="compact"
+          class="mb-4"
+        >
+          {{ t('help.noResourceDoc', { resource: props.resourceName }) }}
+        </v-alert>
+
         <!-- Render H1 title if exists -->
         <div v-if="parsedSections.title" class="text-h5 mb-4">
           {{ parsedSections.title }}
@@ -86,12 +97,13 @@ const emit = defineEmits<{
 }>()
 
 // Get i18n at component level (must be called at top of setup)
-const { locale: currentLocale } = useI18n()
+const { locale: currentLocale, t } = useI18n()
 
 const loading = ref(false)
 const error = ref<string | null>(null)
 const markdownContent = ref('')
 const showingMainDoc = ref(false)
+const noResourceDoc = ref(false)
 
 const isOpen = computed({
   get: () => props.modelValue,
@@ -197,35 +209,44 @@ const parsedSections = computed((): ParsedContent => {
 async function loadDocumentation() {
   loading.value = true
   error.value = null
-  
+  noResourceDoc.value = false
+
   try {
     // Use locale from component setup
     const locale = currentLocale.value || 'en'
-    
+
     // Use Vite's import.meta.glob to load markdown files
     const docs = import.meta.glob('../documentation/**/*.md', { as: 'raw', eager: false })
-    
+
     let content = ''
-    
+    let foundResourceDoc = false
+
     // If showing main doc is toggled, skip resource-specific docs
     if (!showingMainDoc.value && props.resourceName) {
       // Try: /documentation/[locale]/[Resource].md
       const localizedResourcePath = `../documentation/${locale}/${props.resourceName}.md`
       // Fallback: /documentation/[Resource].md
       const resourcePath = `../documentation/${props.resourceName}.md`
-      
+
       if (docs[localizedResourcePath]) {
         content = await docs[localizedResourcePath]()
+        foundResourceDoc = true
       } else if (docs[resourcePath]) {
         content = await docs[resourcePath]()
+        foundResourceDoc = true
       }
     }
-    
+
     // If no resource-specific doc found, try localized main.md
     if (!content) {
+      // Track that we're on a resource page but no specific doc exists
+      if (props.resourceName && !showingMainDoc.value) {
+        noResourceDoc.value = true
+      }
+
       const localizedMainPath = `../documentation/${locale}/main.md`
       const fallbackPath = '../documentation/main.md'
-      
+
       if (docs[localizedMainPath]) {
         content = await docs[localizedMainPath]()
       } else if (docs[fallbackPath]) {
@@ -234,7 +255,7 @@ async function loadDocumentation() {
         throw new Error('No documentation found')
       }
     }
-    
+
     markdownContent.value = content
   } catch (e) {
     error.value = 'Failed to load documentation'
@@ -245,11 +266,23 @@ async function loadDocumentation() {
 }
 
 // Load documentation when drawer opens or resource changes
-watch([() => props.modelValue, () => props.resourceName], ([isOpen]) => {
+watch([() => props.modelValue, () => props.resourceName], ([isOpen], [wasOpen, oldResourceName]) => {
+  // Reset to resource-specific doc when resource changes
+  if (props.resourceName !== oldResourceName) {
+    showingMainDoc.value = false
+  }
+
   if (isOpen) {
     loadDocumentation()
   }
 }, { immediate: true })
+
+// Reload documentation when locale changes while drawer is open
+watch(currentLocale, () => {
+  if (props.modelValue) {
+    loadDocumentation()
+  }
+})
 </script>
 
 <style scoped>

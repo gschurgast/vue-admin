@@ -59,7 +59,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, markRaw, shallowRef } from 'vue'
+import { ref, computed, onMounted, markRaw, shallowRef, watch } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../../services/apiPlatform'
@@ -276,5 +276,12 @@ function handleEdit() {
 
 onMounted(() => {
   loadItem()
+})
+
+// Watch for locale changes to reload resource-specific translations
+watch(locale, async (newLocale) => {
+  if (resourceName.value) {
+    await loadResourceMessages(String(resourceName.value), newLocale)
+  }
 })
 </script>

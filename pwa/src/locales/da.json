@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} af {total}",
         "noData": "Ingen data tilgængelig",
         "searchFilters": "Søgefiltre",
-        "advancedSearch": "Avanceret søgning"
+        "advancedSearch": "Avanceret søgning",
+        "notFound": {
+            "title": "Ressource ikke fundet",
+            "message": "Ressourcen \"{resource}\" findes ikke."
+        },
+        "forbidden": {
+            "title": "Adgang nægtet",
+            "message": "Du har ikke tilladelse til at få adgang til \"{resource}\"."
+        }
     },
     "filter": {
         "text": "Søg {field}",
@@ -71,5 +79,31 @@
         "placeholder": "Spørg mig om alt...",
         "error": "Beklager, der opstod en fejl. Prøv igen.",
         "sendHint": "Shift+Enter for at sende"
+    },
+    "help": {
+        "noResourceDoc": "Ingen specifik dokumentation tilgængelig for {resource}. Viser generel hjælp."
+    },
+    "auth": {
+        "login": "Log ind",
+        "logout": "Log ud",
+        "email": "Email",
+        "password": "Adgangskode",
+        "signIn": "Log ind",
+        "invalidEmail": "Ugyldig emailadresse",
+        "invalidCredentials": "Ugyldige loginoplysninger"
+    },
+    "account": {
+        "title": "Min Konto",
+        "firstName": "Fornavn",
+        "lastName": "Efternavn",
+        "email": "Email",
+        "changePicture": "Skift billede",
+        "saveSuccess": "Profil opdateret",
+        "fileTooLarge": "Filen er for stor. Maksimal størrelse: 5 MB",
+        "changePassword": "Skift adgangskode",
+        "newPassword": "Ny adgangskode",
+        "confirmPassword": "Bekræft adgangskode",
+        "passwordMinLength": "Adgangskoden skal være mindst 6 tegn",
+        "passwordMismatch": "Adgangskoderne matcher ikke"
     }
 }

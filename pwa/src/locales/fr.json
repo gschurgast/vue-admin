@@ -46,6 +46,10 @@
         "notFound": {
             "title": "Ressource non trouvée",
             "message": "La ressource \"{resource}\" n'existe pas."
+        },
+        "forbidden": {
+            "title": "Accès refusé",
+            "message": "Vous n'avez pas la permission d'accéder à \"{resource}\"."
         }
     },
     "filter": {
@@ -80,5 +84,31 @@
         "placeholder": "Posez-moi une question...",
         "error": "Désolé, une erreur s'est produite. Veuillez réessayer.",
         "sendHint": "Shift+Entrée pour envoyer"
+    },
+    "help": {
+        "noResourceDoc": "Aucune documentation spécifique disponible pour {resource}. Affichage de l'aide générale."
+    },
+    "auth": {
+        "login": "Connexion",
+        "logout": "Déconnexion",
+        "email": "Email",
+        "password": "Mot de passe",
+        "signIn": "Se connecter",
+        "invalidEmail": "Adresse email invalide",
+        "invalidCredentials": "Identifiants invalides"
+    },
+    "account": {
+        "title": "Mon Compte",
+        "firstName": "Prénom",
+        "lastName": "Nom",
+        "email": "Email",
+        "changePicture": "Changer la photo",
+        "saveSuccess": "Profil mis à jour avec succès",
+        "fileTooLarge": "Fichier trop volumineux. Taille maximale : 5 Mo",
+        "changePassword": "Changer le mot de passe",
+        "newPassword": "Nouveau mot de passe",
+        "confirmPassword": "Confirmer le mot de passe",
+        "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+        "passwordMismatch": "Les mots de passe ne correspondent pas"
     }
 }

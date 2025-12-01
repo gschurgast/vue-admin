@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "user": {
+            "name": "用户",
+            "fields": {
+                "email": "电子邮件",
+                "roles": "角色",
+                "firstName": "名",
+                "lastName": "姓",
+                "picture": "头像",
+                "plainPassword": "密码"
+            }
+        }
+    }
+}

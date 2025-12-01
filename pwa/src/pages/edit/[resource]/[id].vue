@@ -13,6 +13,12 @@
       <p class="mt-4">{{ t('common.loading') }}</p>
     </v-card>
 
+    <!-- 403 Error for forbidden resource -->
+    <ResourceForbidden
+        v-else-if="isForbidden"
+        :resource-name="resourceName"
+    />
+
     <!-- Edit Form -->
     <v-card v-else>
       <v-card-title>
@@ -70,11 +76,14 @@ import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../../services/apiPlatform'
 import { loadResourceMessages } from '../../../plugins/i18n'
 import { useResourcesStore } from '../../../stores/resources'
+import { useAuthStore } from '../../../stores/auth'
 import ResourceForm from '../../../components/resource/ResourceForm.vue'
+import ResourceForbidden from '../../../components/common/ResourceForbidden.vue'
 
 const route = useRoute()
 const router = useRouter()
 const resourcesStore = useResourcesStore()
+const authStore = useAuthStore()
 const { t, locale } = useI18n()
 
 const resourceName = computed(() => {
@@ -98,6 +107,7 @@ const loadingRelations = ref({})
 const EditComponent = shallowRef(null)
 const customComponents = ref({})
 const resourceConfig = ref<any>(null)
+const isForbidden = ref(false)
 
 const snackbar = ref({
   show: false,
@@ -300,8 +310,12 @@ async function loadItem() {
         }
       }
     })
-  } catch (error) {
-    showSnackbar(t('messages.loadingError'), 'error')
+  } catch (error: any) {
+    if (error.response?.status === 403) {
+      isForbidden.value = true
+    } else {
+      showSnackbar(t('messages.loadingError'), 'error')
+    }
   } finally {
     loading.value = false
   }
@@ -341,6 +355,11 @@ async function handleSave() {
     } else {
       await apiPlatform.update(resourcePath.value, itemId.value, formData.value)
       showSnackbar(t('messages.updateSuccess', { resource: resourceTitle.value }))
+
+      // Refresh auth store if editing current user
+      if (resourceName.value === 'User' && authStore.user?.id === Number(itemId.value)) {
+        await authStore.fetchProfile()
+      }
     }
 
     router.push(`/resource/${resourceName.value}`)

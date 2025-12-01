@@ -46,6 +46,10 @@
         "notFound": {
             "title": "Resource Not Found",
             "message": "The resource \"{resource}\" does not exist."
+        },
+        "forbidden": {
+            "title": "Access Denied",
+            "message": "You do not have permission to access \"{resource}\"."
         }
     },
     "filter": {
@@ -80,5 +84,31 @@
         "placeholder": "Ask me anything...",
         "error": "Sorry, I encountered an error. Please try again.",
         "sendHint": "Shift+Enter to send"
+    },
+    "help": {
+        "noResourceDoc": "No specific documentation available for {resource}. Showing general help."
+    },
+    "auth": {
+        "login": "Login",
+        "logout": "Logout",
+        "email": "Email",
+        "password": "Password",
+        "signIn": "Sign In",
+        "invalidEmail": "Invalid email address",
+        "invalidCredentials": "Invalid credentials"
+    },
+    "account": {
+        "title": "My Account",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "email": "Email",
+        "changePicture": "Change Picture",
+        "saveSuccess": "Profile updated successfully",
+        "fileTooLarge": "File too large. Maximum size: 5MB",
+        "changePassword": "Change Password",
+        "newPassword": "New Password",
+        "confirmPassword": "Confirm Password",
+        "passwordMinLength": "Password must be at least 6 characters",
+        "passwordMismatch": "Passwords do not match"
     }
 }

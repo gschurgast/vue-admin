@@ -21,15 +21,15 @@ export const useResourcesStore = defineStore('resources', {
     }),
 
     actions: {
-        async loadResources() {
-            // Don't reload if already loaded
-            if (this.resources.length > 0) return
+        async loadResources(force = false) {
+            // Don't reload if already loaded (unless forced)
+            if (!force && this.resources.length > 0) return
 
             this.loading = true
             this.error = null
 
             try {
-                await apiPlatform.fetchSchema()
+                await apiPlatform.fetchSchema(force)
                 this.resources = apiPlatform.getResources()
             } catch (error: any) {
                 this.error = error.message
@@ -37,6 +37,11 @@ export const useResourcesStore = defineStore('resources', {
             } finally {
                 this.loading = false
             }
+        },
+
+        clearResources() {
+            this.resources = []
+            this.error = null
         },
 
         getResourceByName(name: string) {

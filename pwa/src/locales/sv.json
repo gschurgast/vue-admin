@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} av {total}",
         "noData": "Ingen data tillgänglig",
         "searchFilters": "Sökfilter",
-        "advancedSearch": "Avancerad sökning"
+        "advancedSearch": "Avancerad sökning",
+        "notFound": {
+            "title": "Resurs hittades inte",
+            "message": "Resursen \"{resource}\" finns inte."
+        },
+        "forbidden": {
+            "title": "Åtkomst nekad",
+            "message": "Du har inte behörighet att komma åt \"{resource}\"."
+        }
     },
     "filter": {
         "text": "Sök {field}",
@@ -71,5 +79,31 @@
         "placeholder": "Fråga mig vad som helst...",
         "error": "Tyvärr uppstod ett fel. Försök igen.",
         "sendHint": "Shift+Enter för att skicka"
+    },
+    "help": {
+        "noResourceDoc": "Ingen specifik dokumentation tillgänglig för {resource}. Visar allmän hjälp."
+    },
+    "auth": {
+        "login": "Logga in",
+        "logout": "Logga ut",
+        "email": "E-post",
+        "password": "Lösenord",
+        "signIn": "Logga in",
+        "invalidEmail": "Ogiltig e-postadress",
+        "invalidCredentials": "Ogiltiga inloggningsuppgifter"
+    },
+    "account": {
+        "title": "Mitt Konto",
+        "firstName": "Förnamn",
+        "lastName": "Efternamn",
+        "email": "E-post",
+        "changePicture": "Ändra bild",
+        "saveSuccess": "Profil uppdaterad",
+        "fileTooLarge": "Filen är för stor. Maximal storlek: 5 MB",
+        "changePassword": "Ändra lösenord",
+        "newPassword": "Nytt lösenord",
+        "confirmPassword": "Bekräfta lösenord",
+        "passwordMinLength": "Lösenordet måste vara minst 6 tecken",
+        "passwordMismatch": "Lösenorden matchar inte"
     }
 }

@@ -1,0 +1,15 @@
+{
+    "resources": {
+        "user": {
+            "name": "User",
+            "fields": {
+                "email": "Email",
+                "roles": "Roles",
+                "firstName": "First Name",
+                "lastName": "Last Name",
+                "picture": "Picture",
+                "plainPassword": "Password"
+            }
+        }
+    }
+}

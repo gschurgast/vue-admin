@@ -37,7 +37,15 @@
         "pageText": "{start}-{end} av {total}",
         "noData": "Ingen data tilgjengelig",
         "searchFilters": "Søkefiltre",
-        "advancedSearch": "Avansert søk"
+        "advancedSearch": "Avansert søk",
+        "notFound": {
+            "title": "Ressurs ikke funnet",
+            "message": "Ressursen \"{resource}\" finnes ikke."
+        },
+        "forbidden": {
+            "title": "Tilgang nektet",
+            "message": "Du har ikke tillatelse til å få tilgang til \"{resource}\"."
+        }
     },
     "filter": {
         "text": "Søk {field}",
@@ -71,5 +79,31 @@
         "placeholder": "Spør meg om hva som helst...",
         "error": "Beklager, det oppstod en feil. Vennligst prøv igjen.",
         "sendHint": "Shift+Enter for å sende"
+    },
+    "help": {
+        "noResourceDoc": "Ingen spesifikk dokumentasjon tilgjengelig for {resource}. Viser generell hjelp."
+    },
+    "auth": {
+        "login": "Logg inn",
+        "logout": "Logg ut",
+        "email": "E-post",
+        "password": "Passord",
+        "signIn": "Logg inn",
+        "invalidEmail": "Ugyldig e-postadresse",
+        "invalidCredentials": "Ugyldige påloggingsopplysninger"
+    },
+    "account": {
+        "title": "Min Konto",
+        "firstName": "Fornavn",
+        "lastName": "Etternavn",
+        "email": "E-post",
+        "changePicture": "Endre bilde",
+        "saveSuccess": "Profil oppdatert",
+        "fileTooLarge": "Filen er for stor. Maksimal størrelse: 5 MB",
+        "changePassword": "Endre passord",
+        "newPassword": "Nytt passord",
+        "confirmPassword": "Bekreft passord",
+        "passwordMinLength": "Passordet må være minst 6 tegn",
+        "passwordMismatch": "Passordene samsvarer ikke"
     }
 }
