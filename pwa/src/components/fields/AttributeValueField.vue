@@ -109,11 +109,11 @@
       />
 
       <!-- RELATION -->
-      <v-text-field
+      <RelationSearchField
         v-else-if="selectedDefinition.type === 'relation'"
         v-model="valueData"
-        label="Relation IRI"
-        hint="Enter the IRI of the related entity"
+        :endpoint="selectedDefinition.relationEndpoint"
+        label="Relation"
         @update:model-value="onValueChange"
       />
 
@@ -162,6 +162,7 @@ import { useAttributeOptions } from '../../composables/useAttributeOptions'
 import { extractIri } from '../../utils/resourceConfig'
 import JsonKeyValueField from './JsonKeyValueField.vue'
 import RichTextField from './RichTextField.vue'
+import RelationSearchField from './RelationSearchField.vue'
 
 interface Props {
   modelValue: string | null | undefined

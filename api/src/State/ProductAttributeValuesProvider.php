@@ -97,6 +97,7 @@ class ProductAttributeValuesProvider implements ProviderInterface
                     'code' => $definition->getCode(),
                     'type' => $definition->getType()->value,
                     'unit' => $definition->getUnit(),
+                    'relationEndpoint' => $definition->getRelationEndpoint(),
                 ],
                 'option' => $option ? [
                     '@id' => '/api/attribute_options/' . $option->getId(),

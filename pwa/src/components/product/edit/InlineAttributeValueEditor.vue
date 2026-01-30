@@ -108,6 +108,15 @@
       />
     </div>
 
+    <!-- RELATION -->
+    <RelationSearchField
+      v-else-if="attributeType === 'relation'"
+      v-model="localValue"
+      :endpoint="definition?.relationEndpoint"
+      :label="label"
+      @update:model-value="emitChange"
+    />
+
     <!-- Fallback -->
     <v-text-field
       v-else
@@ -124,6 +133,7 @@ import { ref, computed, onMounted } from 'vue'
 import { useAttributeOptions } from '../../../composables/useAttributeOptions'
 import { extractIri } from '../../../utils/resourceConfig'
 import RichTextField from '../../fields/RichTextField.vue'
+import RelationSearchField from '../../fields/RelationSearchField.vue'
 
 interface Props {
   attributeValue: {

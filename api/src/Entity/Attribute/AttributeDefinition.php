@@ -32,6 +32,7 @@ use App\Validator as AppAssert;
     denormalizationContext: ['groups' => ['attribute_definition:write']]
 )]
 #[MenuGroup('Settings')]
+#[AppAssert\RelationEndpointImmutableIfUsed]
 class AttributeDefinition
 {
     #[ORM\Id]
@@ -86,6 +87,13 @@ class AttributeDefinition
     #[ORM\Column]
     #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
     private int $sortOrder = 0;
+
+    /**
+     * API endpoint path for relation type attributes (e.g., "/api/collections", "/api/products")
+     */
+    #[ORM\Column(length: 255, nullable: true)]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
+    private ?string $relationEndpoint = null;
 
     public function getId(): ?int
     {
@@ -210,6 +218,17 @@ class AttributeDefinition
     public function setSortOrder(int $sortOrder): static
     {
         $this->sortOrder = $sortOrder;
+        return $this;
+    }
+
+    public function getRelationEndpoint(): ?string
+    {
+        return $this->relationEndpoint;
+    }
+
+    public function setRelationEndpoint(?string $relationEndpoint): static
+    {
+        $this->relationEndpoint = $relationEndpoint;
         return $this;
     }
 }

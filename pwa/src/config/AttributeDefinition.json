@@ -13,6 +13,7 @@
         "fields": [
             { "code": "CodeField" },
             { "type": "" },
+            { "relationEndpoint": "RelationEndpointField" },
             { "unit": "" },
             { "isLocalizable": "" },
             { "isScopable": "" },
@@ -28,6 +29,7 @@
         "fields": [
             { "code": "" },
             { "type": "" },
+            { "relationEndpoint": "" },
             { "isLocalizable": "" },
             { "isScopable": "" },
             { "isRequired": "" },

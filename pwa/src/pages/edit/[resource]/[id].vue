@@ -64,26 +64,11 @@
         </v-btn>
       </template>
     </v-snackbar>
-
-    <!-- Unsaved Changes Dialog -->
-    <v-dialog v-model="showLeaveDialog" max-width="400" persistent>
-      <v-card>
-        <v-card-title>{{ t('common.unsavedChanges') }}</v-card-title>
-        <v-card-text>{{ t('messages.unsavedChangesWarning') }}</v-card-text>
-        <v-card-actions>
-          <v-spacer />
-          <v-btn variant="text" @click="cancelLeave">{{ t('common.stay') }}</v-btn>
-          <v-btn color="error" variant="text" @click="confirmLeave">{{ t('common.leave') }}</v-btn>
-        </v-card-actions>
-      </v-card>
-    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, onUnmounted, shallowRef } from 'vue'
-import { onBeforeRouteLeave, useRouter } from 'vue-router'
-import type { RouteLocationRaw } from 'vue-router'
+import { ref, computed, onMounted, shallowRef } from 'vue'
 import { useResource } from '../../../composables/useResource'
 import { useAuthStore } from '../../../stores/auth'
 import apiPlatform from '../../../services/apiPlatform'
@@ -141,36 +126,18 @@ const {
 })
 
 const authStore = useAuthStore()
-const router = useRouter()
 
 const isCreate = computed(() => itemId.value === 'new')
 
 const loading = ref(true)
 const saving = ref(false)
 const formData = ref<Record<string, any>>({})
-const originalFormData = ref<Record<string, any>>({})
 const fieldErrors = ref<Record<string, string[]>>({})
 const relationData = ref({})
 const loadingRelations = ref({})
 const EditComponent = shallowRef(null)
 const isForbidden = ref(false)
 const editComponentRef = ref<any>(null)
-const showLeaveDialog = ref(false)
-const pendingDestination = ref<RouteLocationRaw | null>(null)
-const isLeavingConfirmed = ref(false)
-
-// Check if form has unsaved changes
-const hasUnsavedChanges = computed(() => {
-  if (loading.value) return false
-
-  // Check main form data changes
-  const formChanged = JSON.stringify(formData.value) !== JSON.stringify(originalFormData.value)
-
-  // Check custom component pending changes (e.g., attribute values)
-  const customComponentChanges = editComponentRef.value?.hasPendingChanges?.() ?? false
-
-  return formChanged || customComponentChanges
-})
 
 const breadcrumbs = computed(() => [
   {
@@ -308,7 +275,6 @@ async function loadItem() {
 
   if (isCreate.value) {
     formData.value = {}
-    originalFormData.value = {}
     loading.value = false
     return
   }
@@ -327,9 +293,6 @@ async function loadItem() {
         }
       }
     })
-
-    // Store original data for change detection
-    originalFormData.value = JSON.parse(JSON.stringify(formData.value))
   } catch (error: any) {
     console.error('Failed to load item:', error)
     if (error.response?.status === 403) {
@@ -475,64 +438,15 @@ async function handleSave() {
 }
 
 function handleCancel() {
-  if (hasUnsavedChanges.value) {
-    pendingDestination.value = `/resource/${resourceName.value}`
-    showLeaveDialog.value = true
-  } else {
-    navigateToResource()
-  }
+  navigateToResource()
 }
-
-function confirmLeave() {
-  showLeaveDialog.value = false
-  isLeavingConfirmed.value = true
-  if (pendingDestination.value) {
-    const destination = pendingDestination.value
-    pendingDestination.value = null
-    router.push(destination)
-  }
-}
-
-function cancelLeave() {
-  showLeaveDialog.value = false
-  pendingDestination.value = null
-}
-
-// Browser beforeunload event for page refresh/close
-function handleBeforeUnload(e: BeforeUnloadEvent) {
-  if (hasUnsavedChanges.value) {
-    e.preventDefault()
-    e.returnValue = ''
-    return ''
-  }
-}
-
-// Vue Router navigation guard
-onBeforeRouteLeave((to, _from, next) => {
-  if (isLeavingConfirmed.value) {
-    next()
-    return
-  }
-  if (hasUnsavedChanges.value && !showLeaveDialog.value) {
-    pendingDestination.value = to.fullPath
-    showLeaveDialog.value = true
-    next(false)
-  } else {
-    next()
-  }
-})
 
 onMounted(async () => {
-  window.addEventListener('beforeunload', handleBeforeUnload)
   // Ensure resources are loaded first (needed for relation field detection)
   await resourcesStore.loadResources()
   await loadResourceMessages(resourceName.value, locale.value)
   await loadResourceConfig()
   await loadRelations()
   await loadItem()
-})
-
-onUnmounted(() => {
-  window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 </script>
