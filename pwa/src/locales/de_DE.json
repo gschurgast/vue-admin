@@ -80,7 +80,11 @@
         "thinking": "Denkt nach...",
         "placeholder": "Frag mich alles...",
         "error": "Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-        "sendHint": "Shift+Enter zum Senden"
+        "sendHint": "Shift+Enter zum Senden",
+        "recording": "Hört zu...",
+        "startRecording": "Spracheingabe starten",
+        "stopRecording": "Spracheingabe stoppen",
+        "speechNotSupported": "Spracherkennung wird von diesem Browser nicht unterstützt"
     },
     "help": {
         "noResourceDoc": "Keine spezifische Dokumentation für {resource} verfügbar. Allgemeine Hilfe wird angezeigt."

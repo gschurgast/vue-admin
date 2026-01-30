@@ -80,7 +80,11 @@
         "thinking": "考え中...",
         "placeholder": "何でも聞いてください...",
         "error": "申し訳ありませんが、エラーが発生しました。もう一度お試しください。",
-        "sendHint": "Shift+Enterで送信"
+        "sendHint": "Shift+Enterで送信",
+        "recording": "聞いています...",
+        "startRecording": "音声入力を開始",
+        "stopRecording": "音声入力を停止",
+        "speechNotSupported": "このブラウザは音声認識に対応していません"
     },
     "help": {
         "noResourceDoc": "{resource}の専用ドキュメントはありません。一般ヘルプを表示しています。"

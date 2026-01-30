@@ -80,7 +80,11 @@
         "thinking": "חושב...",
         "placeholder": "שאל אותי כל דבר...",
         "error": "מצטער, אירעה שגיאה. אנא נסה שוב.",
-        "sendHint": "Shift+Enter לשליחה"
+        "sendHint": "Shift+Enter לשליחה",
+        "recording": "מקשיב...",
+        "startRecording": "התחל הכתבה",
+        "stopRecording": "עצור הכתבה",
+        "speechNotSupported": "זיהוי דיבור לא נתמך בדפדפן זה"
     },
     "help": {
         "noResourceDoc": "אין תיעוד ספציפי עבור {resource}. מציג עזרה כללית."

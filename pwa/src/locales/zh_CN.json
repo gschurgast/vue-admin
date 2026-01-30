@@ -80,7 +80,11 @@
         "thinking": "思考中...",
         "placeholder": "随便问我...",
         "error": "抱歉，遇到错误。请重试。",
-        "sendHint": "Shift+Enter发送"
+        "sendHint": "Shift+Enter发送",
+        "recording": "录音中...",
+        "startRecording": "开始语音输入",
+        "stopRecording": "停止语音输入",
+        "speechNotSupported": "此浏览器不支持语音识别"
     },
     "help": {
         "noResourceDoc": "{resource}没有特定文档。显示通用帮助。"

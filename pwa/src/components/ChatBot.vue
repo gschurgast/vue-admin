@@ -68,6 +68,16 @@
           @keydown.enter.shift="sendMessage"
           :disabled="loading"
         >
+          <template v-slot:prepend-inner>
+            <VoiceInput
+              ref="voiceInputRef"
+              :disabled="loading"
+              :lang="voiceLang"
+              @transcript="onTranscript"
+              @start="onRecordingStart"
+              @stop="onRecordingStop"
+            />
+          </template>
           <template v-slot:append-inner>
             <v-btn
               icon="mdi-send"
@@ -78,7 +88,10 @@
             ></v-btn>
           </template>
         </v-textarea>
-        <div class="send-hint">{{ t('ai.sendHint') }}</div>
+        <div class="send-hint">
+          <span v-if="isRecording" class="recording-hint">{{ t('ai.recording') }}</span>
+          <span v-else>{{ t('ai.sendHint') }}</span>
+        </div>
       </div>
     </v-card-actions>
   </v-navigation-drawer>
@@ -88,6 +101,7 @@
 import { ref, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
 import apiPlatform from '../services/apiPlatform'
+import VoiceInput from './VoiceInput.vue'
 
 interface Props {
   modelValue: boolean
@@ -105,11 +119,16 @@ const emit = defineEmits<{
   'update:modelValue': [value: boolean]
 }>()
 
-const { t } = useI18n()
+const { t, locale } = useI18n()
 const currentMessage = ref('')
 const messages = ref<ChatMessage[]>([])
 const loading = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
+const isRecording = ref(false)
+const voiceInputRef = ref<InstanceType<typeof VoiceInput> | null>(null)
+
+// Convert locale format: en_US -> en-US for Web Speech API
+const voiceLang = computed(() => locale.value.replace('_', '-'))
 
 const isOpen = computed({
   get: () => props.modelValue,
@@ -130,8 +149,25 @@ function copyToClipboard(text: string) {
   })
 }
 
+function onTranscript(text: string, isFinal: boolean) {
+  if (isFinal) {
+    currentMessage.value = (currentMessage.value + ' ' + text).trim()
+  }
+}
+
+function onRecordingStart() {
+  isRecording.value = true
+}
+
+function onRecordingStop() {
+  isRecording.value = false
+}
+
 async function sendMessage() {
   if (!currentMessage.value.trim() || loading.value) return
+
+  // Stop recording if active
+  voiceInputRef.value?.stopRecording()
 
   const userMessage = currentMessage.value
   currentMessage.value = ''
@@ -263,5 +299,15 @@ watch(() => props.modelValue, (isOpen) => {
   color: #9e9e9e;
   margin-top: 4px;
   text-align: right;
+}
+
+.recording-hint {
+  color: #f44336;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
 }
 </style>

@@ -80,7 +80,11 @@
         "thinking": "Tänker...",
         "placeholder": "Fråga mig vad som helst...",
         "error": "Tyvärr uppstod ett fel. Försök igen.",
-        "sendHint": "Shift+Enter för att skicka"
+        "sendHint": "Shift+Enter för att skicka",
+        "recording": "Lyssnar...",
+        "startRecording": "Starta diktering",
+        "stopRecording": "Stoppa diktering",
+        "speechNotSupported": "Taligenkänning stöds inte av denna webbläsare"
     },
     "help": {
         "noResourceDoc": "Ingen specifik dokumentation tillgänglig för {resource}. Visar allmän hjälp."

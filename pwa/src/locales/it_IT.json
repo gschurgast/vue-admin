@@ -80,7 +80,11 @@
         "thinking": "Pensando...",
         "placeholder": "Chiedimi tutto...",
         "error": "Spiacente, si è verificato un errore. Riprova per favore.",
-        "sendHint": "Shift+Invio per inviare"
+        "sendHint": "Shift+Invio per inviare",
+        "recording": "In ascolto...",
+        "startRecording": "Avvia dettatura",
+        "stopRecording": "Ferma dettatura",
+        "speechNotSupported": "Riconoscimento vocale non supportato da questo browser"
     },
     "help": {
         "noResourceDoc": "Nessuna documentazione specifica disponibile per {resource}. Visualizzazione della guida generale."

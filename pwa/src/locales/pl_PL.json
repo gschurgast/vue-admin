@@ -80,7 +80,11 @@
         "thinking": "Myślę...",
         "placeholder": "Zapytaj mnie o cokolwiek...",
         "error": "Przepraszam, wystąpił błąd. Spróbuj ponownie.",
-        "sendHint": "Shift+Enter aby wysłać"
+        "sendHint": "Shift+Enter aby wysłać",
+        "recording": "Słucham...",
+        "startRecording": "Rozpocznij dyktowanie",
+        "stopRecording": "Zatrzymaj dyktowanie",
+        "speechNotSupported": "Rozpoznawanie mowy nie jest obsługiwane przez tę przeglądarkę"
     },
     "help": {
         "noResourceDoc": "Brak specyficznej dokumentacji dla {resource}. Wyświetlanie pomocy ogólnej."

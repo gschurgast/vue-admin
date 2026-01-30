@@ -92,7 +92,11 @@
         "thinking": "Thinking...",
         "placeholder": "Ask me anything...",
         "error": "Sorry, I encountered an error. Please try again.",
-        "sendHint": "Shift+Enter to send"
+        "sendHint": "Shift+Enter to send",
+        "recording": "Listening...",
+        "startRecording": "Start voice input",
+        "stopRecording": "Stop voice input",
+        "speechNotSupported": "Speech recognition not supported by this browser"
     },
     "help": {
         "noResourceDoc": "No specific documentation available for {resource}. Showing general help."

@@ -80,7 +80,11 @@
         "thinking": "Tenker...",
         "placeholder": "Spør meg om hva som helst...",
         "error": "Beklager, det oppstod en feil. Vennligst prøv igjen.",
-        "sendHint": "Shift+Enter for å sende"
+        "sendHint": "Shift+Enter for å sende",
+        "recording": "Lytter...",
+        "startRecording": "Start diktering",
+        "stopRecording": "Stopp diktering",
+        "speechNotSupported": "Talegjenkjenning støttes ikke av denne nettleseren"
     },
     "help": {
         "noResourceDoc": "Ingen spesifikk dokumentasjon tilgjengelig for {resource}. Viser generell hjelp."

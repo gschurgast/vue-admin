@@ -80,7 +80,11 @@
         "thinking": "يفكر...",
         "placeholder": "اسألني أي شيء...",
         "error": "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.",
-        "sendHint": "Shift+Enter للإرسال"
+        "sendHint": "Shift+Enter للإرسال",
+        "recording": "جاري الاستماع...",
+        "startRecording": "بدء الإملاء",
+        "stopRecording": "إيقاف الإملاء",
+        "speechNotSupported": "التعرف على الكلام غير مدعوم في هذا المتصفح"
     },
     "help": {
         "noResourceDoc": "لا يوجد توثيق خاص لـ {resource}. عرض المساعدة العامة."

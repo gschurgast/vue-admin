@@ -92,7 +92,11 @@
         "thinking": "Réfléchit...",
         "placeholder": "Posez-moi une question...",
         "error": "Désolé, une erreur s'est produite. Veuillez réessayer.",
-        "sendHint": "Shift+Entrée pour envoyer"
+        "sendHint": "Shift+Entrée pour envoyer",
+        "recording": "En écoute...",
+        "startRecording": "Démarrer la dictée",
+        "stopRecording": "Arrêter la dictée",
+        "speechNotSupported": "Reconnaissance vocale non supportée par ce navigateur"
     },
     "help": {
         "noResourceDoc": "Aucune documentation spécifique disponible pour {resource}. Affichage de l'aide générale."
