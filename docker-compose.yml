@@ -12,10 +12,10 @@ services:
       APP_RUNTIME: Symfony\Component\Runtime\SymfonyRuntime
       APP_SECRET: "ChangeMe123"
       DATABASE_URL: "postgresql://app:ChangeMe123@database:5432/app?serverVersion=16&charset=utf8"
-      OPENAI_API_KEY: "${OPENAI_API_KEY:-}"
-      ANTHROPIC_API_KEY: "${ANTHROPIC_API_KEY:-}"
+      REDIS_URL: "redis://redis:6379"
     depends_on:
       - database
+      - redis
     tty: true
 
   database:
@@ -29,6 +29,13 @@ services:
     volumes:
       - db-data:/var/lib/postgresql/data
 
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    volumes:
+      - redis-data:/data
+
   pwa:
     image: node:lts
     working_dir: /app
@@ -40,3 +47,4 @@ services:
 
 volumes:
   db-data:
+  redis-data:

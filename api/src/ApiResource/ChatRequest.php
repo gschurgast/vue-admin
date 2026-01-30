@@ -22,6 +22,9 @@ class ChatRequest
     #[Groups(['chat:read', 'chat:write'])]
     public ?string $message = null;
 
+    #[Groups(['chat:write'])]
+    public ?string $conversationId = null;
+
     #[Groups(['chat:read'])]
     public ?string $response = null;
 }

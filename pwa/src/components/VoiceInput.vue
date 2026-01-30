@@ -30,6 +30,7 @@ interface Props {
   lang?: string
   continuous?: boolean
   interimResults?: boolean
+  autoSend?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
@@ -39,7 +40,8 @@ const props = withDefaults(defineProps<Props>(), {
   disabled: false,
   lang: 'fr-FR',
   continuous: true,
-  interimResults: true
+  interimResults: true,
+  autoSend: false
 })
 
 const emit = defineEmits<{
@@ -47,6 +49,7 @@ const emit = defineEmits<{
   'start': []
   'stop': []
   'error': [error: string]
+  'complete': [text: string]
 }>()
 
 const { t } = useI18n()
@@ -57,6 +60,8 @@ const isSupported = computed(() => !!SpeechRecognition)
 
 const isRecording = ref(false)
 let recognition: any = null
+let fullTranscript = ''
+let manualStop = false
 
 function startRecording() {
   if (!SpeechRecognition) {
@@ -64,9 +69,13 @@ function startRecording() {
     return
   }
 
+  fullTranscript = ''
+  manualStop = false
+
   recognition = new SpeechRecognition()
   recognition.lang = props.lang
-  recognition.continuous = props.continuous
+  // In autoSend mode, disable continuous so it stops when user pauses
+  recognition.continuous = props.autoSend ? false : props.continuous
   recognition.interimResults = props.interimResults
 
   recognition.onstart = () => {
@@ -88,6 +97,7 @@ function startRecording() {
     }
 
     if (finalTranscript) {
+      fullTranscript += (fullTranscript ? ' ' : '') + finalTranscript
       emit('transcript', finalTranscript, true)
     } else if (interimTranscript) {
       emit('transcript', interimTranscript, false)
@@ -106,12 +116,18 @@ function startRecording() {
   recognition.onend = () => {
     isRecording.value = false
     emit('stop')
+
+    // In autoSend mode, emit complete with full transcript when recognition ends naturally
+    if (props.autoSend && !manualStop && fullTranscript.trim()) {
+      emit('complete', fullTranscript.trim())
+    }
   }
 
   recognition.start()
 }
 
 function stopRecording() {
+  manualStop = true
   if (recognition) {
     recognition.stop()
     recognition = null

@@ -73,9 +73,11 @@
               ref="voiceInputRef"
               :disabled="loading"
               :lang="voiceLang"
+              auto-send
               @transcript="onTranscript"
               @start="onRecordingStart"
               @stop="onRecordingStop"
+              @complete="onVoiceComplete"
             />
           </template>
           <template v-slot:append-inner>
@@ -98,10 +100,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch, nextTick } from 'vue'
+import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import apiPlatform from '../services/apiPlatform'
 import VoiceInput from './VoiceInput.vue'
+
+const CONVERSATION_KEY = 'chat_conversation_id'
 
 interface Props {
   modelValue: boolean
@@ -126,9 +130,26 @@ const loading = ref(false)
 const messagesContainer = ref<HTMLElement | null>(null)
 const isRecording = ref(false)
 const voiceInputRef = ref<InstanceType<typeof VoiceInput> | null>(null)
+const wasVoiceMessage = ref(false)
+const conversationId = ref('')
 
 // Convert locale format: en_US -> en-US for Web Speech API
 const voiceLang = computed(() => locale.value.replace('_', '-'))
+
+function generateConversationId(): string {
+  return crypto.randomUUID()
+}
+
+onMounted(() => {
+  // Get or create conversation ID
+  const stored = localStorage.getItem(CONVERSATION_KEY)
+  if (stored) {
+    conversationId.value = stored
+  } else {
+    conversationId.value = generateConversationId()
+    localStorage.setItem(CONVERSATION_KEY, conversationId.value)
+  }
+})
 
 const isOpen = computed({
   get: () => props.modelValue,
@@ -139,7 +160,21 @@ function close() {
   isOpen.value = false
 }
 
-function startNewConversation() {
+async function startNewConversation() {
+  // Delete conversation from Redis
+  if (conversationId.value) {
+    try {
+      await apiPlatform.client.delete(`/api/conversations/${conversationId.value}`)
+    } catch (error) {
+      console.error('Error deleting conversation:', error)
+    }
+  }
+
+  // Generate new conversation ID
+  conversationId.value = generateConversationId()
+  localStorage.setItem(CONVERSATION_KEY, conversationId.value)
+
+  // Clear local messages
   messages.value = []
 }
 
@@ -163,6 +198,12 @@ function onRecordingStop() {
   isRecording.value = false
 }
 
+function onVoiceComplete(text: string) {
+  currentMessage.value = text
+  wasVoiceMessage.value = true
+  sendMessage()
+}
+
 async function sendMessage() {
   if (!currentMessage.value.trim() || loading.value) return
 
@@ -183,7 +224,8 @@ async function sendMessage() {
 
   try {
     const response = await apiPlatform.client.post('/api/chat', {
-      message: userMessage
+      message: userMessage,
+      conversationId: conversationId.value
     }, {
       headers: {
         'Content-Type': 'application/ld+json',
@@ -204,6 +246,14 @@ async function sendMessage() {
     lastMessage.loading = false
   } finally {
     loading.value = false
+
+    // Restart recording if the message was sent via voice
+    if (wasVoiceMessage.value) {
+      wasVoiceMessage.value = false
+      nextTick(() => {
+        voiceInputRef.value?.startRecording()
+      })
+    }
   }
 }
 

@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ### Starting the Project
 ```bash
-docker compose up -d              # Start all services (API, PWA, Database)
+docker compose up -d              # Start all services (API, PWA, Database, Redis)
 docker compose down               # Stop all services
 docker compose logs -f api        # Follow API logs
 ```
@@ -50,8 +50,8 @@ This is a schema-driven admin application. The PWA fetches Hydra/OpenAPI documen
 |-----------|---------|
 | Entity/ | Doctrine ORM entities, grouped by domain (Product/, Attribute/, Collection/) |
 | ApiResource/ | Request/Response DTOs for custom endpoints |
-| State/ | API Platform processors for custom operations |
-| Service/ | Business logic (OpenAiService, TranslationService, ChatService) |
+| State/ | API Platform processors and providers for custom operations |
+| Service/ | Business logic (ChatService, ConversationService, TranslationService) |
 | Validator/ | Custom validation constraints (Code.php + CodeValidator.php) |
 | Enum/ | Backed enums (Market, AttributeType, Locale) |
 | Attribute/ | Custom PHP attributes (MenuGroup for navigation grouping) |
@@ -68,7 +68,7 @@ This is a schema-driven admin application. The PWA fetches Hydra/OpenAPI documen
 | composables/ | Vue composables for shared logic |
 | services/apiPlatform.ts | API client with schema introspection |
 | stores/ | Pinia stores (auth, resources) |
-| locales/ | i18n translations (14 languages, ISO codes like en_US, fr_FR) |
+| locales/ | i18n translations (14 languages: ar_SA, da_DK, de_DE, en_US, es_ES, fr_FR, he_IL, it_IT, ja_JP, nb_NO, pl_PL, pt_PT, sv_SE, zh_CN) |
 
 ### Resource Configuration Pattern
 
@@ -147,7 +147,9 @@ Custom field rendering is configured via JSON in `pwa/src/config/ResourceName.js
 
 ## Environment
 
-OpenAI integration requires `OPENAI_API_KEY` environment variable for content generation features.
+API keys are stored in `api/.env.local` (not passed via Docker):
+- `OPENAI_API_KEY` - Required for AI Assistant chat features
+- `OPENAI_ORGANIZATION` - OpenAI organization ID
 
 ## Tech Stack
 
@@ -156,4 +158,24 @@ OpenAI integration requires `OPENAI_API_KEY` environment variable for content ge
 | API | PHP 8.4, Symfony 7.3, API Platform 4, Doctrine ORM |
 | PWA | Vue 3, Vuetify 3, Vite, Pinia, TypeScript |
 | Database | PostgreSQL 16 |
+| Cache | Redis 7 (conversation storage) |
 | Auth | JWT (lexik/jwt-authentication-bundle) |
+
+## AI Assistant
+
+The PWA includes an AI chat assistant with the following features:
+
+### Voice Input
+- Uses Web Speech API for real-time speech recognition
+- Automatically sends message when user stops speaking (`autoSend` mode)
+- Restarts recording after receiving AI response for hands-free conversation
+- Language detection based on current locale (e.g., `fr_FR` → `fr-FR`)
+- Component: `pwa/src/components/VoiceInput.vue`
+
+### Conversation Management
+- Conversations stored in Redis with 24h TTL (max 50 messages)
+- Conversation ID stored in localStorage (`chat_conversation_id`)
+- New conversation: generates new UUID and deletes Redis history
+- Endpoints:
+  - `POST /api/chat` - Send message with `conversationId`
+  - `DELETE /api/conversations/{conversationId}` - Clear conversation
