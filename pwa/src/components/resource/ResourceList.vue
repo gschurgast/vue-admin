@@ -5,6 +5,8 @@
       :items="items"
       :loading="loading"
       :items-per-page="itemsPerPage"
+      :items-per-page-text="t('resource.itemsPerPage')"
+      :page-text="pageText"
       class="elevation-1"
     >
       <!-- Custom cell rendering for each column -->
@@ -78,10 +80,13 @@
 
 <script setup lang="ts">
 import { computed } from 'vue'
+import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../services/apiPlatform'
 import DateTimeCell from '../list/DateTimeCell.vue'
 import BooleanCell from '../list/BooleanCell.vue'
 import RelationCell from '../list/RelationCell.vue'
+
+const { t } = useI18n()
 
 interface Props {
   items: Array<any>
@@ -99,6 +104,10 @@ const props = withDefaults(defineProps<Props>(), {
   relationData: () => ({}),
   relationsLoaded: false,
   resourceName: ''
+})
+
+const pageText = computed(() => {
+  return `{0}-{1} ${t('resource.pageOf')} {2}`
 })
 
 const emit = defineEmits<{

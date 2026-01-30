@@ -87,7 +87,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick } from 'vue'
 import { useI18n } from 'vue-i18n'
-import axios from 'axios'
+import apiPlatform from '../services/apiPlatform'
 
 interface Props {
   modelValue: boolean
@@ -146,7 +146,7 @@ async function sendMessage() {
   scrollToBottom()
 
   try {
-    const response = await axios.post('http://localhost:8080/api/chat', {
+    const response = await apiPlatform.client.post('/api/chat', {
       message: userMessage
     }, {
       headers: {

@@ -1,12 +1,19 @@
 <template>
-  <v-container fluid>
-    <!-- Breadcrumb Navigation -->
-    <v-breadcrumbs :items="breadcrumbs" class="px-0">
-      <template v-slot:divider>
-        <v-icon>mdi-chevron-right</v-icon>
-      </template>
-    </v-breadcrumbs>
+  <ResourceAppBar :breadcrumbs="breadcrumbs" :loading="saving">
+    <template #actions>
+      <v-btn icon density="compact" size="small" class="mr-2" @click="handleCancel" :disabled="saving">
+        <v-icon>mdi-close</v-icon>
+        <v-tooltip activator="parent" location="bottom">{{ t('common.cancel') }}</v-tooltip>
+      </v-btn>
+      <v-btn icon density="compact" size="small" class="mr-2" @click="handleSave" :disabled="saving">
+        <v-progress-circular v-if="saving" indeterminate size="18" width="2" />
+        <v-icon v-else>mdi-content-save</v-icon>
+        <v-tooltip activator="parent" location="bottom">{{ t('common.save') }}</v-tooltip>
+      </v-btn>
+    </template>
+  </ResourceAppBar>
 
+  <v-container fluid>
     <!-- Loading state -->
     <v-card v-if="loading" class="text-center pa-10">
       <v-progress-circular indeterminate color="primary"/>
@@ -21,15 +28,12 @@
 
     <!-- Edit Form -->
     <v-card v-else>
-      <v-card-title>
-        {{ isCreate ? t('resource.create', { resource: resourceTitle }) : t('resource.edit', { resource: resourceTitle }) }}
-      </v-card-title>
-      
       <v-card-text>
         <!-- Custom edit component -->
         <component
           v-if="EditComponent"
           :is="EditComponent"
+          ref="editComponentRef"
           v-model:formData="formData"
           :fields="editableFields"
           :custom-components="customComponents"
@@ -50,12 +54,6 @@
           :field-errors="fieldErrors"
         />
       </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn variant="outlined" @click="handleCancel">{{ t('common.cancel') }}</v-btn>
-        <v-btn variant="outlined" color="primary" @click="handleSave" :loading="saving">{{ t('common.save') }}</v-btn>
-      </v-card-actions>
     </v-card>
 
     <v-snackbar v-model="snackbar.show" :color="snackbar.color">
@@ -66,67 +64,112 @@
         </v-btn>
       </template>
     </v-snackbar>
+
+    <!-- Unsaved Changes Dialog -->
+    <v-dialog v-model="showLeaveDialog" max-width="400" persistent>
+      <v-card>
+        <v-card-title>{{ t('common.unsavedChanges') }}</v-card-title>
+        <v-card-text>{{ t('messages.unsavedChangesWarning') }}</v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn variant="text" @click="cancelLeave">{{ t('common.stay') }}</v-btn>
+          <v-btn color="error" variant="text" @click="confirmLeave">{{ t('common.leave') }}</v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, markRaw, shallowRef } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
-import apiPlatform from '../../../services/apiPlatform'
-import { loadResourceMessages } from '../../../plugins/i18n'
-import { useResourcesStore } from '../../../stores/resources'
+import { ref, computed, onMounted, onUnmounted, shallowRef } from 'vue'
+import { onBeforeRouteLeave, useRouter } from 'vue-router'
+import type { RouteLocationRaw } from 'vue-router'
+import { useResource } from '../../../composables/useResource'
 import { useAuthStore } from '../../../stores/auth'
+import apiPlatform from '../../../services/apiPlatform'
 import ResourceForm from '../../../components/resource/ResourceForm.vue'
 import ResourceForbidden from '../../../components/common/ResourceForbidden.vue'
+import ResourceAppBar from '../../../components/resource/ResourceAppBar.vue'
 
-const route = useRoute()
-const router = useRouter()
-const resourcesStore = useResourcesStore()
+// Pre-load component modules using import.meta.glob for Vite compatibility
+const fieldComponents = import.meta.glob('../../../components/fields/*.vue')
+const configFiles = import.meta.glob('../../../config/*.json')
+const resourceViewComponents = import.meta.glob('../../../components/*/*/**.vue')
+
+const componentModules: Record<string, () => Promise<any>> = {
+  ...Object.fromEntries(Object.entries(fieldComponents).map(([k, v]) => [`fields/${k.split('/').pop()?.replace('.vue', '')}`, v]))
+}
+
+const {
+  resourceName,
+  itemId,
+  resource,
+  resourceTitle,
+  resourcePath,
+  resourceConfig,
+  customComponents,
+  snackbar,
+  showSnackbar,
+  resourcesStore,
+  t,
+  locale,
+  loadResourceConfigBase,
+  loadResourceViewComponent,
+  loadFieldComponents,
+  loadResourceMessages,
+  navigateToResource,
+  getConfigFields,
+  normalizeConfigItem,
+  getFieldType
+} = useResource({
+  importComponent: (path) => {
+    const loader = componentModules[path]
+    if (loader) return loader()
+    return Promise.reject(new Error(`Component not found: ${path}`))
+  },
+  importConfig: (name) => {
+    const loader = configFiles[`../../../config/${name}.json`]
+    if (loader) return loader()
+    return Promise.reject(new Error(`Config not found: ${name}`))
+  },
+  importViewComponent: (folder, type, name) => {
+    const path = `../../../components/${folder}/${type}/${name}.vue`
+    const loader = resourceViewComponents[path]
+    if (loader) return loader()
+    return Promise.reject(new Error(`View component not found: ${path}`))
+  }
+})
+
 const authStore = useAuthStore()
-const { t, locale } = useI18n()
-
-const resourceName = computed(() => {
-  const name = route.params.resource
-  return Array.isArray(name) ? name[0] : name
-})
-
-const itemId = computed(() => {
-  const id = route.params.id
-  return Array.isArray(id) ? id[0] : id
-})
+const router = useRouter()
 
 const isCreate = computed(() => itemId.value === 'new')
 
 const loading = ref(true)
 const saving = ref(false)
-const formData = ref({})
+const formData = ref<Record<string, any>>({})
+const originalFormData = ref<Record<string, any>>({})
 const fieldErrors = ref<Record<string, string[]>>({})
 const relationData = ref({})
 const loadingRelations = ref({})
 const EditComponent = shallowRef(null)
-const customComponents = ref({})
-const resourceConfig = ref<any>(null)
 const isForbidden = ref(false)
+const editComponentRef = ref<any>(null)
+const showLeaveDialog = ref(false)
+const pendingDestination = ref<RouteLocationRaw | null>(null)
+const isLeavingConfirmed = ref(false)
 
-const snackbar = ref({
-  show: false,
-  message: '',
-  color: 'success'
-})
+// Check if form has unsaved changes
+const hasUnsavedChanges = computed(() => {
+  if (loading.value) return false
 
-const resource = computed(() => {
-  return resourcesStore.getResourceByName(resourceName.value)
-})
+  // Check main form data changes
+  const formChanged = JSON.stringify(formData.value) !== JSON.stringify(originalFormData.value)
 
-const resourceTitle = computed(() => {
-  if (!resourceName.value) return ''
-  const translationKey = `resources.${String(resourceName.value).toLowerCase()}.name`
-  return t(translationKey, resource.value?.title || resourceName.value)
-})
+  // Check custom component pending changes (e.g., attribute values)
+  const customComponentChanges = editComponentRef.value?.hasPendingChanges?.() ?? false
 
-const resourcePath = computed(() => {
-  return apiPlatform.getResourcePath(resourceName.value)
+  return formChanged || customComponentChanges
 })
 
 const breadcrumbs = computed(() => [
@@ -146,106 +189,66 @@ const breadcrumbs = computed(() => [
   }
 ])
 
-// Helper to get fields from config
-function getConfigFields(config: any) {
-  if (config && typeof config === 'object' && Array.isArray(config.fields)) return config.fields
-  return []
-}
-
-// Helper to normalize config item
-function normalizeConfigItem(item: any) {
-  if (typeof item !== 'object' || item === null) return null
-  const keys = Object.keys(item)
-  if (keys.length !== 1) return null
-  const field = keys[0]
-  const value = item[field]
-  return { field, value }
-}
-
-// Load custom component
-async function loadCustomComponent(componentName, type = 'fields') {
-  const cacheKey = `${type}/${componentName}`
-  if (customComponents.value[cacheKey]) {
-    return customComponents.value[cacheKey]
+// Get field names that have custom components in config
+function getConfiguredFieldNames(): Set<string> {
+  const fieldNames = new Set<string>()
+  if (resourceConfig.value?.edit) {
+    const configFields = getConfigFields(resourceConfig.value.edit)
+    for (const item of configFields) {
+      const normalized = normalizeConfigItem(item)
+      if (normalized?.value) {
+        fieldNames.add(normalized.field)
+      }
+    }
   }
-  try {
-    const component = await import(`../../../components/${type}/${componentName}.vue`)
-    customComponents.value[cacheKey] = markRaw(component.default || component)
-    return customComponents.value[cacheKey]
-  } catch (error) {
-    console.warn(`Failed to load custom component: ${componentName}`, error)
-    return null
-  }
+  return fieldNames
 }
 
 // Load resource config
 async function loadResourceConfig() {
-  if (!resourceName.value) return
-  try {
-    const config = await import(`../../../config/${resourceName.value}.json`)
-    resourceConfig.value = config.default || config
+  await loadResourceConfigBase()
+  EditComponent.value = null
 
-    // Reset to default (no custom edit component)
-    EditComponent.value = null
-
-    const componentsToLoad = []
-    if (resourceConfig.value?.edit) {
-      // Check for custom Edit component
-      if (resourceConfig.value.edit.component) {
-        const componentName = resourceConfig.value.edit.component
-        const resourceFolder = String(resourceName.value).toLowerCase()
-        try {
-          // Try loading from resource-specific folder: components/[resource]/edit/[Name].vue
-          const component = await import(`../../../components/${resourceFolder}/edit/${componentName}.vue`)
-          EditComponent.value = markRaw(component.default || component)
-        } catch (e) {
-          console.warn(`Failed to load custom edit component: ${resourceFolder}/edit/${componentName}`, e)
-        }
-      }
-
-      const fields = getConfigFields(resourceConfig.value.edit)
-      fields.forEach((item: any) => {
-        const normalized = normalizeConfigItem(item)
-        if (normalized) {
-          const { value } = normalized
-          if (value && /^[A-Z]/.test(value)) {
-            componentsToLoad.push(loadCustomComponent(value, 'fields'))
-          }
-        }
-      })
-    }
-    await Promise.all(componentsToLoad)
-  } catch (error) {
-    resourceConfig.value = null
+  if (resourceConfig.value?.edit) {
+    const customEdit = await loadResourceViewComponent('edit')
+    if (customEdit) EditComponent.value = customEdit
+    await loadFieldComponents('edit', 'fields')
   }
 }
 
 const editableFields = computed(() => {
   if (!resource.value) return []
 
+  const customComponentFields = getConfiguredFieldNames()
+
   let fields = resource.value.properties
     .filter(prop => {
       if (!prop.writeable) return false
       if (prop.isRelation) {
         const maxCardinality = prop.property?.['owl:maxCardinality']
-        if (maxCardinality !== 1) return false
+        // Allow collection relations if they have a custom component configured
+        const fieldName = prop.property?.label || prop.title
+        if (maxCardinality !== 1 && !customComponentFields.has(fieldName)) return false
       }
       return true
     })
     .map(prop => {
-      const range = prop.property?.range
-      let type = 'string'
+      const type = getFieldType(prop)
 
-      if (prop.isRelation) {
-        type = 'relation'
-      } else if (range?.includes('boolean')) {
-        type = 'boolean'
-      } else if (range?.includes('text')) {
-        type = 'textarea'
-      } else if (range?.includes('dateTime')) {
-        type = 'datetime'
-      } else if (range?.includes('date')) {
-        type = 'date'
+      // Determine the best display field for relation fields
+      let itemTitle = 'name'
+      if (prop.isRelation && prop.relatedResource) {
+        const relatedRes = resourcesStore.getResourceByName(prop.relatedResource)
+        if (relatedRes) {
+          const relatedProps = relatedRes.properties.map(p => p.property?.label || p.title)
+          const displayFieldPriority = ['name', 'title', 'label', 'code']
+          for (const displayField of displayFieldPriority) {
+            if (relatedProps.includes(displayField)) {
+              itemTitle = displayField
+              break
+            }
+          }
+        }
       }
 
       const fieldName = prop.property?.label || prop.title
@@ -257,6 +260,8 @@ const editableFields = computed(() => {
         required: prop.required || false,
         isRelation: prop.isRelation,
         relatedResource: prop.relatedResource,
+        itemTitle,
+        enumValues: prop.enumValues,
         customComponent: null
       }
     })
@@ -275,6 +280,12 @@ const editableFields = computed(() => {
           const fieldCopy = { ...field }
           if (customComponent) {
             fieldCopy.customComponent = customComponent
+            // Override type based on component name for built-in field components
+            if (customComponent === 'DateField') {
+              fieldCopy.type = 'date'
+            } else if (customComponent === 'DateTimeField') {
+              fieldCopy.type = 'datetime'
+            }
           }
           return fieldCopy
         }
@@ -292,8 +303,12 @@ const editableFields = computed(() => {
 })
 
 async function loadItem() {
+  loading.value = true
+  isForbidden.value = false
+
   if (isCreate.value) {
     formData.value = {}
+    originalFormData.value = {}
     loading.value = false
     return
   }
@@ -302,19 +317,25 @@ async function loadItem() {
     const item = await apiPlatform.getOne(resourcePath.value, itemId.value)
     formData.value = { ...item }
 
-    // Convert relation objects to IRIs
+    // Convert relation objects to IRIs (only for single relations, not arrays)
     editableFields.value.forEach(field => {
       if (field.isRelation && formData.value[field.name]) {
-        if (typeof formData.value[field.name] === 'object') {
-          formData.value[field.name] = formData.value[field.name]['@id']
+        const value = formData.value[field.name]
+        // Only convert single object relations to IRI, keep arrays as-is
+        if (typeof value === 'object' && !Array.isArray(value) && value['@id']) {
+          formData.value[field.name] = value['@id']
         }
       }
     })
+
+    // Store original data for change detection
+    originalFormData.value = JSON.parse(JSON.stringify(formData.value))
   } catch (error: any) {
+    console.error('Failed to load item:', error)
     if (error.response?.status === 403) {
       isForbidden.value = true
     } else {
-      showSnackbar(t('messages.loadingError'), 'error')
+      showSnackbar(t('messages.error'), 'error')
     }
   } finally {
     loading.value = false
@@ -344,25 +365,89 @@ async function loadRelations() {
   }
 }
 
+function prepareDataForSubmission() {
+  const data: Record<string, any> = {}
+  const editableFieldNames = new Set(editableFields.value.map(f => f.name))
+
+  // Include editable fields with proper type conversion
+  editableFields.value.forEach(field => {
+    const value = formData.value[field.name]
+    if (value !== undefined && value !== null && value !== '') {
+      // Convert types based on field type
+      if (field.type === 'integer') {
+        data[field.name] = parseInt(value, 10)
+      } else if (field.type === 'number') {
+        data[field.name] = parseFloat(value)
+      } else if (field.type === 'boolean') {
+        data[field.name] = Boolean(value)
+      } else {
+        data[field.name] = value
+      }
+    } else if (value === '' && (field.type === 'integer' || field.type === 'number')) {
+      // Don't send empty string for numeric fields
+    } else if (value !== undefined) {
+      data[field.name] = value
+    }
+  })
+
+  // Include additional fields added by custom components (e.g., variant, option, value, values)
+  Object.keys(formData.value).forEach(key => {
+    if (!editableFieldNames.has(key) && !key.startsWith('@')) {
+      let value = formData.value[key]
+      if (value !== undefined && value !== null && value !== '') {
+        // Convert objects with @id to IRI strings
+        if (typeof value === 'object' && !Array.isArray(value) && value['@id']) {
+          value = value['@id']
+        }
+        // Convert arrays of objects to arrays of IRIs
+        if (Array.isArray(value)) {
+          value = value.map(item =>
+            typeof item === 'object' && item['@id'] ? item['@id'] : item
+          )
+        }
+        data[key] = value
+      }
+    }
+  })
+
+  return data
+}
+
 async function handleSave() {
   try {
     saving.value = true
     fieldErrors.value = {}
 
+    const dataToSubmit = prepareDataForSubmission()
+
     if (isCreate.value) {
-      await apiPlatform.create(resourcePath.value, formData.value)
+      const created = await apiPlatform.create(resourcePath.value, dataToSubmit)
       showSnackbar(t('messages.createSuccess', { resource: resourceTitle.value }))
+
+      // After creation, navigate to edit the created item
+      if (created && created.id) {
+        window.location.href = `/edit/${resourceName.value}/${created.id}`
+      } else {
+        navigateToResource()
+      }
     } else {
-      await apiPlatform.update(resourcePath.value, itemId.value, formData.value)
+      await apiPlatform.update(resourcePath.value, itemId.value, dataToSubmit)
+
+      // Save custom component data (e.g., attribute values)
+      if (editComponentRef.value?.saveAttributeValues) {
+        await editComponentRef.value.saveAttributeValues()
+      }
+
       showSnackbar(t('messages.updateSuccess', { resource: resourceTitle.value }))
 
       // Refresh auth store if editing current user
       if (resourceName.value === 'User' && authStore.user?.id === Number(itemId.value)) {
         await authStore.fetchProfile()
       }
-    }
 
-    router.push(`/resource/${resourceName.value}`)
+      // Stay on the page - reload item data to refresh
+      await loadItem()
+    }
   } catch (error: any) {
     console.error('Failed to save item:', error)
 
@@ -390,17 +475,64 @@ async function handleSave() {
 }
 
 function handleCancel() {
-  router.push(`/resource/${resourceName.value}`)
+  if (hasUnsavedChanges.value) {
+    pendingDestination.value = `/resource/${resourceName.value}`
+    showLeaveDialog.value = true
+  } else {
+    navigateToResource()
+  }
 }
 
-function showSnackbar(message, color = 'success') {
-  snackbar.value = { show: true, message, color }
+function confirmLeave() {
+  showLeaveDialog.value = false
+  isLeavingConfirmed.value = true
+  if (pendingDestination.value) {
+    const destination = pendingDestination.value
+    pendingDestination.value = null
+    router.push(destination)
+  }
 }
+
+function cancelLeave() {
+  showLeaveDialog.value = false
+  pendingDestination.value = null
+}
+
+// Browser beforeunload event for page refresh/close
+function handleBeforeUnload(e: BeforeUnloadEvent) {
+  if (hasUnsavedChanges.value) {
+    e.preventDefault()
+    e.returnValue = ''
+    return ''
+  }
+}
+
+// Vue Router navigation guard
+onBeforeRouteLeave((to, _from, next) => {
+  if (isLeavingConfirmed.value) {
+    next()
+    return
+  }
+  if (hasUnsavedChanges.value && !showLeaveDialog.value) {
+    pendingDestination.value = to.fullPath
+    showLeaveDialog.value = true
+    next(false)
+  } else {
+    next()
+  }
+})
 
 onMounted(async () => {
+  window.addEventListener('beforeunload', handleBeforeUnload)
+  // Ensure resources are loaded first (needed for relation field detection)
+  await resourcesStore.loadResources()
   await loadResourceMessages(resourceName.value, locale.value)
   await loadResourceConfig()
   await loadRelations()
   await loadItem()
+})
+
+onUnmounted(() => {
+  window.removeEventListener('beforeunload', handleBeforeUnload)
 })
 </script>

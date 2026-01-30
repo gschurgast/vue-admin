@@ -1,0 +1,13 @@
+{
+  "list": {
+    "fields": [
+      { "code": "" }
+    ]
+  },
+  "edit": {
+    "fields": [
+      { "code": "CodeField" },
+      { "translations": "TranslationsField" }
+    ]
+  }
+}

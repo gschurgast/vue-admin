@@ -93,6 +93,7 @@ const props = withDefaults(defineProps<Props>(), {
 
 const emit = defineEmits<{
   'update:modelValue': [value: string]
+  'blur': []
 }>()
 
 const errorMessage = ref('')
@@ -112,6 +113,9 @@ const editor = useEditor({
   ],
   onUpdate: ({ editor }) => {
     emit('update:modelValue', editor.getHTML())
+  },
+  onBlur: () => {
+    emit('blur')
   },
   editorProps: {
     attributes: {
@@ -173,6 +177,11 @@ onBeforeUnmount(() => {
 /* TipTap default styles */
 :deep(.ProseMirror) {
   outline: none;
+}
+
+:deep(.ProseMirror ul),
+:deep(.ProseMirror ol) {
+  padding-left: 1.5rem;
 }
 
 :deep(.ProseMirror p.is-editor-empty:first-child::before) {

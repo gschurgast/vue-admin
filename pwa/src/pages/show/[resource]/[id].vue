@@ -1,24 +1,32 @@
 <template>
-  <v-container fluid>
-    <!-- Breadcrumb Navigation -->
-    <v-breadcrumbs :items="breadcrumbs" class="px-0">
-      <template v-slot:divider>
-        <v-icon>mdi-chevron-right</v-icon>
-      </template>
-    </v-breadcrumbs>
+  <ResourceAppBar :breadcrumbs="breadcrumbs">
+    <template #actions>
+      <v-btn icon density="compact" size="small" class="mr-2" @click="handleBack">
+        <v-icon>mdi-arrow-left</v-icon>
+        <v-tooltip activator="parent" location="bottom">{{ t('common.back') }}</v-tooltip>
+      </v-btn>
+      <v-btn icon density="compact" size="small" class="mr-2" @click="handleEdit">
+        <v-icon>mdi-pencil</v-icon>
+        <v-tooltip activator="parent" location="bottom">{{ t('common.edit') }}</v-tooltip>
+      </v-btn>
+    </template>
+  </ResourceAppBar>
 
+  <v-container fluid>
     <!-- Loading state -->
     <v-card v-if="loading" class="text-center pa-10">
       <v-progress-circular indeterminate color="primary"/>
       <p class="mt-4">{{ t('common.loading') }}</p>
     </v-card>
 
+    <!-- 403 Error for forbidden resource -->
+    <ResourceForbidden
+        v-else-if="isForbidden"
+        :resource-name="resourceName"
+    />
+
     <!-- Show View -->
     <v-card v-else>
-      <v-card-title>
-        {{ t('resource.show', { resource: resourceTitle }) }}
-      </v-card-title>
-      
       <v-card-text>
         <!-- Custom show component -->
         <component
@@ -39,12 +47,6 @@
           :resource-name="resourceName"
         />
       </v-card-text>
-
-      <v-card-actions>
-        <v-spacer></v-spacer>
-        <v-btn variant="outlined" @click="handleBack">{{ t('common.back') }}</v-btn>
-        <v-btn variant="outlined" color="primary" @click="handleEdit">{{ t('common.edit') }}</v-btn>
-      </v-card-actions>
     </v-card>
 
     <v-snackbar v-model="snackbar.show" :color="snackbar.color">
@@ -59,56 +61,64 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, markRaw, shallowRef, watch } from 'vue'
-import { useRoute, useRouter } from 'vue-router'
-import { useI18n } from 'vue-i18n'
+import { ref, computed, onMounted, shallowRef, watch } from 'vue'
+import { useResource } from '../../../composables/useResource'
 import apiPlatform from '../../../services/apiPlatform'
-import { loadResourceMessages } from '../../../plugins/i18n'
-import { useResourcesStore } from '../../../stores/resources'
-import ResourceDelete from '../../../components/resource/ResourceDelete.vue'
 import ResourceShow from '../../../components/resource/ResourceShow.vue'
+import ResourceAppBar from '../../../components/resource/ResourceAppBar.vue'
+import ResourceForbidden from '../../../components/common/ResourceForbidden.vue'
 
-const route = useRoute()
-const router = useRouter()
-const resourcesStore = useResourcesStore()
-const { t, locale } = useI18n()
+// Pre-load component modules using import.meta.glob for Vite compatibility
+const showComponents = import.meta.glob('../../../components/show/*.vue')
+const configFiles = import.meta.glob('../../../config/*.json')
+const resourceViewComponents = import.meta.glob('../../../components/*/*/**.vue')
 
-const resourceName = computed(() => {
-  const name = route.params.resource
-  return Array.isArray(name) ? name[0] : name
-})
+const componentModules: Record<string, () => Promise<any>> = {
+  ...Object.fromEntries(Object.entries(showComponents).map(([k, v]) => [`show/${k.split('/').pop()?.replace('.vue', '')}`, v]))
+}
 
-const itemId = computed(() => {
-  const id = route.params.id
-  return Array.isArray(id) ? id[0] : id
+const {
+  resourceName,
+  itemId,
+  resource,
+  resourceTitle,
+  resourcePath,
+  resourceConfig,
+  customComponents,
+  snackbar,
+  showSnackbar,
+  t,
+  locale,
+  loadResourceConfigBase,
+  loadResourceViewComponent,
+  loadFieldComponents,
+  loadResourceMessages,
+  navigateToResource,
+  navigateToEdit,
+  getConfigFields
+} = useResource({
+  importComponent: (path) => {
+    const loader = componentModules[path]
+    if (loader) return loader()
+    return Promise.reject(new Error(`Component not found: ${path}`))
+  },
+  importConfig: (name) => {
+    const loader = configFiles[`../../../config/${name}.json`]
+    if (loader) return loader()
+    return Promise.reject(new Error(`Config not found: ${name}`))
+  },
+  importViewComponent: (folder, type, name) => {
+    const path = `../../../components/${folder}/${type}/${name}.vue`
+    const loader = resourceViewComponents[path]
+    if (loader) return loader()
+    return Promise.reject(new Error(`View component not found: ${path}`))
+  }
 })
 
 const loading = ref(true)
 const item = ref<any>({})
 const ShowComponent = shallowRef(null)
-const customComponents = ref({})
-const resourceConfig = ref<any>(null)
-
-const snackbar = ref({
-  show: false,
-  message: '',
-  color: 'success'
-})
-
-const resource = computed(() => {
-  return resourcesStore.getResourceByName(resourceName.value)
-})
-
-const resourceTitle = computed(() => {
-  if (!resourceName.value) return ''
-  const translationKey = `resources.${String(resourceName.value).toLowerCase()}.name`
-  return t(translationKey, resource.value?.title || resourceName.value)
-})
-
-const resourcePath = computed(() => {
-  if (!resourceName.value) return ''
-  return apiPlatform.getResourcePath(resourceName.value)
-})
+const isForbidden = ref(false)
 
 const breadcrumbs = computed(() => [
   {
@@ -127,76 +137,27 @@ const breadcrumbs = computed(() => [
   }
 ])
 
-// Helper to get fields from config (supports object with fields property)
-function getConfigFields(config: any) {
-  if (config && typeof config === 'object' && Array.isArray(config.fields)) return config.fields
-  return []
-}
-
-// Helper to normalize config item (shorthand { field: value } -> { field, value })
-function normalizeConfigItem(item: any) {
+// Helper to normalize config item for show view (returns { name, component })
+function normalizeShowConfigItem(item: any): { name: string; component: string | null } | null {
   if (typeof item === 'string') return { name: item, component: null }
-  if (typeof item === 'object') {
+  if (typeof item === 'object' && item !== null) {
     const keys = Object.keys(item)
     if (keys.length === 1) {
-      const field = keys[0]
-      const value = item[field]
-      return { name: field, component: value || null }
+      return { name: keys[0], component: item[keys[0]] || null }
     }
   }
   return null
 }
 
-// Load custom component dynamically
-async function loadCustomComponent(componentName: any, folder: string) {
-  try {
-    const component = await import(`../../../components/${folder}/${componentName}.vue`)
-    customComponents.value[`${folder}/${componentName}`] = markRaw(component.default || component)
-  } catch (error) {
-    console.warn(`Failed to load custom component: ${componentName}`, error)
-    return null
-  }
-}
-
 // Load resource config
 async function loadResourceConfig() {
-  if (!resourceName.value) return
-  try {
-    const config = await import(`../../../config/${resourceName.value}.json`)
-    resourceConfig.value = config.default || config
+  await loadResourceConfigBase()
+  ShowComponent.value = null
 
-    // Reset to default (no custom show component)
-    ShowComponent.value = null
-
-    const componentsToLoad: Promise<any>[] = []
-    if (resourceConfig.value?.show) {
-      // Check for custom Show component
-      if (resourceConfig.value.show.component) {
-        const componentName = resourceConfig.value.show.component
-        const resourceFolder = String(resourceName.value).toLowerCase()
-        try {
-          // Try loading from resource-specific folder: components/[resource]/show/[Name].vue
-          const component = await import(`../../../components/${resourceFolder}/show/${componentName}.vue`)
-          ShowComponent.value = markRaw(component.default || component)
-        } catch (e) {
-          console.warn(`Failed to load custom show component: ${resourceFolder}/show/${componentName}`, e)
-        }
-      }
-
-      const fields = getConfigFields(resourceConfig.value.show)
-      fields.forEach((item: any) => {
-        const normalized = normalizeConfigItem(item)
-        if (normalized) {
-          const { component } = normalized
-          if (component && /^[A-Z]/.test(component)) {
-            componentsToLoad.push(loadCustomComponent(component, 'show'))
-          }
-        }
-      })
-    }
-    await Promise.all(componentsToLoad)
-  } catch (error) {
-    resourceConfig.value = null
+  if (resourceConfig.value?.show) {
+    const customShow = await loadResourceViewComponent('show')
+    if (customShow) ShowComponent.value = customShow
+    await loadFieldComponents('show', 'show')
   }
 }
 
@@ -208,25 +169,24 @@ const displayFields = computed(() => {
   if (resourceConfig.value?.show) {
     const configFields = getConfigFields(resourceConfig.value.show)
     if (configFields.length > 0) {
-      return configFields.map((item: any) => {
-        const normalized = normalizeConfigItem(item)
-        if (normalized) {
+      return configFields
+        .map((item: any) => normalizeShowConfigItem(item))
+        .filter((normalized): normalized is { name: string; component: string | null } => normalized !== null)
+        .map(normalized => {
           const prop = resource.value.properties?.find((p: any) => {
-             const pName = p.property?.label || p.title
-             return pName === normalized.name
+            const pName = p.property?.label || p.title
+            return pName === normalized.name
           })
-          
+
           const translationKey = `resources.${String(resourceName.value).toLowerCase()}.fields.${normalized.name}`
-          
+
           return {
             name: normalized.name,
             label: t(translationKey, prop?.title || normalized.name),
             component: normalized.component,
             type: prop?.type
           }
-        }
-        return null
-      }).filter(Boolean)
+        })
     }
   }
 
@@ -248,18 +208,19 @@ const displayFields = computed(() => {
 
 async function loadItem() {
   loading.value = true
+  isForbidden.value = false
   try {
     await loadResourceMessages(String(resourceName.value), locale.value)
     await loadResourceConfig()
-    
+
     const data = await apiPlatform.getOne(resourcePath.value, itemId.value)
     item.value = data
   } catch (error: any) {
     console.error('Failed to load item:', error)
-    snackbar.value = {
-      show: true,
-      message: t('messages.error'),
-      color: 'error'
+    if (error.response?.status === 403) {
+      isForbidden.value = true
+    } else {
+      showSnackbar(t('messages.error'), 'error')
     }
   } finally {
     loading.value = false
@@ -267,11 +228,11 @@ async function loadItem() {
 }
 
 function handleBack() {
-  router.push(`/resource/${resourceName.value}`)
+  navigateToResource()
 }
 
 function handleEdit() {
-  router.push(`/edit/${resourceName.value}/${itemId.value}`)
+  navigateToEdit()
 }
 
 onMounted(() => {

@@ -1,0 +1,18 @@
+{
+  "list": {
+    "fields": [
+      { "product": "" },
+      { "variant": "" },
+      { "attributeDefinition": "" },
+      { "value": "AttributeValueCell" }
+    ]
+  },
+  "edit": {
+    "fields": [
+      { "product": "ProductWithVariantField" },
+      { "attributeDefinition": "AttributeValueField" },
+      { "locale": "LocaleField" },
+      { "market": "" }
+    ]
+  }
+}

@@ -10,18 +10,18 @@
     <v-row>
       <v-col cols="8">
         <ResourceList
-      :items="items"
-      :headers="headers"
-      :loading="loading"
-      :items-per-page="itemsPerPage"
-      :custom-components="customComponents"
-      :relation-data="relationData"
-      :relations-loaded="relationsLoaded"
-      :resource-name="resourceName"
-      @view="handleView"
-      @edit="handleEdit"
-      @delete="handleDelete"
-    />
+          :items="items"
+          :headers="headers"
+          :loading="loading"
+          :items-per-page="itemsPerPage"
+          :custom-components="customComponents"
+          :relation-data="relationData"
+          :relations-loaded="relationsLoaded"
+          :resource-name="resourceName"
+          @view="handleView"
+          @edit="handleEdit"
+          @delete="handleDelete"
+        />
       </v-col>
       <v-col cols="4">
         Infos complémentaires

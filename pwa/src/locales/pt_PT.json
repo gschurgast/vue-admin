@@ -1,0 +1,111 @@
+{
+    "common": {
+        "home": "Início",
+        "resources": "Recursos",
+        "search": "Pesquisar",
+        "clear": "Limpar",
+        "apply": "Aplicar",
+        "cancel": "Cancelar",
+        "save": "Salvar",
+        "delete": "Excluir",
+        "edit": "Editar",
+        "create": "Criar",
+        "close": "Fechar",
+        "confirm": "Confirmar",
+        "actions": "Ações",
+        "loading": "Carregando...",
+        "refresh": "Atualizar",
+        "showFilters": "Mostrar filtros",
+        "hideFilters": "Ocultar filtros",
+        "createNew": "Criar novo",
+        "language": "Idioma"
+    },
+    "app": {
+        "title": "Admin API Platform",
+        "manageResources": "Gerencie seus recursos"
+    },
+    "navigation": {
+        "home": "Início",
+        "resources": "Recursos"
+    },
+    "resource": {
+        "list": "Lista",
+        "create": "Criar {resource}",
+        "edit": "Editar {resource}",
+        "delete": "Excluir {resource}",
+        "confirmDelete": "Tem certeza de que deseja excluir este {resource}?",
+        "itemsPerPage": "Itens por página",
+        "pageText": "{start}-{end} de {total}",
+        "pageOf": "de",
+        "noData": "Nenhum dado disponível",
+        "searchFilters": "Filtros de pesquisa",
+        "advancedSearch": "Pesquisa avançada",
+        "notFound": {
+            "title": "Recurso não encontrado",
+            "message": "O recurso \"{resource}\" não existe."
+        },
+        "forbidden": {
+            "title": "Acesso negado",
+            "message": "Você não tem permissão para acessar \"{resource}\"."
+        }
+    },
+    "filter": {
+        "text": "Pesquisar {field}",
+        "date": "Filtrar {field}",
+        "dateRange": "Intervalo de datas",
+        "from": "De",
+        "to": "Até"
+    },
+    "field": {
+        "required": "Este campo é obrigatório",
+        "select": "Selecionar {field}",
+        "enterText": "Inserir {field}",
+        "selectDate": "Selecionar data"
+    },
+    "messages": {
+        "createSuccess": "{resource} criado com sucesso",
+        "updateSuccess": "{resource} atualizado com sucesso",
+        "deleteSuccess": "{resource} excluído com sucesso",
+        "error": "Ocorreu um erro",
+        "loadingError": "Erro ao carregar dados"
+    },
+    "boolean": {
+        "true": "Sim",
+        "false": "Não"
+    },
+    "ai": {
+        "title": "Assistente de IA",
+        "newConversation": "Nova conversa",
+        "copy": "Copiar",
+        "thinking": "Pensando...",
+        "placeholder": "Pergunte-me qualquer coisa...",
+        "error": "Desculpe, ocorreu um erro. Por favor, tente novamente.",
+        "sendHint": "Shift+Enter para enviar"
+    },
+    "help": {
+        "noResourceDoc": "Nenhuma documentação específica disponível para {resource}. Exibindo ajuda geral."
+    },
+    "auth": {
+        "login": "Entrar",
+        "logout": "Sair",
+        "email": "Email",
+        "password": "Senha",
+        "signIn": "Entrar",
+        "invalidEmail": "Endereço de email inválido",
+        "invalidCredentials": "Credenciais inválidas"
+    },
+    "account": {
+        "title": "Minha Conta",
+        "firstName": "Nome",
+        "lastName": "Sobrenome",
+        "email": "Email",
+        "changePicture": "Alterar foto",
+        "saveSuccess": "Perfil atualizado com sucesso",
+        "fileTooLarge": "Arquivo muito grande. Tamanho máximo: 5 MB",
+        "changePassword": "Alterar senha",
+        "newPassword": "Nova senha",
+        "confirmPassword": "Confirmar senha",
+        "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
+        "passwordMismatch": "As senhas não coincidem"
+    }
+}

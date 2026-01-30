@@ -1,0 +1,15 @@
+{
+  "list": {
+    "fields": [
+      { "skuRoot": "" },
+      { "isActive": "" }
+    ]
+  },
+  "edit": {
+    "component": "ProductEdit",
+    "fields": [
+      { "skuRoot": "" },
+      { "isActive": "" }
+    ]
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "Attributtdefinisjon",
+      "fields": {
+        "id": "ID",
+        "code": "Kode",
+        "type": "Type",
+        "isLocalizable": "Lokaliserbar",
+        "isScopable": "Avgrenset",
+        "validationRules": "Valideringsregler",
+        "allowedValues": "Tillatte verdier",
+        "unit": "Enhet",
+        "isRequired": "Påkrevd",
+        "defaultValue": "Standardverdi",
+        "helpText": "Hjelpetekst",
+        "sortOrder": "Sorteringsrekkefølge"
+      }
+    }
+  }
+}

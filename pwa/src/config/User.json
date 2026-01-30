@@ -12,6 +12,9 @@
             },
             {
                 "roles": ""
+            },
+            {
+                "picture": "PictureCell"
             }
         ]
     },
@@ -26,9 +29,6 @@
             },
             {
                 "email": ""
-            },
-            {
-                "picture": "PictureField"
             }
         ]
     },
@@ -45,9 +45,6 @@
             },
             {
                 "roles": ""
-            },
-            {
-                "picture": "PictureCell"
             }
         ]
     }

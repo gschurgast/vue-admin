@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "تعريف السمة",
+      "fields": {
+        "id": "المعرف",
+        "code": "الرمز",
+        "type": "النوع",
+        "isLocalizable": "قابل للتوطين",
+        "isScopable": "قابل للتحديد",
+        "validationRules": "قواعد التحقق",
+        "allowedValues": "القيم المسموحة",
+        "unit": "الوحدة",
+        "isRequired": "مطلوب",
+        "defaultValue": "القيمة الافتراضية",
+        "helpText": "نص المساعدة",
+        "sortOrder": "ترتيب الفرز"
+      }
+    }
+  }
+}

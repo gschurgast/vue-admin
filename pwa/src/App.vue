@@ -16,6 +16,25 @@ const authStore = useAuthStore()
 const helpDrawer = ref(false)
 const chatDrawer = ref(false)
 const commandPalette = ref<InstanceType<typeof CommandPalette> | null>(null)
+const navigationDrawer = ref<InstanceType<typeof AppNavigationDrawer> | null>(null)
+
+function toggleChat() {
+  if (chatDrawer.value) {
+    chatDrawer.value = false
+  } else {
+    helpDrawer.value = false
+    chatDrawer.value = true
+  }
+}
+
+function toggleHelp() {
+  if (helpDrawer.value) {
+    helpDrawer.value = false
+  } else {
+    chatDrawer.value = false
+    helpDrawer.value = true
+  }
+}
 
 const currentResourceName = computed(() => {
   const resourceParam = route.params.resource
@@ -54,12 +73,13 @@ watch(
   <v-app v-else>
     <CommandPalette ref="commandPalette" />
 
-    <AppNavigationDrawer />
+    <AppNavigationDrawer ref="navigationDrawer" />
 
     <AppBar
       @open-search="commandPalette?.open()"
-      @toggle-chat="chatDrawer = !chatDrawer"
-      @toggle-help="helpDrawer = !helpDrawer"
+      @toggle-chat="toggleChat"
+      @toggle-help="toggleHelp"
+      @toggle-drawer="navigationDrawer?.toggleRail()"
     />
     <v-hotkey keys="cmd+k" variant="tonal" platform="auto" @click="commandPalette?.open()" />
 

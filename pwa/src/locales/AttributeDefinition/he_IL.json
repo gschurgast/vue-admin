@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "הגדרת מאפיין",
+      "fields": {
+        "id": "מזהה",
+        "code": "קוד",
+        "type": "סוג",
+        "isLocalizable": "ניתן ללוקליזציה",
+        "isScopable": "ניתן להיקף",
+        "validationRules": "כללי אימות",
+        "allowedValues": "ערכים מותרים",
+        "unit": "יחידה",
+        "isRequired": "נדרש",
+        "defaultValue": "ערך ברירת מחדל",
+        "helpText": "טקסט עזרה",
+        "sortOrder": "סדר מיון"
+      }
+    }
+  }
+}

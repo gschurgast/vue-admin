@@ -18,10 +18,9 @@ services:
 
     # add more service definitions when explicit configuration is needed
     # please note that last definitions always *replace* previous ones
-    
-    App\Service\ChatService:
-        arguments:
-            $openaiApiKey: '%env(OPENAI_API_KEY)%'
+
+    # Alias PlatformInterface to OpenAI platform
+    Symfony\AI\Platform\PlatformInterface: '@ai.platform.openai'
 
     App\State\UserProcessor:
         arguments:
@@ -30,6 +29,7 @@ services:
     App\EventListener\JwtCreatedListener:
         tags:
             - { name: kernel.event_listener, event: lexik_jwt_authentication.on_jwt_created, method: onJWTCreated }
+
 
 
 

@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "Definicja atrybutu",
+      "fields": {
+        "id": "ID",
+        "code": "Kod",
+        "type": "Typ",
+        "isLocalizable": "Lokalizowalny",
+        "isScopable": "Z zakresem",
+        "validationRules": "Reguły walidacji",
+        "allowedValues": "Dozwolone wartości",
+        "unit": "Jednostka",
+        "isRequired": "Wymagane",
+        "defaultValue": "Wartość domyślna",
+        "helpText": "Tekst pomocy",
+        "sortOrder": "Kolejność sortowania"
+      }
+    }
+  }
+}

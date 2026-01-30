@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "属性定義",
+      "fields": {
+        "id": "ID",
+        "code": "コード",
+        "type": "タイプ",
+        "isLocalizable": "ローカライズ可能",
+        "isScopable": "スコープ可能",
+        "validationRules": "検証ルール",
+        "allowedValues": "許可された値",
+        "unit": "単位",
+        "isRequired": "必須",
+        "defaultValue": "デフォルト値",
+        "helpText": "ヘルプテキスト",
+        "sortOrder": "並べ替え順"
+      }
+    }
+  }
+}

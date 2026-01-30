@@ -1,88 +1,46 @@
 import { createI18n } from 'vue-i18n'
 import { nextTick } from 'vue'
-import enMessages from '../locales/en.json'
+import enMessages from '../locales/en_US.json'
 
-// Simple deep merge implementation to avoid external dependency
-function deepMerge(target: any, source: any) {
-    if (typeof target !== 'object' || target === null) {
-        return source
-    }
-    if (typeof source !== 'object' || source === null) {
-        return target
-    }
-
-    const output = { ...target }
-
-    Object.keys(source).forEach(key => {
-        if (source[key] && typeof source[key] === 'object' && !Array.isArray(source[key])) {
-            if (!(key in target)) {
-                Object.assign(output, { [key]: source[key] })
-            } else {
-                output[key] = deepMerge(target[key], source[key])
-            }
-        } else {
-            Object.assign(output, { [key]: source[key] })
-        }
-    })
-
-    return output
-}
-
-// 1. Load top-level json files for lazy loading
+// Lazy load locale files
 const localeFiles = import.meta.glob('../locales/*.json')
-
-// 2. Lazy load resource-specific files
 const resourceLocaleFiles = import.meta.glob('../locales/*/*.json')
+
+const RTL_LOCALES = ['ar_SA', 'he_IL']
 
 const i18n = createI18n({
     legacy: false,
-    locale: localStorage.getItem('locale') || 'en',
-    fallbackLocale: 'en',
+    locale: localStorage.getItem('locale') || 'en_US',
+    fallbackLocale: 'en_US',
     messages: {
-        en: enMessages // Load English eagerly as default
+        en_US: enMessages
     },
 })
 
-// Helper to load the main locale file (e.g., fr.json)
-export async function loadLocaleMessages(locale: string) {
-    // English is already loaded eagerly, skip it
-    if (locale === 'en') {
-        i18n.global.locale.value = locale
-        localStorage.setItem('locale', locale)
-        document.documentElement.dir = 'ltr'
-        document.documentElement.lang = locale
-        return nextTick()
-    }
-
-    // Check if already loaded
-    if (i18n.global.availableLocales.includes(locale as any) && (i18n.global.messages.value as any)[locale]) {
-        i18n.global.locale.value = locale as any
-        localStorage.setItem('locale', locale)
-        const isRtl = ['ar', 'he'].includes(locale)
-        document.documentElement.dir = isRtl ? 'rtl' : 'ltr'
-        document.documentElement.lang = locale
-        return nextTick()
-    }
-
-    const path = `../locales/${locale}.json`
-    if (localeFiles[path]) {
-        const messages = await localeFiles[path]()
-        i18n.global.setLocaleMessage(locale as any, (messages as any).default)
-    }
-
-    // Set the locale
+// Apply locale settings to document and localStorage
+function applyLocale(locale: string) {
     i18n.global.locale.value = locale as any
     localStorage.setItem('locale', locale)
+    document.documentElement.dir = RTL_LOCALES.includes(locale) ? 'rtl' : 'ltr'
+    document.documentElement.lang = locale.split('_')[0]
+}
 
-    // Handle RTL
-    const isRtl = ['ar', 'he'].includes(locale)
-    document.documentElement.dir = isRtl ? 'rtl' : 'ltr'
-    document.documentElement.lang = locale
+// Helper to load the main locale file (e.g., fr_FR.json)
+export async function loadLocaleMessages(locale: string) {
+    // Load messages if not already loaded (en_US is eagerly loaded)
+    if (locale !== 'en_US' && !i18n.global.availableLocales.includes(locale as any)) {
+        const path = `../locales/${locale}.json`
+        if (localeFiles[path]) {
+            const messages = await localeFiles[path]()
+            i18n.global.setLocaleMessage(locale as any, (messages as any).default)
+        }
+    }
 
+    applyLocale(locale)
     return nextTick()
 }
 
-// Helper to load resource-specific messages (e.g., locales/Book/fr.json)
+// Helper to load resource-specific messages (e.g., locales/Book/fr_FR.json)
 export async function loadResourceMessages(resource: string, locale: string) {
     const promises: Promise<void>[] = []
 
@@ -90,12 +48,12 @@ export async function loadResourceMessages(resource: string, locale: string) {
     const capitalizedResource = resource.charAt(0).toUpperCase() + resource.slice(1)
 
     // Always load English as fallback first (if not already the current locale)
-    if (locale !== 'en') {
-        const enPath = `../locales/${capitalizedResource}/en.json`
+    if (locale !== 'en_US') {
+        const enPath = `../locales/${capitalizedResource}/en_US.json`
         if (resourceLocaleFiles[enPath]) {
             promises.push(
                 resourceLocaleFiles[enPath]().then((mod: any) => {
-                    i18n.global.mergeLocaleMessage('en', mod.default)
+                    i18n.global.mergeLocaleMessage('en_US', mod.default)
                 })
             )
         }
@@ -123,7 +81,7 @@ export async function initI18n() {
     const currentLocale = i18n.global.locale.value
     const promises = []
 
-    if (currentLocale !== 'en') {
+    if (currentLocale !== 'en_US') {
         // Load global locale messages
         promises.push(loadLocaleMessages(currentLocale))
     }

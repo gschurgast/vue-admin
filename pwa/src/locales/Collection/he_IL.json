@@ -1,0 +1,12 @@
+{
+  "resources": {
+    "collection": {
+      "name": "אוסף",
+      "fields": {
+        "id": "מזהה",
+        "code": "קוד",
+        "translations": "תרגומים"
+      }
+    }
+  }
+}

@@ -212,48 +212,41 @@ async function loadDocumentation() {
   noResourceDoc.value = false
 
   try {
-    // Use locale from component setup
-    const locale = currentLocale.value || 'en'
-
-    // Use Vite's import.meta.glob to load markdown files
+    const locale = currentLocale.value || 'en_US'
     const docs = import.meta.glob('../documentation/**/*.md', { as: 'raw', eager: false })
 
     let content = ''
-    let foundResourceDoc = false
 
-    // If showing main doc is toggled, skip resource-specific docs
-    if (!showingMainDoc.value && props.resourceName) {
-      // Try: /documentation/[locale]/[Resource].md
-      const localizedResourcePath = `../documentation/${locale}/${props.resourceName}.md`
-      // Fallback: /documentation/[Resource].md
-      const resourcePath = `../documentation/${props.resourceName}.md`
+    // Determine which folder to load from
+    const folder = (!showingMainDoc.value && props.resourceName) ? props.resourceName : 'main'
 
-      if (docs[localizedResourcePath]) {
-        content = await docs[localizedResourcePath]()
-        foundResourceDoc = true
-      } else if (docs[resourcePath]) {
-        content = await docs[resourcePath]()
-        foundResourceDoc = true
-      }
-    }
+    // Try localized version first, then fallback to en_US
+    const localizedPath = `../documentation/${folder}/${locale}.md`
+    const fallbackPath = `../documentation/${folder}/en_US.md`
 
-    // If no resource-specific doc found, try localized main.md
-    if (!content) {
-      // Track that we're on a resource page but no specific doc exists
-      if (props.resourceName && !showingMainDoc.value) {
+    if (docs[localizedPath]) {
+      content = await docs[localizedPath]()
+    } else if (docs[fallbackPath]) {
+      content = await docs[fallbackPath]()
+      // Track that we're showing fallback for a resource
+      if (folder !== 'main' && locale !== 'en_US') {
         noResourceDoc.value = true
       }
+    } else if (folder !== 'main') {
+      // No resource doc found, fall back to main
+      noResourceDoc.value = true
+      const mainLocalizedPath = `../documentation/main/${locale}.md`
+      const mainFallbackPath = '../documentation/main/en_US.md'
 
-      const localizedMainPath = `../documentation/${locale}/main.md`
-      const fallbackPath = '../documentation/main.md'
-
-      if (docs[localizedMainPath]) {
-        content = await docs[localizedMainPath]()
-      } else if (docs[fallbackPath]) {
-        content = await docs[fallbackPath]()
+      if (docs[mainLocalizedPath]) {
+        content = await docs[mainLocalizedPath]()
+      } else if (docs[mainFallbackPath]) {
+        content = await docs[mainFallbackPath]()
       } else {
         throw new Error('No documentation found')
       }
+    } else {
+      throw new Error('No documentation found')
     }
 
     markdownContent.value = content

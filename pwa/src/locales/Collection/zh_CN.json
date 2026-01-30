@@ -1,0 +1,12 @@
+{
+  "resources": {
+    "collection": {
+      "name": "系列",
+      "fields": {
+        "id": "ID",
+        "code": "代码",
+        "translations": "翻译"
+      }
+    }
+  }
+}

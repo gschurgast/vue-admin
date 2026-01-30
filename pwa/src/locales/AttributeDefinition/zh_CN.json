@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "属性定义",
+      "fields": {
+        "id": "ID",
+        "code": "代码",
+        "type": "类型",
+        "isLocalizable": "可本地化",
+        "isScopable": "可定范围",
+        "validationRules": "验证规则",
+        "allowedValues": "允许的值",
+        "unit": "单位",
+        "isRequired": "必填",
+        "defaultValue": "默认值",
+        "helpText": "帮助文本",
+        "sortOrder": "排序顺序"
+      }
+    }
+  }
+}

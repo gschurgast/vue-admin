@@ -1,0 +1,18 @@
+{
+  "list": {
+    "fields": [
+      { "product": "" },
+      { "sku": "" },
+      { "isDefault": "" }
+    ]
+  },
+  "edit": {
+    "component": "ProductVariantEdit",
+    "fields": [
+      { "product": "ProductField" },
+      { "sku": "" },
+      { "ean": "" },
+      { "isDefault": "" }
+    ]
+  }
+}

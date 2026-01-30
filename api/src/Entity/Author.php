@@ -6,6 +6,7 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Attribute\MenuGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -14,6 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
+#[MenuGroup('Content')]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial', 'bio' => 'ipartial', 'isAlive' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate', 'deathDate'])]
 class Author
@@ -29,28 +31,27 @@ class Author
         max: 255,
         maxMessage: 'Name cannot be longer than {{ limit }} characters'
     )]
-    public ?string $name = null;
+    private ?string $name = null;
 
     #[ORM\Column(type: 'text', nullable: true)]
-    public ?string $bio = null;
+    private ?string $bio = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
-    public ?\DateTimeImmutable $birthDate = null;
+    private ?\DateTimeImmutable $birthDate = null;
 
     #[ORM\Column(type: Types::DATE_IMMUTABLE, nullable: true)]
     #[Assert\GreaterThan(propertyPath: 'birthDate', message: 'Death date must be after birth date')]
-    public ?\DateTimeImmutable $deathDate = null;
+    private ?\DateTimeImmutable $deathDate = null;
 
     #[ORM\Column(type: 'boolean', nullable: false)]
     #[Assert\Expression(
         "(this.isAlive == true and this.deathDate == null) or (this.isAlive == false and this.deathDate != null)",
         message: "If the author is alive, the death date must be empty. If the author is dead, a death date must be provided."
     )]
-    public bool $isAlive = true;
+    private bool $isAlive = true;
 
     #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    public ?\DateTimeImmutable $nextMeeting = null;
-
+    private ?\DateTimeImmutable $nextMeeting = null;
 
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'author')]
     private Collection $books;
@@ -63,6 +64,72 @@ class Author
     public function getId(): ?int
     {
         return $this->id;
+    }
+
+    public function getName(): ?string
+    {
+        return $this->name;
+    }
+
+    public function setName(?string $name): static
+    {
+        $this->name = $name;
+        return $this;
+    }
+
+    public function getBio(): ?string
+    {
+        return $this->bio;
+    }
+
+    public function setBio(?string $bio): static
+    {
+        $this->bio = $bio;
+        return $this;
+    }
+
+    public function getBirthDate(): ?\DateTimeImmutable
+    {
+        return $this->birthDate;
+    }
+
+    public function setBirthDate(?\DateTimeImmutable $birthDate): static
+    {
+        $this->birthDate = $birthDate;
+        return $this;
+    }
+
+    public function getDeathDate(): ?\DateTimeImmutable
+    {
+        return $this->deathDate;
+    }
+
+    public function setDeathDate(?\DateTimeImmutable $deathDate): static
+    {
+        $this->deathDate = $deathDate;
+        return $this;
+    }
+
+    public function isAlive(): bool
+    {
+        return $this->isAlive;
+    }
+
+    public function setIsAlive(bool $isAlive): static
+    {
+        $this->isAlive = $isAlive;
+        return $this;
+    }
+
+    public function getNextMeeting(): ?\DateTimeImmutable
+    {
+        return $this->nextMeeting;
+    }
+
+    public function setNextMeeting(?\DateTimeImmutable $nextMeeting): static
+    {
+        $this->nextMeeting = $nextMeeting;
+        return $this;
     }
 
     /**

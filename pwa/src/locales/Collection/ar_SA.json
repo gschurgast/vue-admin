@@ -1,0 +1,12 @@
+{
+  "resources": {
+    "collection": {
+      "name": "مجموعة",
+      "fields": {
+        "id": "المعرف",
+        "code": "الرمز",
+        "translations": "الترجمات"
+      }
+    }
+  }
+}

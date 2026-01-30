@@ -1,0 +1,111 @@
+{
+    "common": {
+        "home": "الرئيسية",
+        "resources": "الموارد",
+        "search": "بحث",
+        "clear": "مسح",
+        "apply": "تطبيق",
+        "cancel": "إلغاء",
+        "save": "حفظ",
+        "delete": "حذف",
+        "edit": "تعديل",
+        "create": "إنشاء",
+        "close": "إغلاق",
+        "confirm": "تأكيد",
+        "actions": "إجراءات",
+        "loading": "جاري التحميل...",
+        "refresh": "تحديث",
+        "showFilters": "إظهار المرشحات",
+        "hideFilters": "إخفاء المرشحات",
+        "createNew": "إنشاء جديد",
+        "language": "اللغة"
+    },
+    "app": {
+        "title": "إدارة منصة API",
+        "manageResources": "إدارة مواردك"
+    },
+    "navigation": {
+        "home": "الرئيسية",
+        "resources": "الموارد"
+    },
+    "resource": {
+        "list": "قائمة",
+        "create": "إنشاء {resource}",
+        "edit": "تعديل {resource}",
+        "delete": "حذف {resource}",
+        "confirmDelete": "هل أنت متأكد من حذف هذا {resource}؟",
+        "itemsPerPage": "عناصر لكل صفحة",
+        "pageText": "{start}-{end} من {total}",
+        "pageOf": "من",
+        "noData": "لا توجد بيانات متاحة",
+        "searchFilters": "مرشحات البحث",
+        "advancedSearch": "بحث متقدم",
+        "notFound": {
+            "title": "المورد غير موجود",
+            "message": "المورد \"{resource}\" غير موجود."
+        },
+        "forbidden": {
+            "title": "تم رفض الوصول",
+            "message": "ليس لديك إذن للوصول إلى \"{resource}\"."
+        }
+    },
+    "filter": {
+        "text": "بحث {field}",
+        "date": "تصفية {field}",
+        "dateRange": "نطاق التاريخ",
+        "from": "من",
+        "to": "إلى"
+    },
+    "field": {
+        "required": "هذا الحقل مطلوب",
+        "select": "اختر {field}",
+        "enterText": "أدخل {field}",
+        "selectDate": "اختر التاريخ"
+    },
+    "messages": {
+        "createSuccess": "تم إنشاء {resource} بنجاح",
+        "updateSuccess": "تم تحديث {resource} بنجاح",
+        "deleteSuccess": "تم حذف {resource} بنجاح",
+        "error": "حدث خطأ",
+        "loadingError": "خطأ في تحميل البيانات"
+    },
+    "boolean": {
+        "true": "نعم",
+        "false": "لا"
+    },
+    "ai": {
+        "title": "مساعد الذكاء الاصطناعي",
+        "newConversation": "محادثة جديدة",
+        "copy": "نسخ",
+        "thinking": "يفكر...",
+        "placeholder": "اسألني أي شيء...",
+        "error": "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.",
+        "sendHint": "Shift+Enter للإرسال"
+    },
+    "help": {
+        "noResourceDoc": "لا يوجد توثيق خاص لـ {resource}. عرض المساعدة العامة."
+    },
+    "auth": {
+        "login": "تسجيل الدخول",
+        "logout": "تسجيل الخروج",
+        "email": "البريد الإلكتروني",
+        "password": "كلمة المرور",
+        "signIn": "دخول",
+        "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+        "invalidCredentials": "بيانات اعتماد غير صالحة"
+    },
+    "account": {
+        "title": "حسابي",
+        "firstName": "الاسم الأول",
+        "lastName": "اسم العائلة",
+        "email": "البريد الإلكتروني",
+        "changePicture": "تغيير الصورة",
+        "saveSuccess": "تم تحديث الملف الشخصي",
+        "fileTooLarge": "الملف كبير جداً. الحد الأقصى: 5 ميجابايت",
+        "changePassword": "تغيير كلمة المرور",
+        "newPassword": "كلمة المرور الجديدة",
+        "confirmPassword": "تأكيد كلمة المرور",
+        "passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+        "passwordMismatch": "كلمات المرور غير متطابقة"
+    }
+}

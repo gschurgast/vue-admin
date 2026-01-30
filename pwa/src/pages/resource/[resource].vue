@@ -1,27 +1,19 @@
 <template>
- <v-app-bar density="compact" color="blue-grey-darken-1">
-  <v-app-bar-title>{{ resourceTitle }}</v-app-bar-title>
-  <template
-      v-if="resource"
-      v-slot:append>
+  <ResourceAppBar :breadcrumbs="breadcrumbs">
+    <template v-if="resource" #actions>
+      <!-- Filter -->
+      <v-btn icon density="compact" size="small" class="mr-2" @click="showSearchForm = !showSearchForm">
+        <v-icon>mdi-filter</v-icon>
+        <v-tooltip activator="parent" location="bottom">{{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}</v-tooltip>
+      </v-btn>
 
-   <!-- Filter -->
-   <v-btn icon density="compact" size="small" class="mr-2" @click="showSearchForm = !showSearchForm">
-    <v-icon>mdi-filter</v-icon>
-    <v-tooltip activator="parent" location="bottom">{{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}</v-tooltip>
-   </v-btn>
-
-   <!-- Create New -->
-   <v-btn icon density="compact" size="small" class="mr-2" @click="createItem">
-    <v-icon>mdi-plus</v-icon>
-    <v-tooltip activator="parent" location="bottom">
-     Create New
-    </v-tooltip>
-   </v-btn>
-  </template>
-
-
- </v-app-bar>
+      <!-- Create New -->
+      <v-btn icon density="compact" size="small" class="mr-2" @click="createItem">
+        <v-icon>mdi-plus</v-icon>
+        <v-tooltip activator="parent" location="bottom">{{ t('common.create') }}</v-tooltip>
+      </v-btn>
+    </template>
+  </ResourceAppBar>
 
  <v-container fluid>
   <!-- Loading state until resource messages are loaded -->
@@ -97,11 +89,8 @@
 
 <script setup lang="ts">
 import {ref, computed, onMounted, watch, shallowRef, markRaw} from 'vue'
-import {useRoute, useRouter} from 'vue-router'
-import {useI18n} from 'vue-i18n'
+import {useResource} from '../../composables/useResource'
 import apiPlatform from '../../services/apiPlatform'
-import {loadResourceMessages} from '../../plugins/i18n'
-import {useResourcesStore} from '../../stores/resources'
 
 // Resource components
 import ResourceFilter from '../../components/resource/ResourceFilter.vue'
@@ -109,57 +98,62 @@ import ResourceList from '../../components/resource/ResourceList.vue'
 import ResourceDelete from '../../components/resource/ResourceDelete.vue'
 import ResourceNotFound from '../../components/common/ResourceNotFound.vue'
 import ResourceForbidden from '../../components/common/ResourceForbidden.vue'
+import ResourceAppBar from '../../components/resource/ResourceAppBar.vue'
 
-const route = useRoute()
-const router = useRouter()
-const resourcesStore = useResourcesStore()
-const {t, locale} = useI18n()
+// Pre-load component modules using import.meta.glob for Vite compatibility
+const fieldComponents = import.meta.glob('../../components/fields/*.vue')
+const listComponents = import.meta.glob('../../components/list/*.vue')
+const filterComponents = import.meta.glob('../../components/filters/*.vue')
+const configFiles = import.meta.glob('../../config/*.json')
+const resourceViewComponents = import.meta.glob('../../components/*/*/**.vue')
 
-// Custom component cache
-const customComponents = ref<Record<string, any>>({})
-
-// Helper to get fields from config (supports object with fields property)
-function getConfigFields(config: any) {
-  if (config && typeof config === 'object' && Array.isArray(config.fields)) return config.fields
-  return []
+const componentModules: Record<string, () => Promise<any>> = {
+ ...Object.fromEntries(Object.entries(fieldComponents).map(([k, v]) => [`fields/${k.split('/').pop()?.replace('.vue', '')}`, v])),
+ ...Object.fromEntries(Object.entries(listComponents).map(([k, v]) => [`list/${k.split('/').pop()?.replace('.vue', '')}`, v])),
+ ...Object.fromEntries(Object.entries(filterComponents).map(([k, v]) => [`filters/${k.split('/').pop()?.replace('.vue', '')}`, v]))
 }
 
-// Helper to normalize config item (shorthand { field: value } -> { field, value })
-function normalizeConfigItem(item: any) {
-  if (typeof item !== 'object' || item === null) return null
-  
-  const keys = Object.keys(item)
-  if (keys.length !== 1) return null
-  
-  const field = keys[0]
-  const value = item[field]
-  
-  return { field, value }
-}
-
-// Function to load custom component dynamically
-async function loadCustomComponent(componentName: string, type = 'list') {
- const cacheKey = `${type}/${componentName}`
-
- if (customComponents.value[cacheKey]) {
-  return customComponents.value[cacheKey]
+const {
+ resourceName,
+ resource,
+ resourcePath,
+ resourceConfig,
+ customComponents,
+ snackbar,
+ showSnackbar,
+ resourcesStore,
+ t,
+ locale,
+ loadCustomComponent,
+ loadResourceConfigBase,
+ loadResourceViewComponent,
+ loadFieldComponents,
+ loadResourceMessages,
+ navigateToCreate,
+ navigateToEdit,
+ navigateToShow,
+ getConfigFields,
+ normalizeConfigItem,
+ getFieldType
+} = useResource({
+ importComponent: (path) => {
+  const loader = componentModules[path]
+  if (loader) return loader()
+  return Promise.reject(new Error(`Component not found: ${path}`))
+ },
+ importConfig: (name) => {
+  const loader = configFiles[`../../config/${name}.json`]
+  if (loader) return loader()
+  return Promise.reject(new Error(`Config not found: ${name}`))
+ },
+ importViewComponent: (folder, type, name) => {
+  const path = `../../components/${folder}/${type}/${name}.vue`
+  const loader = resourceViewComponents[path]
+  if (loader) return loader()
+  return Promise.reject(new Error(`View component not found: ${path}`))
  }
-
- try {
-  const component = await import(`../../components/${type}/${componentName}.vue`)
-  customComponents.value[cacheKey] = markRaw(component.default || component)
-  return customComponents.value[cacheKey]
- } catch (error) {
-  console.warn(`Failed to load custom component: ${componentName}`, error)
-  return null
- }
-}
-
-
-const resourceName = computed(() => {
- const name = route.params.resource
- return Array.isArray(name) ? name[0] : name
 })
+
 const items = ref([])
 const loading = ref(false)
 const itemsPerPage = ref(10)
@@ -171,9 +165,27 @@ const relationData = ref<Record<string, any>>({})
 const loadingRelations = ref<Record<string, boolean>>({})
 const relationsLoaded = ref(false)
 const initialLoadDone = ref(false)
-const resourceConfig = ref<any>(null)
 const resourceMessagesLoaded = ref(false)
 const isForbidden = ref(false)
+
+const resourceTitle = computed(() => {
+ if (!resourceName.value) return ''
+ if (!resourceMessagesLoaded.value && initialLoadDone.value) return ''
+ const translationKey = `resources.${String(resourceName.value).toLowerCase()}.name`
+ return t(translationKey, resource.value?.title || resourceName.value)
+})
+
+const breadcrumbs = computed(() => [
+ {
+  title: t('navigation.home'),
+  disabled: false,
+  to: '/'
+ },
+ {
+  title: resourceTitle.value,
+  disabled: true
+ }
+])
 
 // Dynamic components for List and Filter
 const ListComponent = shallowRef(ResourceList)
@@ -190,102 +202,28 @@ watch(resourceName, () => {
 
 // Load resource-specific configuration if it exists
 async function loadResourceConfig() {
- if (!resourceName.value) return
+ ListComponent.value = ResourceList
+ FilterComponent.value = ResourceFilter
 
- try {
-  // Dynamically import the config file for this resource
-  const config = await import(`../../config/${resourceName.value}.json`)
-  resourceConfig.value = config.default || config
+ await loadResourceConfigBase()
 
-  // Pre-load any custom components specified in the config
-  const componentsToLoad: Promise<any>[] = []
-  
-  // Reset to default components
-  ListComponent.value = ResourceList
-  FilterComponent.value = ResourceFilter
+ if (resourceConfig.value) {
+  // Load custom List component
+  const customList = await loadResourceViewComponent('list')
+  if (customList) ListComponent.value = customList
 
-  if (resourceConfig.value) {
-    // Check for custom List component
-    if (resourceConfig.value.list && resourceConfig.value.list.component) {
-      const componentName = resourceConfig.value.list.component
-      const resourceFolder = String(resourceName.value).toLowerCase()
-      try {
-        // Try loading from resource-specific folder: components/[resource]/list/[Name].vue
-        const component = await import(`../../components/${resourceFolder}/list/${componentName}.vue`)
-        ListComponent.value = markRaw(component.default || component)
-      } catch (e) {
-        // Fallback to generic location if needed, or just log warning
-        console.warn(`Failed to load custom list component: ${resourceFolder}/list/${componentName}`, e)
-      }
-    }
+  // Load custom Filter component
+  const customFilter = await loadResourceViewComponent('filter')
+  if (customFilter) FilterComponent.value = customFilter
 
-    // Check for custom Filter component
-    if (resourceConfig.value.filters && resourceConfig.value.filters.component) {
-      const componentName = resourceConfig.value.filters.component
-      const resourceFolder = String(resourceName.value).toLowerCase()
-      try {
-        // Try loading from resource-specific folder: components/[resource]/filter/[Name].vue
-        const component = await import(`../../components/${resourceFolder}/filter/${componentName}.vue`)
-        FilterComponent.value = markRaw(component.default || component)
-      } catch (e) {
-        console.warn(`Failed to load custom filter component: ${resourceFolder}/filter/${componentName}`, e)
-      }
-    }
-    
-    const sections = [
-      { name: 'list', type: 'list' },
-      { name: 'edit', type: 'fields' },
-      { name: 'filters', type: 'filters' }
-    ]
-
-    sections.forEach(section => {
-      const fields = getConfigFields(resourceConfig.value[section.name])
-      if (fields.length > 0) {
-        fields.forEach((item: any) => {
-          const normalized = normalizeConfigItem(item)
-          if (normalized) {
-            const { value } = normalized
-            // If value starts with uppercase (Component) or is not empty (for filters), load it
-            if (value && /^[A-Z]/.test(value)) {
-              componentsToLoad.push(loadCustomComponent(value, section.type))
-            }
-          }
-        })
-      }
-    })
-  }
-
-  // Load all custom components in parallel
-  await Promise.all(componentsToLoad)
-
- } catch (error) {
-  // Config file doesn't exist - use default behavior
-  resourceConfig.value = null
+  // Load field components for all sections
+  await Promise.all([
+   loadFieldComponents('list', 'list'),
+   loadFieldComponents('edit', 'fields'),
+   loadFieldComponents('filters', 'filters')
+  ])
  }
 }
-
-const snackbar = ref({
- show: false,
- message: '',
- color: 'success'
-})
-
-const resource = computed(() => {
- return resourcesStore.getResourceByName(resourceName.value)
-})
-
-const resourceTitle = computed(() => {
- if (!resourceName.value) return ''
- // Prevent translation attempts while loading new resource messages
- if (!resourceMessagesLoaded.value && initialLoadDone.value) return ''
-
- const translationKey = `resources.${String(resourceName.value).toLowerCase()}.name`
- return t(translationKey, resource.value?.title || resourceName.value)
-})
-
-const resourcePath = computed(() => {
- return apiPlatform.getResourcePath(resourceName.value)
-})
 
 const searchableFields = computed(() => {
  if (!resource.value) return []
@@ -331,19 +269,19 @@ const filterFields = computed(() => {
   return configFilters.map((filterItem: any) => {
    const normalized = normalizeConfigItem(filterItem)
    if (!normalized) return null
-   
+
    const { field, value } = normalized
-   
+
    let type = 'text'
    let component = null
-   
+
    // If value starts with uppercase, assume component, else type
    if (value && /^[A-Z]/.test(value)) {
      component = value
    } else if (value) {
      type = value
    }
-   
+
    return {
     field,
     type,
@@ -376,13 +314,24 @@ const headers = computed(() => {
       .map((configItem: any) => {
        const normalized = normalizeConfigItem(configItem)
        if (!normalized) return undefined
-       
+
        const { field: fieldName, value: componentName } = normalized
        const customComponent = componentName || null
 
-       const col = cols.find((c: any) => c.key === fieldName)
-       if (col && customComponent) {
-        col.customComponent = customComponent
+       let col = cols.find((c: any) => c.key === fieldName)
+       if (col) {
+        if (customComponent) {
+         col.customComponent = customComponent
+        }
+       } else {
+        // Create column for fields not in resource properties (e.g., custom virtual fields)
+        const translationKey = `resources.${String(resourceName.value).toLowerCase()}.fields.${fieldName}`
+        col = {
+         title: t(translationKey, fieldName),
+         key: fieldName,
+         sortable: false,
+         customComponent
+        }
        }
        return col
       })
@@ -446,31 +395,16 @@ const editableFields = computed(() => {
       return true
      })
      .map((prop: any) => {
-      const range = prop.property?.range
-      let type = 'string'
-
-      if (prop.isRelation) {
-       type = 'relation'
-      } else if (range?.includes('boolean')) {
-       type = 'boolean'
-      } else if (range?.includes('text')) {
-       type = 'textarea'
-      } else if (range?.includes('dateTime')) {
-       type = 'datetime'
-      } else if (range?.includes('date')) {
-       type = 'date'
-      }
-
       const fieldName = prop.property?.label || prop.title
       const translationKey = `resources.${String(resourceName.value).toLowerCase()}.fields.${fieldName}`
       return {
        name: fieldName,
        label: t(translationKey, prop.title),
-       type,
+       type: getFieldType(prop),
        required: prop.required || false,
        isRelation: prop.isRelation,
        relatedResource: prop.relatedResource,
-       customComponent: null  // Will be set if config specifies
+       customComponent: null
       }
      })
 
@@ -481,13 +415,19 @@ const editableFields = computed(() => {
       .map((configItem: any) => {
        const normalized = normalizeConfigItem(configItem)
        if (!normalized) return undefined
-       
+
        const { field: fieldName, value: componentName } = normalized
        const customComponent = componentName || null
 
        const field = fields.find(f => f.name === fieldName)
        if (field && customComponent) {
         field.customComponent = customComponent
+        // Override type based on component name for built-in field components
+        if (customComponent === 'DateField') {
+         field.type = 'date'
+        } else if (customComponent === 'DateTimeField') {
+         field.type = 'datetime'
+        }
        }
        return field
       })
@@ -511,12 +451,12 @@ async function loadRelations() {
 
  relationsLoaded.value = false
 
- // Get relation fields
- const relationFields = resource.value.properties
+ // Get relation fields from resource properties
+ const relations = resource.value.properties
      .filter(prop => prop.isRelation)
 
  // For each relation field, extract unique IDs from current items
- for (const relationField of relationFields) {
+ for (const relationField of relations) {
   const relatedResource = relationField.relatedResource
   if (!relatedResource) continue
 
@@ -658,15 +598,15 @@ function clearSearch() {
 }
 
 function createItem() {
-  router.push(`/edit/${resourceName.value}/new`)
+ navigateToCreate()
 }
 
 function showItem(item) {
-  router.push(`/show/${resourceName.value}/${item.id}`)
+ navigateToShow(item.id)
 }
 
 function editItem(item) {
-  router.push(`/edit/${resourceName.value}/${item.id}`)
+ navigateToEdit(item.id)
 }
 
 function confirmDelete(item) {
@@ -683,15 +623,6 @@ async function deleteItem() {
  } catch (error) {
   showSnackbar('Failed to delete item', 'error')
  }
-}
-
-function formatDate(date) {
- if (!date) return ''
- return new Date(date).toLocaleDateString()
-}
-
-function showSnackbar(message, color = 'success') {
- snackbar.value = {show: true, message, color}
 }
 
 // Watch the resource object, not just the name
@@ -716,7 +647,6 @@ watch(resource, async (newResource, oldResource) => {
  resourceMessagesLoaded.value = true // End loading state
 
  await loadResourceConfig()
- await loadRelations()
  await loadData()
 })
 
@@ -747,11 +677,8 @@ onMounted(async () => {
  // Load resource config
  await loadResourceConfig()
 
- // Load initial data
+ // Load initial data (also loads relations)
  await loadData()
-
- // Load relations
- await loadRelations()
 
  // Mark as loaded so watch can take over for subsequent changes
  initialLoadDone.value = true

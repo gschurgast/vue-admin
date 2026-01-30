@@ -19,6 +19,7 @@ interface HydraProperty {
 interface EnhancedProperty extends HydraProperty {
     isRelation: boolean
     relatedResource: string | null
+    enumValues?: string[]
 }
 
 export interface Resource {
@@ -28,6 +29,15 @@ export interface Resource {
     properties: EnhancedProperty[]
     operations: HydraOperation[]
     collectionOperations: HydraOperation[]
+    menuGroup: string | null
+}
+
+interface OpenApiSchema {
+    openapi: string
+    components?: {
+        schemas?: Record<string, any>
+    }
+    [key: string]: any
 }
 
 interface HydraClass {
@@ -51,6 +61,7 @@ interface ListResponse<T = any> {
 class ApiPlatformService {
     public client: AxiosInstance
     public schema: HydraSchema | null
+    public openApiSchema: OpenApiSchema | null
     public resources: Map<string, Resource>
     private fetchPromise: Promise<HydraSchema> | null
     private onUnauthorized: (() => void) | null = null
@@ -64,6 +75,7 @@ class ApiPlatformService {
             }
         })
         this.schema = null
+        this.openApiSchema = null
         this.resources = new Map()
         this.fetchPromise = null // Track ongoing fetch to prevent duplicates
 
@@ -111,6 +123,7 @@ class ApiPlatformService {
         localStorage.removeItem('auth_user')
         // Reset schema to force refetch after login
         this.schema = null
+        this.openApiSchema = null
         this.resources.clear()
     }
 
@@ -162,14 +175,22 @@ class ApiPlatformService {
         // Clear existing data when forcing
         if (force) {
             this.schema = null
+            this.openApiSchema = null
             this.resources.clear()
         }
 
         this.fetchPromise = (async () => {
             try {
-                // Fetch Hydra documentation
-                const response = await this.client.get('/api/docs.jsonld')
-                this.schema = response.data
+                // Fetch both schemas in parallel
+                const [hydraResponse, openApiResponse] = await Promise.all([
+                    this.client.get('/api/docs.jsonld'),
+                    this.client.get('/api/docs', {
+                        headers: { 'Accept': 'application/vnd.openapi+json' }
+                    })
+                ])
+
+                this.schema = hydraResponse.data
+                this.openApiSchema = openApiResponse.data
 
                 // Parse resources from Hydra documentation
                 if (this.schema && this.schema.supportedClass) {
@@ -185,15 +206,23 @@ class ApiPlatformService {
 
                         const resourceName = resource['@id'].replace('#', '')
 
-                        // Enhance properties with relation detection
+                        // Enhance properties with relation detection and enum values
                         const enhancedProperties: EnhancedProperty[] = (resource.supportedProperty || []).map((prop: HydraProperty) => {
-                            const isRelation = prop.property?.['@type'] === 'Link'
-                            const relatedResource = isRelation && typeof prop.property.range === 'string' ? prop.property.range.replace('#', '') : null
+                            // Check if it's a relation: either @type is 'Link' or range points to another entity (starts with #)
+                            const range = prop.property?.range
+                            const isRelation = prop.property?.['@type'] === 'Link' ||
+                                (typeof range === 'string' && range.startsWith('#') && !range.includes('xmls:'))
+                            const relatedResource = isRelation && typeof range === 'string' ? range.replace('#', '') : null
+                            const fieldName = prop.property?.label || prop.title
+
+                            // Get enum values from OpenAPI schema
+                            const enumValues = this.getEnumValuesFromOpenApi(resourceName, fieldName)
 
                             return {
                                 ...prop,
                                 isRelation,
-                                relatedResource
+                                relatedResource,
+                                enumValues
                             }
                         })
 
@@ -203,7 +232,8 @@ class ApiPlatformService {
                             description: resource.description || '',
                             properties: enhancedProperties,
                             operations: resource.supportedOperation || [],
-                            collectionOperations: [] // Initialize collection operations
+                            collectionOperations: [], // Initialize collection operations
+                            menuGroup: null // Will be set from OpenAPI
                         })
                     })
 
@@ -240,6 +270,24 @@ class ApiPlatformService {
                             }
                         })
                     }
+
+                    // Third pass: parse OpenAPI paths for x-menu-group
+                    if (this.openApiSchema?.paths) {
+                        for (const [path, methods] of Object.entries(this.openApiSchema.paths)) {
+                            const getOperation = (methods as any)?.get
+                            if (getOperation?.['x-menu-group']) {
+                                // Extract resource name from tags
+                                const tag = getOperation.tags?.[0]
+                                if (tag && this.resources.has(tag)) {
+                                    const resource = this.resources.get(tag)
+                                    if (resource) {
+                                        resource.menuGroup = getOperation['x-menu-group']
+                                        this.resources.set(tag, resource)
+                                    }
+                                }
+                            }
+                        }
+                    }
                 }
 
                 if (!this.schema) {
@@ -256,6 +304,33 @@ class ApiPlatformService {
         })()
 
         return this.fetchPromise
+    }
+
+    private getEnumValuesFromOpenApi(resourceName: string, fieldName: string): string[] | undefined {
+        if (!this.openApiSchema?.components?.schemas) return undefined
+
+        // Look for the write schema (used for forms)
+        const schemaPatterns = [
+            `${resourceName}-`, // e.g., AttributeDefinition-attribute_definition.write
+            `${resourceName}.jsonld-`, // e.g., AttributeDefinition.jsonld-attribute_definition.read
+            resourceName // e.g., AttributeDefinition
+        ]
+
+        for (const [schemaName, schema] of Object.entries(this.openApiSchema.components.schemas)) {
+            // Check if this schema is for the resource we're looking for
+            const matchesResource = schemaPatterns.some(pattern => schemaName.startsWith(pattern))
+            if (!matchesResource) continue
+
+            // Look for the field in properties
+            if (schema && typeof schema === 'object' && 'properties' in schema) {
+                const properties = schema.properties as Record<string, any>
+                if (properties[fieldName] && Array.isArray(properties[fieldName].enum)) {
+                    return properties[fieldName].enum
+                }
+            }
+        }
+
+        return undefined
     }
 
     getResources(): Resource[] {
@@ -302,6 +377,16 @@ class ApiPlatformService {
             return response.data
         } catch (error) {
             console.error('Failed to fetch item:', error)
+            throw error
+        }
+    }
+
+    async getByIri(iri: string): Promise<any> {
+        try {
+            const response = await this.client.get(iri)
+            return response.data
+        } catch (error) {
+            console.error('Failed to fetch by IRI:', error)
             throw error
         }
     }
@@ -375,6 +460,16 @@ class ApiPlatformService {
 
             return false
         })
+    }
+
+    isResourceHidden(resourceName: string): boolean {
+        const resource = this.getResource(resourceName)
+        return resource?.menuGroup === 'hidden'
+    }
+
+    getResourceMenuGroup(resourceName: string): string | null {
+        const resource = this.getResource(resourceName)
+        return resource?.menuGroup || null
     }
 }
 

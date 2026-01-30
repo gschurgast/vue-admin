@@ -1,0 +1,12 @@
+{
+  "resources": {
+    "collection": {
+      "name": "Collection",
+      "fields": {
+        "id": "ID",
+        "code": "Code",
+        "translations": "Translations"
+      }
+    }
+  }
+}

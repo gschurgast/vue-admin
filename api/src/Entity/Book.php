@@ -6,12 +6,14 @@ use ApiPlatform\Doctrine\Orm\Filter\DateFilter;
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
+use App\Attribute\MenuGroup;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
+#[MenuGroup('Content')]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial'])]
 #[ApiFilter(DateFilter::class, properties: ['publicationDate'])]
 class Book

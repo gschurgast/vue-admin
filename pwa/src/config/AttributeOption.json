@@ -1,0 +1,17 @@
+{
+  "list": {
+    "fields": [
+      { "attribute": "" },
+      { "code": "" },
+      { "sortOrder": "" }
+    ]
+  },
+  "edit": {
+    "fields": [
+      { "attribute": "AttributeEnumTypeField" },
+      { "code": "CodeField" },
+      { "sortOrder": "" },
+      { "translations": "TranslationsField" }
+    ]
+  }
+}

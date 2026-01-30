@@ -1,0 +1,42 @@
+{
+    "list": {
+        "fields": [
+            { "code": "" },
+            { "type": "" },
+            { "isLocalizable": "" },
+            { "isScopable": "" },
+            { "isRequired": "" },
+            { "sortOrder": "" }
+        ]
+    },
+    "edit": {
+        "fields": [
+            { "code": "CodeField" },
+            { "type": "" },
+            { "unit": "" },
+            { "isLocalizable": "" },
+            { "isScopable": "" },
+            { "isRequired": "" },
+            { "validationRules": "JsonKeyValueField" },
+            { "allowedValues": "JsonKeyValueField" },
+            { "defaultValue": "" },
+            { "helpText": "" },
+            { "sortOrder": "" }
+        ]
+    },
+    "show": {
+        "fields": [
+            { "code": "" },
+            { "type": "" },
+            { "isLocalizable": "" },
+            { "isScopable": "" },
+            { "isRequired": "" },
+            { "validationRules": "" },
+            { "allowedValues": "" },
+            { "unit": "" },
+            { "defaultValue": "" },
+            { "helpText": "" },
+            { "sortOrder": "" }
+        ]
+    }
+}

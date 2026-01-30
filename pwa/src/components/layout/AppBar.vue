@@ -1,5 +1,9 @@
 <template>
   <v-app-bar elevation="1" color="blue-grey-darken-3" density="compact">
+    <v-btn icon density="compact" size="small" class="ml-2" @click="emit('toggle-drawer')">
+      <v-icon>mdi-menu</v-icon>
+    </v-btn>
+
     <v-btn icon density="compact" size="small" class="ml-2" @click="emit('open-search')">
       <v-icon>mdi-magnify</v-icon>
       <v-tooltip activator="parent" location="bottom">
@@ -35,6 +39,8 @@
           Help
         </v-tooltip>
       </v-btn>
+
+      <UserMenu />
     </template>
   </v-app-bar>
 </template>
@@ -42,6 +48,7 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import UserMenu from './UserMenu.vue'
 
 const { t } = useI18n()
 
@@ -49,6 +56,7 @@ const emit = defineEmits<{
   'open-search': []
   'toggle-chat': []
   'toggle-help': []
+  'toggle-drawer': []
 }>()
 
 const isMac = computed(() => navigator.platform.toUpperCase().indexOf('MAC') >= 0)

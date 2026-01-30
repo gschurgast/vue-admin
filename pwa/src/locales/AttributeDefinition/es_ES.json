@@ -1,0 +1,21 @@
+{
+  "resources": {
+    "attributedefinition": {
+      "name": "Definición de atributo",
+      "fields": {
+        "id": "ID",
+        "code": "Código",
+        "type": "Tipo",
+        "isLocalizable": "Localizable",
+        "isScopable": "Alcanzable",
+        "validationRules": "Reglas de validación",
+        "allowedValues": "Valores permitidos",
+        "unit": "Unidad",
+        "isRequired": "Requerido",
+        "defaultValue": "Valor predeterminado",
+        "helpText": "Texto de ayuda",
+        "sortOrder": "Orden de clasificación"
+      }
+    }
+  }
+}

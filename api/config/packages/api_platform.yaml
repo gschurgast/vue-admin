@@ -1,5 +1,5 @@
 api_platform:
-    title: Hello API Platform
+    title: Antigravity API
     version: 1.0.0
     enable_swagger_ui: true
     enable_re_doc: true
@@ -7,3 +7,6 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+    resource_class_directories:
+        - '%kernel.project_dir%/src/Entity'
+        - '%kernel.project_dir%/src/ApiResource'

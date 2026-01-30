@@ -1,0 +1,111 @@
+{
+    "common": {
+        "home": "Hjem",
+        "resources": "Ressurser",
+        "search": "Søk",
+        "clear": "Tøm",
+        "apply": "Bruk",
+        "cancel": "Avbryt",
+        "save": "Lagre",
+        "delete": "Slett",
+        "edit": "Rediger",
+        "create": "Opprett",
+        "close": "Lukk",
+        "confirm": "Bekreft",
+        "actions": "Handlinger",
+        "loading": "Laster...",
+        "refresh": "Oppdater",
+        "showFilters": "Vis filtre",
+        "hideFilters": "Skjul filtre",
+        "createNew": "Opprett ny",
+        "language": "Språk"
+    },
+    "app": {
+        "title": "API Platform Admin",
+        "manageResources": "Administrer dine ressurser"
+    },
+    "navigation": {
+        "home": "Hjem",
+        "resources": "Ressurser"
+    },
+    "resource": {
+        "list": "Liste",
+        "create": "Opprett {resource}",
+        "edit": "Rediger {resource}",
+        "delete": "Slett {resource}",
+        "confirmDelete": "Er du sikker på at du vil slette denne {resource}?",
+        "itemsPerPage": "Elementer per side",
+        "pageText": "{start}-{end} av {total}",
+        "pageOf": "av",
+        "noData": "Ingen data tilgjengelig",
+        "searchFilters": "Søkefiltre",
+        "advancedSearch": "Avansert søk",
+        "notFound": {
+            "title": "Ressurs ikke funnet",
+            "message": "Ressursen \"{resource}\" finnes ikke."
+        },
+        "forbidden": {
+            "title": "Tilgang nektet",
+            "message": "Du har ikke tillatelse til å få tilgang til \"{resource}\"."
+        }
+    },
+    "filter": {
+        "text": "Søk {field}",
+        "date": "Filtrer {field}",
+        "dateRange": "Datoperiode",
+        "from": "Fra",
+        "to": "Til"
+    },
+    "field": {
+        "required": "Dette feltet er påkrevd",
+        "select": "Velg {field}",
+        "enterText": "Skriv inn {field}",
+        "selectDate": "Velg dato"
+    },
+    "messages": {
+        "createSuccess": "{resource} opprettet",
+        "updateSuccess": "{resource} oppdatert",
+        "deleteSuccess": "{resource} slettet",
+        "error": "En feil oppstod",
+        "loadingError": "Feil ved lasting av data"
+    },
+    "boolean": {
+        "true": "Ja",
+        "false": "Nei"
+    },
+    "ai": {
+        "title": "AI-assistent",
+        "newConversation": "Ny samtale",
+        "copy": "Kopier",
+        "thinking": "Tenker...",
+        "placeholder": "Spør meg om hva som helst...",
+        "error": "Beklager, det oppstod en feil. Vennligst prøv igjen.",
+        "sendHint": "Shift+Enter for å sende"
+    },
+    "help": {
+        "noResourceDoc": "Ingen spesifikk dokumentasjon tilgjengelig for {resource}. Viser generell hjelp."
+    },
+    "auth": {
+        "login": "Logg inn",
+        "logout": "Logg ut",
+        "email": "E-post",
+        "password": "Passord",
+        "signIn": "Logg inn",
+        "invalidEmail": "Ugyldig e-postadresse",
+        "invalidCredentials": "Ugyldige påloggingsopplysninger"
+    },
+    "account": {
+        "title": "Min Konto",
+        "firstName": "Fornavn",
+        "lastName": "Etternavn",
+        "email": "E-post",
+        "changePicture": "Endre bilde",
+        "saveSuccess": "Profil oppdatert",
+        "fileTooLarge": "Filen er for stor. Maksimal størrelse: 5 MB",
+        "changePassword": "Endre passord",
+        "newPassword": "Nytt passord",
+        "confirmPassword": "Bekreft passord",
+        "passwordMinLength": "Passordet må være minst 6 tegn",
+        "passwordMismatch": "Passordene samsvarer ikke"
+    }
+}
