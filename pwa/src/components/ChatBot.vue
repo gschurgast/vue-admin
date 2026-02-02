@@ -265,10 +265,13 @@ function scrollToBottom() {
   })
 }
 
-// Scroll to bottom when drawer opens
+// Handle drawer open/close
 watch(() => props.modelValue, (isOpen) => {
   if (isOpen) {
     scrollToBottom()
+  } else {
+    // Stop recording when panel closes
+    voiceInputRef.value?.stopRecording()
   }
 })
 </script>
