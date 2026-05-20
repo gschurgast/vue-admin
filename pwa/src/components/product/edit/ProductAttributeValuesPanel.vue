@@ -1,147 +1,105 @@
 <template>
-  <v-card>
-    <v-card-text>
-      <v-progress-linear v-if="loading" indeterminate color="primary" />
+  <div>
+    <v-progress-linear v-if="loading" indeterminate color="primary" />
 
-      <template v-else>
-        <!-- Product Attributes Section -->
-        <div class="d-flex align-center mb-4">
-          <span class="text-subtitle-1 font-weight-medium">Product Attributes</span>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            size="small"
-            variant="tonal"
-            @click="openAddDialog('product')"
-          >
-            <v-icon start size="small">mdi-plus</v-icon>
-            Add
-          </v-btn>
-        </div>
+    <template v-else>
+      <!-- New variant without product selected yet -->
+      <v-alert
+        v-if="isVariant && !productIri"
+        type="info"
+        variant="tonal"
+        density="compact"
+        class="mb-4"
+      >
+        {{ t('attributes.selectProductFirst') }}
+      </v-alert>
 
-        <v-form v-if="productAttributeValues.length > 0" class="mb-6">
-          <div
-            v-for="(attrValue, index) in productAttributeValues"
-            :key="'product-' + (attrValue.id || attrValue._tempId || index)"
-            class="d-flex align-start"
-          >
-            <div class="flex-grow-1">
-              <InlineAttributeValueEditor
-                :attribute-value="attrValue"
-                :label="attrValue.attributeDefinition?.code || 'Unknown'"
-                @change="onValueChange(attrValue, $event)"
-              />
-            </div>
-            <v-btn
-              icon="mdi-delete"
-              size="small"
-              variant="text"
-              color="error"
-              class="mt-3 ml-2"
-              @click="deleteProductAttribute(index)"
-            />
-          </div>
-        </v-form>
+      <!-- Variant-specific attributes shown FIRST when on a variant -->
+      <AttributeSection
+        v-if="isVariant && productIri"
+        :title="t('attributes.variantTitle')"
+        :subtitle="variantIri ? t('attributes.subtitleVariant') : t('attributes.saveVariantFirst')"
+        icon="mdi-shape-outline"
+        color="deep-purple"
+        :scope-label="t('attributes.scopeVariant')"
+        :attributes="variantAttributeValues"
+        :empty-text="t('attributes.emptyVariant')"
+        :add-disabled="!variantIri"
+        class="mb-4"
+        @add="openAddDialog('variant')"
+        @change="onValueChange"
+        @delete="deleteVariantAttribute"
+      />
 
-        <v-alert v-else type="info" variant="tonal" density="compact" class="mb-6">
-          No product attributes
-        </v-alert>
-
-        <!-- Variant Attributes Section (only shown when editing a variant) -->
-        <template v-if="variantIri">
-          <v-divider class="mb-4" />
-
-          <div class="d-flex align-center mb-4">
-            <span class="text-subtitle-1 font-weight-medium">Variant Attributes</span>
-            <v-spacer />
-            <v-btn
-              color="secondary"
-              size="small"
-              variant="tonal"
-              @click="openAddDialog('variant')"
-            >
-              <v-icon start size="small">mdi-plus</v-icon>
-              Add
-            </v-btn>
-          </div>
-
-          <v-form v-if="variantAttributeValues.length > 0">
-            <div
-              v-for="(attrValue, index) in variantAttributeValues"
-              :key="'variant-' + (attrValue.id || attrValue._tempId || index)"
-              class="d-flex align-start"
-            >
-              <div class="flex-grow-1">
-                <InlineAttributeValueEditor
-                  :attribute-value="attrValue"
-                  :label="attrValue.attributeDefinition?.code || 'Unknown'"
-                  @change="onValueChange(attrValue, $event)"
-                />
-              </div>
-              <v-btn
-                icon="mdi-delete"
-                size="small"
-                variant="text"
-                color="error"
-                class="mt-3 ml-2"
-                @click="deleteVariantAttribute(index)"
-              />
-            </div>
-          </v-form>
-
-          <v-alert v-else type="info" variant="tonal" density="compact">
-            No variant attributes
-          </v-alert>
-        </template>
-      </template>
-    </v-card-text>
+      <!-- Product-level attributes: read-only on variant page, editable on product page -->
+      <AttributeSection
+        v-if="productIri"
+        :title="t('attributes.productTitle')"
+        :subtitle="isVariant ? t('attributes.subtitleProductInherited') : t('attributes.subtitleProductShared')"
+        icon="mdi-package-variant-closed"
+        color="primary"
+        :scope-label="t('attributes.scopeProduct')"
+        :attributes="productAttributeValues"
+        :empty-text="isVariant ? t('attributes.emptySharedOnVariant') : t('attributes.emptyProduct')"
+        :readonly="isVariant"
+        :edit-link="isVariant ? productEditLink : null"
+        @add="openAddDialog('product')"
+        @change="onValueChange"
+        @delete="deleteProductAttribute"
+      />
+    </template>
 
     <!-- Add Attribute Value Dialog -->
     <v-dialog v-model="addDialog" max-width="600">
       <v-card>
-        <v-card-title>Add {{ addDialogType === 'product' ? 'Product' : 'Variant' }} Attribute</v-card-title>
+        <v-card-title>
+          {{ addDialogType === 'product' ? t('attributes.addProductAttribute') : t('attributes.addVariantAttribute') }}
+        </v-card-title>
         <v-card-text>
           <AttributeValueField
             v-model="newAttributeDefinition"
             :form-data="newFormData"
             :exclude-definitions="getExcludedDefinitions()"
-            label="Attribute"
+            :label="t('attributes.attributeLabel')"
             @update:form-data="onFormDataUpdate"
           />
         </v-card-text>
         <v-card-actions>
           <v-spacer />
-          <v-btn @click="addDialog = false">Cancel</v-btn>
+          <v-btn @click="addDialog = false">{{ t('common.cancel') }}</v-btn>
           <v-btn
             color="primary"
             :disabled="!newAttributeDefinition"
             @click="addAttributeValue"
           >
-            Add
+            {{ t('common.add') }}
           </v-btn>
         </v-card-actions>
       </v-card>
     </v-dialog>
-  </v-card>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { ref, watch, onMounted } from 'vue'
+import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../../services/apiPlatform'
 import { useAttributeOptions } from '../../../composables/useAttributeOptions'
-import InlineAttributeValueEditor from './InlineAttributeValueEditor.vue'
 import AttributeValueField from '../../fields/AttributeValueField.vue'
+import AttributeSection from './AttributeSection.vue'
 
-// Preload attribute options for all components
+const { t } = useI18n()
 const { ensureLoaded: ensureOptionsLoaded } = useAttributeOptions()
 
 interface Props {
   productIri: string | null
   variantIri?: string | null
+  isVariant?: boolean
 }
 
 const props = withDefaults(defineProps<Props>(), {
-  variantIri: null
+  variantIri: null,
+  isVariant: false
 })
 
 const emit = defineEmits<{
@@ -180,6 +138,11 @@ function extractIdFromIri(iri: string | null): number | null {
   const match = iri.match(/\/(\d+)$/)
   return match ? parseInt(match[1], 10) : null
 }
+
+const productEditLink = computed(() => {
+  const productId = extractIdFromIri(props.productIri)
+  return productId ? `/edit/Product/${productId}` : null
+})
 
 async function loadAttributeValues() {
   if (!props.productIri) return

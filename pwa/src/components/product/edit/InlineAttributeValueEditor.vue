@@ -5,6 +5,10 @@
       v-if="attributeType === 'text'"
       v-model="localValue"
       :label="label"
+      :hint="definitionHint"
+      :persistent-hint="!!definitionHint"
+      :rules="textRules"
+      :required="definition?.isRequired"
       clearable
       @update:model-value="emitChange"
     />
@@ -16,6 +20,10 @@
       :label="label"
       rows="3"
       auto-grow
+      :hint="definitionHint"
+      :persistent-hint="!!definitionHint"
+      :rules="textRules"
+      :required="definition?.isRequired"
       clearable
       @update:model-value="emitChange"
     />
@@ -35,6 +43,12 @@
       :label="label"
       type="number"
       step="any"
+      :min="definition?.validationRules?.min"
+      :max="definition?.validationRules?.max"
+      :hint="definitionHint"
+      :persistent-hint="!!definitionHint"
+      :rules="numberRules"
+      :required="definition?.isRequired"
       clearable
       @update:model-value="emitChange"
     />
@@ -46,6 +60,12 @@
       :label="label"
       type="number"
       step="1"
+      :min="definition?.validationRules?.min"
+      :max="definition?.validationRules?.max"
+      :hint="definitionHint"
+      :persistent-hint="!!definitionHint"
+      :rules="numberRules"
+      :required="definition?.isRequired"
       clearable
       @update:model-value="emitChange"
     />
@@ -95,6 +115,12 @@
         :label="label"
         type="number"
         step="any"
+        :min="definition?.validationRules?.min"
+        :max="definition?.validationRules?.max"
+        :hint="definitionHint"
+        :persistent-hint="!!definitionHint"
+        :rules="numberRules"
+        :required="definition?.isRequired"
         class="flex-grow-1"
         clearable
         @update:model-value="emitMeasureChange"
@@ -131,6 +157,7 @@
 <script setup lang="ts">
 import { ref, computed, onMounted } from 'vue'
 import { useAttributeOptions } from '../../../composables/useAttributeOptions'
+import { useAttributeValidation } from '../../../composables/useAttributeValidation'
 import { extractIri } from '../../../utils/resourceConfig'
 import RichTextField from '../../fields/RichTextField.vue'
 import RelationSearchField from '../../fields/RelationSearchField.vue'
@@ -165,6 +192,7 @@ const isInitializing = ref(false)
 
 const definition = computed(() => props.attributeValue.attributeDefinition)
 const attributeType = computed(() => definition.value?.type || 'text')
+const { helpText: definitionHint, textRules, numberRules } = useAttributeValidation(definition)
 
 // Get options from shared cache with fallback for mismatched options
 const attributeOptions = computed(() => {

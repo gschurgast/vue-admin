@@ -57,6 +57,12 @@
           </div>
         </v-card-text>
       </v-card>
+
+      <ProductVariantsList
+        :product-iri="productIri"
+        :current-variant-id="localFormData.id"
+        class="mt-4"
+      />
     </v-col>
 
     <!-- Right side: Attribute Values Panel -->
@@ -65,6 +71,7 @@
         ref="attributeValuesPanel"
         :product-iri="productIri"
         :variant-iri="variantIri"
+        :is-variant="true"
         @attributes-loaded="onAttributesLoaded"
       />
     </v-col>
@@ -75,6 +82,7 @@
 import { ref, computed, watch } from 'vue'
 import ResourceForm from '../../resource/ResourceForm.vue'
 import ProductAttributeValuesPanel from '../../product/edit/ProductAttributeValuesPanel.vue'
+import ProductVariantsList from '../../product/edit/ProductVariantsList.vue'
 import apiPlatform from '../../../services/apiPlatform'
 
 interface Props {

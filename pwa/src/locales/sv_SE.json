@@ -18,7 +18,11 @@
         "showFilters": "Visa filter",
         "hideFilters": "Dölj filter",
         "createNew": "Skapa ny",
-        "language": "Språk"
+        "language": "Språk",
+        "add": "Lägg till",
+        "readonly": "Skrivskyddad",
+        "showFull": "Visa allt",
+        "showLess": "Visa mindre"
     },
     "app": {
         "title": "API Platform Admin",
@@ -111,5 +115,36 @@
         "confirmPassword": "Bekräfta lösenord",
         "passwordMinLength": "Lösenordet måste vara minst 6 tecken",
         "passwordMismatch": "Lösenorden matchar inte"
+    },
+    "attributes": {
+        "productTitle": "Produktattribut",
+        "variantTitle": "Variantattribut",
+        "scopeProduct": "Produkt",
+        "scopeVariant": "Variant",
+        "subtitleProductShared": "Delas mellan alla varianter av denna produkt",
+        "subtitleProductInherited": "Ärvda från huvudprodukten (skrivskyddade här)",
+        "subtitleVariant": "Specifika för denna variant",
+        "editOnProduct": "Redigera på produkten",
+        "emptyProduct": "Inga produktattribut",
+        "emptySharedOnVariant": "Inga delade attribut på huvudprodukten",
+        "emptyVariant": "Inga variantspecifika attribut ännu",
+        "selectProductFirst": "Välj först en produkt för att se dess attribut",
+        "saveVariantFirst": "Spara varianten först för att lägga till attribut",
+        "addProductAttribute": "Lägg till produktattribut",
+        "addVariantAttribute": "Lägg till variantattribut",
+        "attributeLabel": "Attribut"
+    },
+    "variantList": {
+        "title": "Produktvarianter",
+        "subtitle": "Klicka för att byta till en annan variant",
+        "default": "Standard"
+    },
+    "validation": {
+        "required": "Obligatorisk",
+        "minLength": "Min. längd {limit}",
+        "maxLength": "Max. längd {limit}",
+        "invalidFormat": "Ogiltigt format",
+        "min": "Min. {limit}",
+        "max": "Max. {limit}"
     }
 }

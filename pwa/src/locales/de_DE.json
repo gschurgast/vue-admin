@@ -18,7 +18,11 @@
         "showFilters": "Filter anzeigen",
         "hideFilters": "Filter ausblenden",
         "createNew": "Neu erstellen",
-        "language": "Sprache"
+        "language": "Sprache",
+        "add": "Hinzufügen",
+        "readonly": "Schreibgeschützt",
+        "showFull": "Alles anzeigen",
+        "showLess": "Weniger anzeigen"
     },
     "app": {
         "title": "API Platform Admin",
@@ -111,5 +115,36 @@
         "confirmPassword": "Passwort bestätigen",
         "passwordMinLength": "Passwort muss mindestens 6 Zeichen lang sein",
         "passwordMismatch": "Passwörter stimmen nicht überein"
+    },
+    "attributes": {
+        "productTitle": "Produktattribute",
+        "variantTitle": "Variantenattribute",
+        "scopeProduct": "Produkt",
+        "scopeVariant": "Variante",
+        "subtitleProductShared": "Wird von allen Varianten dieses Produkts geteilt",
+        "subtitleProductInherited": "Vom übergeordneten Produkt geerbt (hier schreibgeschützt)",
+        "subtitleVariant": "Nur für diese Variante",
+        "editOnProduct": "Auf dem Produkt bearbeiten",
+        "emptyProduct": "Keine Produktattribute",
+        "emptySharedOnVariant": "Keine geteilten Attribute auf dem übergeordneten Produkt",
+        "emptyVariant": "Noch keine variantenspezifischen Attribute",
+        "selectProductFirst": "Wählen Sie zuerst ein Produkt, um dessen Attribute zu sehen",
+        "saveVariantFirst": "Speichern Sie die Variante zuerst, um Attribute hinzuzufügen",
+        "addProductAttribute": "Produktattribut hinzufügen",
+        "addVariantAttribute": "Variantenattribut hinzufügen",
+        "attributeLabel": "Attribut"
+    },
+    "variantList": {
+        "title": "Produktvarianten",
+        "subtitle": "Klicken, um zu einer anderen Variante zu wechseln",
+        "default": "Standard"
+    },
+    "validation": {
+        "required": "Erforderlich",
+        "minLength": "Mindestlänge {limit}",
+        "maxLength": "Maximale Länge {limit}",
+        "invalidFormat": "Ungültiges Format",
+        "min": "Min. {limit}",
+        "max": "Max. {limit}"
     }
 }

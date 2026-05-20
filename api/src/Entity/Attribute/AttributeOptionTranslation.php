@@ -4,6 +4,7 @@ namespace App\Entity\Attribute;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
 use ApiPlatform\Metadata\ApiFilter;
+use ApiPlatform\Metadata\ApiProperty;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
@@ -13,8 +14,8 @@ use ApiPlatform\Metadata\Post;
 use App\Attribute\MenuGroup;
 use App\Enum\Locale;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\MaxDepth;
 
 #[ORM\Entity]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'option' => 'exact', 'locale' => 'exact', 'label' => 'partial'])]
@@ -51,6 +52,7 @@ class AttributeOptionTranslation
     #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     #[Groups(['option:read', 'option:write'])]
     #[MaxDepth(1)]
+    #[ApiProperty(fetchEager: false)]
     private ?AttributeOption $option = null;
 
     #[ORM\Column(length: 10, enumType: Locale::class)]

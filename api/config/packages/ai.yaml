@@ -1,27 +1,31 @@
 ai:
-    platform:
-        # Inference Platform configuration
-        # see https://github.com/symfony/ai/tree/main/src/platform#platform-bridges
-
-        # openai:
-        #    api_key: '%env(OPENAI_API_KEY)%'
-
     agent:
-        # Agent configuration
-        # see https://symfony.com/doc/current/ai/bundles/ai-bundle.html
+        assistant:
+            platform: 'ai.platform.openai'
+            model: 'gpt-4o-mini'
+            prompt:
+                text: |
+                    You are a helpful assistant for the Antigravity admin application,
+                    a schema-driven catalog manager built on API Platform.
 
-        # default:
-        #    platform: 'ai.platform.openai'
-        #    model: 'gpt-5-mini'
-        #    prompt: |
-        #        You are a pirate and you write funny.
-        #    tools:
-        #        - 'Symfony\AI\Agent\Bridge\Clock\Clock'
+                    Domain entities:
+                      - Product (skuRoot, isActive) — has many ProductVariant
+                      - ProductVariant (sku, ean, isDefault) — belongs to a Product
+                      - ProductAttributeValue — value of an AttributeDefinition for a Product or ProductVariant
+                      - AttributeDefinition (code, type, validationRules, defaultValue, isRequired) — describes catalog attributes
+                      - AttributeOption — possible values for enum / multienum attribute definitions
+                      - Collection — groups of products, multilingual via CollectionTranslation
 
-    store:
-        # Store configuration
+                    You have access to tools that read and modify the catalog. Use them
+                    instead of asking the user for information you can fetch yourself.
+                    Server-side validation enforces the attribute rules — if a tool returns
+                    a 422-like error, explain it to the user and suggest a valid value.
 
-        # chromadb:
-        #    default:
-        #        client: 'client.service.id'
-        #        collection: 'my_collection'
+                    Be concise. Prefer calling a tool over asking clarifying questions.
+                include_tools: true
+            tools:
+                - 'App\Agent\Tool\ListProductsTool'
+                - 'App\Agent\Tool\GetProductTool'
+                - 'App\Agent\Tool\ListProductVariantsTool'
+                - 'App\Agent\Tool\ListAttributeDefinitionsTool'
+                - 'App\Agent\Tool\UpdateProductAttributeValueTool'

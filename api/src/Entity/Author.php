@@ -45,13 +45,10 @@ class Author
 
     #[ORM\Column(type: 'boolean', nullable: false)]
     #[Assert\Expression(
-        "(this.isAlive == true and this.deathDate == null) or (this.isAlive == false and this.deathDate != null)",
+        "(this.isAlive() == true and this.getDeathDate() == null) or (this.isAlive() == false and this.getDeathDate() != null)",
         message: "If the author is alive, the death date must be empty. If the author is dead, a death date must be provided."
     )]
     private bool $isAlive = true;
-
-    #[ORM\Column(type: Types::DATETIME_IMMUTABLE, nullable: true)]
-    private ?\DateTimeImmutable $nextMeeting = null;
 
     #[ORM\OneToMany(targetEntity: Book::class, mappedBy: 'author')]
     private Collection $books;
@@ -118,17 +115,6 @@ class Author
     public function setIsAlive(bool $isAlive): static
     {
         $this->isAlive = $isAlive;
-        return $this;
-    }
-
-    public function getNextMeeting(): ?\DateTimeImmutable
-    {
-        return $this->nextMeeting;
-    }
-
-    public function setNextMeeting(?\DateTimeImmutable $nextMeeting): static
-    {
-        $this->nextMeeting = $nextMeeting;
         return $this;
     }
 

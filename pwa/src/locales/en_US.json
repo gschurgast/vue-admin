@@ -28,7 +28,11 @@
         "translate": "Translate",
         "unsavedChanges": "Unsaved Changes",
         "stay": "Stay",
-        "leave": "Leave"
+        "leave": "Leave",
+        "add": "Add",
+        "readonly": "Read-only",
+        "showFull": "Show full",
+        "showLess": "Show less"
     },
     "app": {
         "title": "API Platform Admin",
@@ -123,5 +127,36 @@
         "confirmPassword": "Confirm Password",
         "passwordMinLength": "Password must be at least 6 characters",
         "passwordMismatch": "Passwords do not match"
+    },
+    "attributes": {
+        "productTitle": "Product attributes",
+        "variantTitle": "Variant attributes",
+        "scopeProduct": "Product",
+        "scopeVariant": "Variant",
+        "subtitleProductShared": "Shared across all variants of this product",
+        "subtitleProductInherited": "Inherited from the parent product (read-only here)",
+        "subtitleVariant": "Specific to this variant only",
+        "editOnProduct": "Edit on product",
+        "emptyProduct": "No product attributes",
+        "emptySharedOnVariant": "No shared attributes on the parent product",
+        "emptyVariant": "No variant-specific attributes yet",
+        "selectProductFirst": "Select a product first to see its attributes",
+        "saveVariantFirst": "Save the variant first to add attributes",
+        "addProductAttribute": "Add product attribute",
+        "addVariantAttribute": "Add variant attribute",
+        "attributeLabel": "Attribute"
+    },
+    "variantList": {
+        "title": "Product variants",
+        "subtitle": "Click to switch to another variant",
+        "default": "Default"
+    },
+    "validation": {
+        "required": "Required",
+        "minLength": "Min length {limit}",
+        "maxLength": "Max length {limit}",
+        "invalidFormat": "Invalid format",
+        "min": "Min {limit}",
+        "max": "Max {limit}"
     }
 }

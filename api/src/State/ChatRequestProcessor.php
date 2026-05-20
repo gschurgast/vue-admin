@@ -23,12 +23,13 @@ class ChatRequestProcessor implements ProcessorInterface
 
         $conversationId = $data->conversationId ?? '';
         $message = $data->message ?? '';
+        $pageContext = $data->pageContext;
 
         // Get history from Redis
         $history = $conversationId ? $this->conversationService->getHistory($conversationId) : [];
 
-        // Send message with history
-        $aiResponse = $this->chatService->sendMessage($message, $history);
+        // Send message with history and page context
+        $aiResponse = $this->chatService->sendMessage($message, $history, $pageContext);
         $data->response = $aiResponse;
 
         // Store in Redis

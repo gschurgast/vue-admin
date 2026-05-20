@@ -3,19 +3,27 @@
 namespace App\Entity\Collection;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\McpTool;
+use ApiPlatform\Metadata\McpToolCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\ApiResource\Mcp\CollectionSearch;
+use App\ApiResource\Mcp\CollectionUpdateInput;
+use App\ApiResource\Mcp\IdentifierInput;
 use App\Attribute\MenuGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection as DoctrineCollection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AppAssert;
 
@@ -36,6 +44,29 @@ use App\Validator as AppAssert;
         new Post(),
         new Patch(),
         new Delete()
+    ],
+    mcp: [
+        'list_collections' => new McpToolCollection(
+            description: 'List product collections. Filter by code (partial match).',
+            input: CollectionSearch::class,
+            provider: CollectionProvider::class,
+        ),
+        'get_collection' => new McpTool(
+            description: 'Get a single collection by id, including its translations.',
+            uriTemplate: '/collections/{id}',
+            uriVariables: ['id' => new Link(fromClass: self::class, identifiers: ['id'])],
+            input: IdentifierInput::class,
+            provider: ItemProvider::class,
+        ),
+        'create_collection' => new McpTool(
+            description: 'Create a new collection with a unique code. Translations must be added separately.',
+            processor: \App\State\Mcp\GenericCreateProcessor::class,
+        ),
+        'update_collection' => new McpTool(
+            description: 'Update fields of an existing collection. Only the code can be changed here.',
+            input: CollectionUpdateInput::class,
+            processor: \App\State\Mcp\GenericUpdateProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => ['collection:read'], 'enable_max_depth' => true],
     denormalizationContext: ['groups' => ['collection:write']]

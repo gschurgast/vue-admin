@@ -18,7 +18,11 @@
         "showFilters": "显示筛选器",
         "hideFilters": "隐藏筛选器",
         "createNew": "创建新项",
-        "language": "语言"
+        "language": "语言",
+        "add": "添加",
+        "readonly": "只读",
+        "showFull": "显示全部",
+        "showLess": "收起"
     },
     "app": {
         "title": "API平台管理",
@@ -111,5 +115,36 @@
         "confirmPassword": "确认密码",
         "passwordMinLength": "密码至少需要6个字符",
         "passwordMismatch": "密码不匹配"
+    },
+    "attributes": {
+        "productTitle": "产品属性",
+        "variantTitle": "变体属性",
+        "scopeProduct": "产品",
+        "scopeVariant": "变体",
+        "subtitleProductShared": "在此产品的所有变体之间共享",
+        "subtitleProductInherited": "从父产品继承（此处只读）",
+        "subtitleVariant": "此变体特有",
+        "editOnProduct": "在产品上编辑",
+        "emptyProduct": "没有产品属性",
+        "emptySharedOnVariant": "父产品上没有共享属性",
+        "emptyVariant": "尚无此变体特有的属性",
+        "selectProductFirst": "请先选择产品以查看其属性",
+        "saveVariantFirst": "请先保存变体以添加属性",
+        "addProductAttribute": "添加产品属性",
+        "addVariantAttribute": "添加变体属性",
+        "attributeLabel": "属性"
+    },
+    "variantList": {
+        "title": "产品变体",
+        "subtitle": "点击切换到其他变体",
+        "default": "默认"
+    },
+    "validation": {
+        "required": "必填",
+        "minLength": "最小长度 {limit}",
+        "maxLength": "最大长度 {limit}",
+        "invalidFormat": "格式无效",
+        "min": "最小 {limit}",
+        "max": "最大 {limit}"
     }
 }

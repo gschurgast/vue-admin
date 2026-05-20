@@ -68,7 +68,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, onMounted, shallowRef } from 'vue'
+import { ref, computed, onMounted, shallowRef, watch } from 'vue'
 import { useResource } from '../../../composables/useResource'
 import { useAuthStore } from '../../../stores/auth'
 import apiPlatform from '../../../services/apiPlatform'
@@ -448,5 +448,21 @@ onMounted(async () => {
   await loadResourceConfig()
   await loadRelations()
   await loadItem()
+})
+
+// Reload data when navigating between items of the same resource
+watch(itemId, async (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    await loadItem()
+  }
+})
+
+watch(resourceName, async (newName, oldName) => {
+  if (newName && newName !== oldName) {
+    await loadResourceMessages(newName, locale.value)
+    await loadResourceConfig()
+    await loadRelations()
+    await loadItem()
+  }
 })
 </script>

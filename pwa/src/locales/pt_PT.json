@@ -18,7 +18,11 @@
         "showFilters": "Mostrar filtros",
         "hideFilters": "Ocultar filtros",
         "createNew": "Criar novo",
-        "language": "Idioma"
+        "language": "Idioma",
+        "add": "Adicionar",
+        "readonly": "Apenas leitura",
+        "showFull": "Mostrar tudo",
+        "showLess": "Mostrar menos"
     },
     "app": {
         "title": "Admin API Platform",
@@ -111,5 +115,36 @@
         "confirmPassword": "Confirmar senha",
         "passwordMinLength": "A senha deve ter pelo menos 6 caracteres",
         "passwordMismatch": "As senhas não coincidem"
+    },
+    "attributes": {
+        "productTitle": "Atributos do produto",
+        "variantTitle": "Atributos da variante",
+        "scopeProduct": "Produto",
+        "scopeVariant": "Variante",
+        "subtitleProductShared": "Partilhados entre todas as variantes deste produto",
+        "subtitleProductInherited": "Herdados do produto principal (apenas leitura aqui)",
+        "subtitleVariant": "Específicos desta variante",
+        "editOnProduct": "Editar no produto",
+        "emptyProduct": "Sem atributos de produto",
+        "emptySharedOnVariant": "Sem atributos partilhados no produto principal",
+        "emptyVariant": "Ainda não há atributos específicos desta variante",
+        "selectProductFirst": "Selecione primeiro um produto para ver os seus atributos",
+        "saveVariantFirst": "Guarde primeiro a variante para adicionar atributos",
+        "addProductAttribute": "Adicionar atributo do produto",
+        "addVariantAttribute": "Adicionar atributo da variante",
+        "attributeLabel": "Atributo"
+    },
+    "variantList": {
+        "title": "Variantes do produto",
+        "subtitle": "Clique para mudar para outra variante",
+        "default": "Predefinida"
+    },
+    "validation": {
+        "required": "Obrigatório",
+        "minLength": "Comprimento mín. {limit}",
+        "maxLength": "Comprimento máx. {limit}",
+        "invalidFormat": "Formato inválido",
+        "min": "Mín. {limit}",
+        "max": "Máx. {limit}"
     }
 }

@@ -18,7 +18,11 @@
         "showFilters": "إظهار المرشحات",
         "hideFilters": "إخفاء المرشحات",
         "createNew": "إنشاء جديد",
-        "language": "اللغة"
+        "language": "اللغة",
+        "add": "إضافة",
+        "readonly": "للقراءة فقط",
+        "showFull": "عرض الكل",
+        "showLess": "عرض أقل"
     },
     "app": {
         "title": "إدارة منصة API",
@@ -111,5 +115,36 @@
         "confirmPassword": "تأكيد كلمة المرور",
         "passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
         "passwordMismatch": "كلمات المرور غير متطابقة"
+    },
+    "attributes": {
+        "productTitle": "سمات المنتج",
+        "variantTitle": "سمات النسخة",
+        "scopeProduct": "المنتج",
+        "scopeVariant": "النسخة",
+        "subtitleProductShared": "مشتركة بين جميع نسخ هذا المنتج",
+        "subtitleProductInherited": "موروثة من المنتج الأصلي (للقراءة فقط هنا)",
+        "subtitleVariant": "خاصة بهذه النسخة فقط",
+        "editOnProduct": "تعديل في المنتج",
+        "emptyProduct": "لا توجد سمات للمنتج",
+        "emptySharedOnVariant": "لا توجد سمات مشتركة على المنتج الأصلي",
+        "emptyVariant": "لا توجد سمات خاصة بهذه النسخة بعد",
+        "selectProductFirst": "اختر منتجًا أولاً لعرض سماته",
+        "saveVariantFirst": "احفظ النسخة أولاً لإضافة السمات",
+        "addProductAttribute": "إضافة سمة منتج",
+        "addVariantAttribute": "إضافة سمة نسخة",
+        "attributeLabel": "سمة"
+    },
+    "variantList": {
+        "title": "نسخ المنتج",
+        "subtitle": "انقر للانتقال إلى نسخة أخرى",
+        "default": "افتراضي"
+    },
+    "validation": {
+        "required": "حقل مطلوب",
+        "minLength": "الحد الأدنى للطول {limit}",
+        "maxLength": "الحد الأقصى للطول {limit}",
+        "invalidFormat": "تنسيق غير صالح",
+        "min": "الحد الأدنى {limit}",
+        "max": "الحد الأقصى {limit}"
     }
 }

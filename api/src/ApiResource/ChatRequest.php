@@ -5,7 +5,7 @@ namespace App\ApiResource;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
 use App\State\ChatRequestProcessor;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ApiResource(
     operations: [
@@ -24,6 +24,9 @@ class ChatRequest
 
     #[Groups(['chat:write'])]
     public ?string $conversationId = null;
+
+    #[Groups(['chat:write'])]
+    public ?array $pageContext = null;
 
     #[Groups(['chat:read'])]
     public ?string $response = null;

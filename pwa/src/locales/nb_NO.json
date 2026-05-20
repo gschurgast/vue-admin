@@ -18,7 +18,11 @@
         "showFilters": "Vis filtre",
         "hideFilters": "Skjul filtre",
         "createNew": "Opprett ny",
-        "language": "Språk"
+        "language": "Språk",
+        "add": "Legg til",
+        "readonly": "Skrivebeskyttet",
+        "showFull": "Vis alt",
+        "showLess": "Vis mindre"
     },
     "app": {
         "title": "API Platform Admin",
@@ -111,5 +115,36 @@
         "confirmPassword": "Bekreft passord",
         "passwordMinLength": "Passordet må være minst 6 tegn",
         "passwordMismatch": "Passordene samsvarer ikke"
+    },
+    "attributes": {
+        "productTitle": "Produktattributter",
+        "variantTitle": "Variantattributter",
+        "scopeProduct": "Produkt",
+        "scopeVariant": "Variant",
+        "subtitleProductShared": "Delt mellom alle varianter av dette produktet",
+        "subtitleProductInherited": "Arvet fra hovedproduktet (skrivebeskyttet her)",
+        "subtitleVariant": "Spesifikt for denne varianten",
+        "editOnProduct": "Rediger på produktet",
+        "emptyProduct": "Ingen produktattributter",
+        "emptySharedOnVariant": "Ingen delte attributter på hovedproduktet",
+        "emptyVariant": "Ingen variantspesifikke attributter ennå",
+        "selectProductFirst": "Velg et produkt først for å se attributtene",
+        "saveVariantFirst": "Lagre varianten først for å legge til attributter",
+        "addProductAttribute": "Legg til produktattributt",
+        "addVariantAttribute": "Legg til variantattributt",
+        "attributeLabel": "Attributt"
+    },
+    "variantList": {
+        "title": "Produktvarianter",
+        "subtitle": "Klikk for å bytte til en annen variant",
+        "default": "Standard"
+    },
+    "validation": {
+        "required": "Påkrevd",
+        "minLength": "Min. lengde {limit}",
+        "maxLength": "Maks. lengde {limit}",
+        "invalidFormat": "Ugyldig format",
+        "min": "Min. {limit}",
+        "max": "Maks. {limit}"
     }
 }

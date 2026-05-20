@@ -18,7 +18,11 @@
         "showFilters": "Pokaż filtry",
         "hideFilters": "Ukryj filtry",
         "createNew": "Utwórz nowe",
-        "language": "Język"
+        "language": "Język",
+        "add": "Dodaj",
+        "readonly": "Tylko do odczytu",
+        "showFull": "Pokaż wszystko",
+        "showLess": "Pokaż mniej"
     },
     "app": {
         "title": "Panel administracyjny API Platform",
@@ -111,5 +115,36 @@
         "confirmPassword": "Potwierdź hasło",
         "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków",
         "passwordMismatch": "Hasła nie są zgodne"
+    },
+    "attributes": {
+        "productTitle": "Atrybuty produktu",
+        "variantTitle": "Atrybuty wariantu",
+        "scopeProduct": "Produkt",
+        "scopeVariant": "Wariant",
+        "subtitleProductShared": "Współdzielone między wszystkimi wariantami tego produktu",
+        "subtitleProductInherited": "Dziedziczone z produktu nadrzędnego (tylko do odczytu tutaj)",
+        "subtitleVariant": "Specyficzne dla tego wariantu",
+        "editOnProduct": "Edytuj w produkcie",
+        "emptyProduct": "Brak atrybutów produktu",
+        "emptySharedOnVariant": "Brak współdzielonych atrybutów na produkcie nadrzędnym",
+        "emptyVariant": "Brak atrybutów specyficznych dla tego wariantu",
+        "selectProductFirst": "Najpierw wybierz produkt, aby zobaczyć jego atrybuty",
+        "saveVariantFirst": "Najpierw zapisz wariant, aby dodać atrybuty",
+        "addProductAttribute": "Dodaj atrybut produktu",
+        "addVariantAttribute": "Dodaj atrybut wariantu",
+        "attributeLabel": "Atrybut"
+    },
+    "variantList": {
+        "title": "Warianty produktu",
+        "subtitle": "Kliknij, aby przełączyć się na inny wariant",
+        "default": "Domyślny"
+    },
+    "validation": {
+        "required": "Wymagane",
+        "minLength": "Min. długość {limit}",
+        "maxLength": "Maks. długość {limit}",
+        "invalidFormat": "Nieprawidłowy format",
+        "min": "Min. {limit}",
+        "max": "Maks. {limit}"
     }
 }

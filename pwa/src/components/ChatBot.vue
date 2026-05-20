@@ -102,6 +102,7 @@
 <script setup lang="ts">
 import { ref, computed, watch, nextTick, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRoute } from 'vue-router'
 import apiPlatform from '../services/apiPlatform'
 import VoiceInput from './VoiceInput.vue'
 
@@ -124,6 +125,7 @@ const emit = defineEmits<{
 }>()
 
 const { t, locale } = useI18n()
+const route = useRoute()
 const currentMessage = ref('')
 const messages = ref<ChatMessage[]>([])
 const loading = ref(false)
@@ -133,6 +135,50 @@ const voiceInputRef = ref<InstanceType<typeof VoiceInput> | null>(null)
 const wasVoiceMessage = ref(false)
 const conversationId = ref('')
 
+// Build page context from current route
+// Routes: /edit/:resource/:id, /show/:resource/:id, /resource/:resource
+const pageContext = computed(() => {
+  const params = route.params
+  const pathParts = route.path.split('/').filter(Boolean)
+
+  if (pathParts.length < 2) {
+    return null
+  }
+
+  const firstPart = pathParts[0]
+  let pageType: string
+  let resourceType: string
+  let resourceId: string | undefined
+
+  if (firstPart === 'edit' || firstPart === 'show') {
+    // /edit/Author/4 or /show/Author/4
+    pageType = firstPart
+    resourceType = (params.resource as string)?.toLowerCase()
+    resourceId = params.id as string
+  } else if (firstPart === 'resource') {
+    // /resource/Author (list view)
+    pageType = 'list'
+    resourceType = (params.resource as string)?.toLowerCase()
+    resourceId = undefined
+  } else {
+    return null
+  }
+
+  if (!resourceType) {
+    return null
+  }
+
+  // Build IRI: /authors/4 (pluralize resource name)
+  const pluralResource = resourceType.endsWith('s') ? resourceType : resourceType + 's'
+  const resourceIri = resourceId ? `/${pluralResource}/${resourceId}` : null
+
+  return {
+    resourceType: pluralResource,
+    resourceIri,
+    pageType
+  }
+})
+
 // Convert locale format: en_US -> en-US for Web Speech API
 const voiceLang = computed(() => locale.value.replace('_', '-'))
 
@@ -140,16 +186,42 @@ function generateConversationId(): string {
   return crypto.randomUUID()
 }
 
-onMounted(() => {
+onMounted(async () => {
   // Get or create conversation ID
   const stored = localStorage.getItem(CONVERSATION_KEY)
   if (stored) {
     conversationId.value = stored
+    // Load existing conversation history
+    await loadConversationHistory()
   } else {
     conversationId.value = generateConversationId()
     localStorage.setItem(CONVERSATION_KEY, conversationId.value)
   }
 })
+
+async function loadConversationHistory() {
+  if (!conversationId.value) return
+
+  try {
+    const response = await apiPlatform.client.get(`/api/conversations/${conversationId.value}`, {
+      headers: {
+        'Accept': 'application/ld+json'
+      }
+    })
+
+    if (response.data?.messages && Array.isArray(response.data.messages)) {
+      messages.value = response.data.messages.map((msg: { message: string; response: string }) => ({
+        message: msg.message,
+        response: msg.response,
+        loading: false
+      }))
+      scrollToBottom()
+    }
+  } catch (error) {
+    // If conversation not found or error, just start fresh
+    console.log('No existing conversation found, starting fresh')
+  }
+}
 
 const isOpen = computed({
   get: () => props.modelValue,
@@ -225,7 +297,8 @@ async function sendMessage() {
   try {
     const response = await apiPlatform.client.post('/api/chat', {
       message: userMessage,
-      conversationId: conversationId.value
+      conversationId: conversationId.value,
+      pageContext: pageContext.value
     }, {
       headers: {
         'Content-Type': 'application/ld+json',

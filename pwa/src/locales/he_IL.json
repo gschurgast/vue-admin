@@ -18,7 +18,11 @@
         "showFilters": "הצג מסננים",
         "hideFilters": "הסתר מסננים",
         "createNew": "צור חדש",
-        "language": "שפה"
+        "language": "שפה",
+        "add": "הוספה",
+        "readonly": "לקריאה בלבד",
+        "showFull": "הצג הכל",
+        "showLess": "הצג פחות"
     },
     "app": {
         "title": "ניהול פלטפורמת API",
@@ -111,5 +115,36 @@
         "confirmPassword": "אשר סיסמה",
         "passwordMinLength": "הסיסמה חייבת להכיל לפחות 6 תווים",
         "passwordMismatch": "הסיסמאות אינן תואמות"
+    },
+    "attributes": {
+        "productTitle": "מאפייני מוצר",
+        "variantTitle": "מאפייני וריאציה",
+        "scopeProduct": "מוצר",
+        "scopeVariant": "וריאציה",
+        "subtitleProductShared": "משותפים לכל הווריאציות של מוצר זה",
+        "subtitleProductInherited": "ירשו מהמוצר ההורה (לקריאה בלבד כאן)",
+        "subtitleVariant": "ייחודיים לווריאציה זו בלבד",
+        "editOnProduct": "ערוך במוצר",
+        "emptyProduct": "אין מאפייני מוצר",
+        "emptySharedOnVariant": "אין מאפיינים משותפים במוצר ההורה",
+        "emptyVariant": "עדיין אין מאפיינים ייחודיים לווריאציה זו",
+        "selectProductFirst": "בחר תחילה מוצר כדי לראות את מאפייניו",
+        "saveVariantFirst": "שמור תחילה את הווריאציה כדי להוסיף מאפיינים",
+        "addProductAttribute": "הוסף מאפיין מוצר",
+        "addVariantAttribute": "הוסף מאפיין וריאציה",
+        "attributeLabel": "מאפיין"
+    },
+    "variantList": {
+        "title": "וריאציות מוצר",
+        "subtitle": "לחץ כדי לעבור לווריאציה אחרת",
+        "default": "ברירת מחדל"
+    },
+    "validation": {
+        "required": "שדה חובה",
+        "minLength": "אורך מינימלי {limit}",
+        "maxLength": "אורך מקסימלי {limit}",
+        "invalidFormat": "פורמט לא תקין",
+        "min": "מינימום {limit}",
+        "max": "מקסימום {limit}"
     }
 }

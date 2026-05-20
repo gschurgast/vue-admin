@@ -98,6 +98,10 @@ class ProductAttributeValuesProvider implements ProviderInterface
                     'type' => $definition->getType()->value,
                     'unit' => $definition->getUnit(),
                     'relationEndpoint' => $definition->getRelationEndpoint(),
+                    'isRequired' => $definition->getIsRequired(),
+                    'validationRules' => $definition->getValidationRules(),
+                    'defaultValue' => $definition->getDefaultValue(),
+                    'helpText' => $definition->getHelpText(),
                 ],
                 'option' => $option ? [
                     '@id' => '/api/attribute_options/' . $option->getId(),

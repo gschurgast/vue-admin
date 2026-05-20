@@ -57,6 +57,8 @@
           </div>
         </v-card-text>
       </v-card>
+
+      <ProductVariantsList :product-iri="productIri" class="mt-4" />
     </v-col>
 
     <!-- Right side: Attribute Values Panel -->
@@ -74,6 +76,7 @@
 import { ref, computed, watch } from 'vue'
 import ResourceForm from '../../resource/ResourceForm.vue'
 import ProductAttributeValuesPanel from './ProductAttributeValuesPanel.vue'
+import ProductVariantsList from './ProductVariantsList.vue'
 import apiPlatform from '../../../services/apiPlatform'
 
 interface Props {

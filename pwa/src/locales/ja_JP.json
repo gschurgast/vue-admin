@@ -18,7 +18,11 @@
         "showFilters": "フィルターを表示",
         "hideFilters": "フィルターを隠す",
         "createNew": "新規作成",
-        "language": "言語"
+        "language": "言語",
+        "add": "追加",
+        "readonly": "読み取り専用",
+        "showFull": "すべて表示",
+        "showLess": "折りたたむ"
     },
     "app": {
         "title": "API Platform 管理",
@@ -111,5 +115,36 @@
         "confirmPassword": "パスワードを確認",
         "passwordMinLength": "パスワードは6文字以上必要です",
         "passwordMismatch": "パスワードが一致しません"
+    },
+    "attributes": {
+        "productTitle": "商品の属性",
+        "variantTitle": "バリアントの属性",
+        "scopeProduct": "商品",
+        "scopeVariant": "バリアント",
+        "subtitleProductShared": "この商品のすべてのバリアントで共有",
+        "subtitleProductInherited": "親商品から継承（ここでは読み取り専用）",
+        "subtitleVariant": "このバリアント固有",
+        "editOnProduct": "商品で編集",
+        "emptyProduct": "商品属性なし",
+        "emptySharedOnVariant": "親商品に共有属性はありません",
+        "emptyVariant": "このバリアント固有の属性はまだありません",
+        "selectProductFirst": "属性を表示するには、まず商品を選択してください",
+        "saveVariantFirst": "属性を追加するには、まずバリアントを保存してください",
+        "addProductAttribute": "商品属性を追加",
+        "addVariantAttribute": "バリアント属性を追加",
+        "attributeLabel": "属性"
+    },
+    "variantList": {
+        "title": "商品のバリアント",
+        "subtitle": "クリックして別のバリアントに切り替え",
+        "default": "デフォルト"
+    },
+    "validation": {
+        "required": "必須",
+        "minLength": "最小長 {limit}",
+        "maxLength": "最大長 {limit}",
+        "invalidFormat": "無効な形式",
+        "min": "最小 {limit}",
+        "max": "最大 {limit}"
     }
 }

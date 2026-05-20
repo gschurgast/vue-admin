@@ -3,18 +3,29 @@
 namespace App\Entity\Product;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\McpTool;
+use ApiPlatform\Metadata\McpToolCollection;
 use ApiPlatform\Metadata\Post;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Delete;
+use App\ApiResource\Mcp\IdentifierInput;
+use App\ApiResource\Mcp\ProductVariantCreateInput;
+use App\ApiResource\Mcp\ProductVariantSearch;
+use App\ApiResource\Mcp\ProductVariantUpdateInput;
+use App\State\Mcp\ProductVariantCreateProcessor;
+use App\State\Mcp\ProductVariantUpdateProcessor;
 use App\Attribute\MenuGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity]
 #[ORM\Table(name: 'product_variant')]
@@ -25,6 +36,30 @@ use Symfony\Component\Serializer\Annotation\Groups;
         new Post(),
         new Patch(),
         new Delete()
+    ],
+    mcp: [
+        'list_product_variants' => new McpToolCollection(
+            description: 'List product variants. Filter by parent product id, sku (partial), or ean.',
+            input: ProductVariantSearch::class,
+            provider: CollectionProvider::class,
+        ),
+        'get_product_variant' => new McpTool(
+            description: 'Get a single product variant by id, including its attribute values.',
+            uriTemplate: '/product_variants/{id}',
+            uriVariables: ['id' => new Link(fromClass: self::class, identifiers: ['id'])],
+            input: IdentifierInput::class,
+            provider: ItemProvider::class,
+        ),
+        'create_product_variant' => new McpTool(
+            description: 'Create a new variant under an existing product. Requires productId and sku.',
+            input: ProductVariantCreateInput::class,
+            processor: ProductVariantCreateProcessor::class,
+        ),
+        'update_product_variant' => new McpTool(
+            description: 'Update fields of an existing variant. Setting isDefault=true automatically resets the previous default for the same product.',
+            input: ProductVariantUpdateInput::class,
+            processor: ProductVariantUpdateProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => ['variant:read']],
     denormalizationContext: ['groups' => ['variant:write']]

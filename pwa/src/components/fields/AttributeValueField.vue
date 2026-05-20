@@ -22,6 +22,10 @@
         v-if="selectedDefinition.type === 'text'"
         v-model="valueData"
         label="Value"
+        :hint="definitionHint"
+        :persistent-hint="!!definitionHint"
+        :rules="textRules"
+        :required="selectedDefinition.isRequired"
         @update:model-value="onValueChange"
       />
 
@@ -31,6 +35,10 @@
         v-model="valueData"
         label="Value"
         rows="3"
+        :hint="definitionHint"
+        :persistent-hint="!!definitionHint"
+        :rules="textRules"
+        :required="selectedDefinition.isRequired"
         @update:model-value="onValueChange"
       />
 
@@ -49,6 +57,12 @@
         label="Value"
         type="number"
         step="any"
+        :min="selectedDefinition.validationRules?.min"
+        :max="selectedDefinition.validationRules?.max"
+        :hint="definitionHint"
+        :persistent-hint="!!definitionHint"
+        :rules="numberRules"
+        :required="selectedDefinition.isRequired"
         @update:model-value="onValueChange"
       />
 
@@ -59,6 +73,12 @@
         label="Value"
         type="number"
         step="1"
+        :min="selectedDefinition.validationRules?.min"
+        :max="selectedDefinition.validationRules?.max"
+        :hint="definitionHint"
+        :persistent-hint="!!definitionHint"
+        :rules="numberRules"
+        :required="selectedDefinition.isRequired"
         @update:model-value="onValueChange"
       />
 
@@ -132,6 +152,12 @@
           label="Value"
           type="number"
           step="any"
+          :min="selectedDefinition.validationRules?.min"
+          :max="selectedDefinition.validationRules?.max"
+          :rules="numberRules"
+          :required="selectedDefinition.isRequired"
+          :hint="definitionHint"
+          :persistent-hint="!!definitionHint"
           class="flex-grow-1"
           @update:model-value="onMeasureChange"
         />
@@ -159,6 +185,7 @@
 import { ref, computed, watch, onMounted } from 'vue'
 import { useAttributeDefinitions } from '../../composables/useAttributeDefinitions'
 import { useAttributeOptions } from '../../composables/useAttributeOptions'
+import { useAttributeValidation } from '../../composables/useAttributeValidation'
 import { extractIri } from '../../utils/resourceConfig'
 import JsonKeyValueField from './JsonKeyValueField.vue'
 import RichTextField from './RichTextField.vue'
@@ -203,6 +230,7 @@ const {
 } = useAttributeOptions()
 
 const selectedDefinition = ref<any>(null)
+const { helpText: definitionHint, textRules, numberRules } = useAttributeValidation(selectedDefinition)
 
 // Filter definitions based on excludeDefinitions prop
 const filteredDefinitions = computed(() => {
@@ -265,38 +293,80 @@ function parseMeasureFromValue() {
   }
 }
 
+function applyDefaultValue(definition: any) {
+  const dv = definition?.defaultValue
+  const type = definition?.type
+
+  // Reset all
+  valueData.value = null
+  optionValue.value = null
+  valuesData.value = []
+  booleanValue.value = false
+  measureValue.value = null
+  measureUnit.value = definition?.unit || ''
+
+  if (dv === null || dv === undefined || dv === '') {
+    emit('update:formData', { value: null, option: null, values: null })
+    return
+  }
+
+  if (type === 'boolean') {
+    booleanValue.value = dv === 'true' || dv === '1' || dv === true
+    emit('update:formData', { value: booleanValue.value ? 'true' : 'false' })
+  } else if (type === 'enum') {
+    optionValue.value = String(dv)
+    emit('update:formData', { option: optionValue.value })
+  } else if (type === 'multienum') {
+    try {
+      const parsed = typeof dv === 'string' ? JSON.parse(dv) : dv
+      valuesData.value = Array.isArray(parsed) ? parsed.map(String) : []
+    } catch {
+      valuesData.value = []
+    }
+    emit('update:formData', { values: valuesData.value })
+  } else if (type === 'measure') {
+    try {
+      const parsed = typeof dv === 'string' ? JSON.parse(dv) : dv
+      measureValue.value = parsed?.value ?? null
+      measureUnit.value = parsed?.unit ?? definition?.unit ?? ''
+      emit('update:formData', {
+        value: JSON.stringify({ value: measureValue.value, unit: measureUnit.value })
+      })
+    } catch {
+      emit('update:formData', { value: null })
+    }
+  } else {
+    valueData.value = String(dv)
+    emit('update:formData', { value: valueData.value })
+  }
+}
+
 function onDefinitionChange(value: string | null) {
   emit('update:modelValue', value)
 
-  // Clear all value fields when definition changes
+  if (value) {
+    const definition = getDefinition(value) || definitionsList.value.find((d: any) => d['@id'] === value)
+    if (definition) {
+      selectedDefinition.value = definition
+      emit('definition-change', {
+        isLocalizable: definition.isLocalizable ?? false,
+        isScopable: definition.isScopable ?? false
+      })
+      applyDefaultValue(definition)
+      return
+    }
+  }
+
+  // Clear when no definition
+  selectedDefinition.value = null
   valueData.value = null
   optionValue.value = null
   valuesData.value = []
   booleanValue.value = false
   measureValue.value = null
   measureUnit.value = ''
-
-  emit('update:formData', {
-    value: null,
-    option: null,
-    values: null
-  })
-
-  if (value) {
-    // Find the definition from the shared cache
-    const definition = getDefinition(value) || definitionsList.value.find((d: any) => d['@id'] === value)
-    if (definition) {
-      selectedDefinition.value = definition
-      // Emit definition properties for conditional field visibility
-      emit('definition-change', {
-        isLocalizable: definition.isLocalizable ?? false,
-        isScopable: definition.isScopable ?? false
-      })
-    }
-  } else {
-    selectedDefinition.value = null
-    emit('definition-change', null)
-  }
+  emit('update:formData', { value: null, option: null, values: null })
+  emit('definition-change', null)
 }
 
 function onValueChange(value: string | number | null) {

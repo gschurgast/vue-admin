@@ -28,7 +28,11 @@
         "translate": "Traduire",
         "unsavedChanges": "Modifications non enregistrées",
         "stay": "Rester",
-        "leave": "Quitter"
+        "leave": "Quitter",
+        "add": "Ajouter",
+        "readonly": "Lecture seule",
+        "showFull": "Tout afficher",
+        "showLess": "Réduire"
     },
     "app": {
         "title": "Admin API Platform",
@@ -123,5 +127,36 @@
         "confirmPassword": "Confirmer le mot de passe",
         "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
         "passwordMismatch": "Les mots de passe ne correspondent pas"
+    },
+    "attributes": {
+        "productTitle": "Attributs du produit",
+        "variantTitle": "Attributs de la variante",
+        "scopeProduct": "Produit",
+        "scopeVariant": "Variante",
+        "subtitleProductShared": "Partagés entre toutes les variantes de ce produit",
+        "subtitleProductInherited": "Hérités du produit parent (lecture seule ici)",
+        "subtitleVariant": "Spécifiques à cette variante uniquement",
+        "editOnProduct": "Modifier sur le produit",
+        "emptyProduct": "Aucun attribut produit",
+        "emptySharedOnVariant": "Aucun attribut partagé sur le produit parent",
+        "emptyVariant": "Aucun attribut spécifique à cette variante",
+        "selectProductFirst": "Sélectionnez d'abord un produit pour voir ses attributs",
+        "saveVariantFirst": "Enregistrez d'abord la variante pour ajouter des attributs",
+        "addProductAttribute": "Ajouter un attribut produit",
+        "addVariantAttribute": "Ajouter un attribut variante",
+        "attributeLabel": "Attribut"
+    },
+    "variantList": {
+        "title": "Variantes du produit",
+        "subtitle": "Cliquez pour passer à une autre variante",
+        "default": "Par défaut"
+    },
+    "validation": {
+        "required": "Champ requis",
+        "minLength": "Longueur minimale {limit}",
+        "maxLength": "Longueur maximale {limit}",
+        "invalidFormat": "Format invalide",
+        "min": "Minimum {limit}",
+        "max": "Maximum {limit}"
     }
 }

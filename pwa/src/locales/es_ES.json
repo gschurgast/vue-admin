@@ -18,7 +18,11 @@
         "showFilters": "Mostrar filtros",
         "hideFilters": "Ocultar filtros",
         "createNew": "Crear nuevo",
-        "language": "Idioma"
+        "language": "Idioma",
+        "add": "Añadir",
+        "readonly": "Solo lectura",
+        "showFull": "Mostrar todo",
+        "showLess": "Mostrar menos"
     },
     "app": {
         "title": "Admin API Platform",
@@ -111,5 +115,36 @@
         "confirmPassword": "Confirmar contraseña",
         "passwordMinLength": "La contraseña debe tener al menos 6 caracteres",
         "passwordMismatch": "Las contraseñas no coinciden"
+    },
+    "attributes": {
+        "productTitle": "Atributos del producto",
+        "variantTitle": "Atributos de la variante",
+        "scopeProduct": "Producto",
+        "scopeVariant": "Variante",
+        "subtitleProductShared": "Compartidos entre todas las variantes de este producto",
+        "subtitleProductInherited": "Heredados del producto principal (solo lectura aquí)",
+        "subtitleVariant": "Específicos de esta variante",
+        "editOnProduct": "Editar en el producto",
+        "emptyProduct": "Sin atributos de producto",
+        "emptySharedOnVariant": "Sin atributos compartidos en el producto principal",
+        "emptyVariant": "Aún no hay atributos específicos de esta variante",
+        "selectProductFirst": "Seleccione primero un producto para ver sus atributos",
+        "saveVariantFirst": "Guarde primero la variante para añadir atributos",
+        "addProductAttribute": "Añadir atributo del producto",
+        "addVariantAttribute": "Añadir atributo de la variante",
+        "attributeLabel": "Atributo"
+    },
+    "variantList": {
+        "title": "Variantes del producto",
+        "subtitle": "Haga clic para cambiar a otra variante",
+        "default": "Predeterminado"
+    },
+    "validation": {
+        "required": "Obligatorio",
+        "minLength": "Longitud mínima {limit}",
+        "maxLength": "Longitud máxima {limit}",
+        "invalidFormat": "Formato inválido",
+        "min": "Mínimo {limit}",
+        "max": "Máximo {limit}"
     }
 }

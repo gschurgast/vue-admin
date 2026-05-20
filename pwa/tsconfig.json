@@ -55,13 +55,10 @@
     ],
     "skipLibCheck": true,
     "types": [
-      "vite/client",
-      "unplugin-vue-router/client",
-      "vite-plugin-vue-meta-layouts/client"
+      "vite/client"
     ]
   },
   "include": [
-    "./typed-router.d.ts",
     "./vite.config.*",
     "./env.d.ts",
     "./shims.d.ts",

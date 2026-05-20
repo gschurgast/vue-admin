@@ -3,18 +3,29 @@
 namespace App\Entity\Attribute;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\McpTool;
+use ApiPlatform\Metadata\McpToolCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\ApiResource\Mcp\AttributeDefinitionCreateInput;
+use App\ApiResource\Mcp\AttributeDefinitionSearch;
+use App\ApiResource\Mcp\AttributeDefinitionUpdateInput;
+use App\ApiResource\Mcp\IdentifierInput;
+use App\State\Mcp\AttributeDefinitionCreateProcessor;
+use App\State\Mcp\AttributeDefinitionUpdateProcessor;
 use App\Attribute\MenuGroup;
 use App\Enum\AttributeType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
+use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AppAssert;
 
@@ -27,6 +38,30 @@ use App\Validator as AppAssert;
         new Post(),
         new Patch(),
         new Delete(),
+    ],
+    mcp: [
+        'list_attribute_definitions' => new McpToolCollection(
+            description: 'List attribute definitions. Filter by code (partial), type (text, number, boolean, enum, ...), or isRequired.',
+            input: AttributeDefinitionSearch::class,
+            provider: CollectionProvider::class,
+        ),
+        'get_attribute_definition' => new McpTool(
+            description: 'Get a single attribute definition by id, with its validation rules and default value.',
+            uriTemplate: '/attribute_definitions/{id}',
+            uriVariables: ['id' => new Link(fromClass: self::class, identifiers: ['id'])],
+            input: IdentifierInput::class,
+            provider: ItemProvider::class,
+        ),
+        'create_attribute_definition' => new McpTool(
+            description: 'Create a new attribute definition. Type must be one of: text, textarea, richtext, number, integer, decimal, boolean, enum, multienum, media, relation, json, measure.',
+            input: AttributeDefinitionCreateInput::class,
+            processor: AttributeDefinitionCreateProcessor::class,
+        ),
+        'update_attribute_definition' => new McpTool(
+            description: 'Update fields of an existing attribute definition. Only provided fields are modified. Note: relationEndpoint is immutable once the attribute is in use.',
+            input: AttributeDefinitionUpdateInput::class,
+            processor: AttributeDefinitionUpdateProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => ['attribute_definition:read']],
     denormalizationContext: ['groups' => ['attribute_definition:write']]
@@ -49,7 +84,7 @@ class AttributeDefinition
 
     #[ORM\Column(length: 50, enumType: AttributeType::class)]
     #[Assert\NotBlank]
-    #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
     private ?AttributeType $type = null;
 
     #[ORM\Column(options: ['default' => false])]
@@ -61,7 +96,7 @@ class AttributeDefinition
     private bool $isScopable = false;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
-    #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
     private ?array $validationRules = null;
 
     #[ORM\Column(type: Types::JSON, nullable: true)]
@@ -69,19 +104,19 @@ class AttributeDefinition
     private ?array $allowedValues = null;
 
     #[ORM\Column(length: 50, nullable: true)]
-    #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
     private ?string $unit = null;
 
     #[ORM\Column]
-    #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
     private bool $isRequired = false;
 
     #[ORM\Column(length: 255, nullable: true)]
-    #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
     private ?string $defaultValue = null;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
-    #[Groups(['attribute_definition:read', 'attribute_definition:write'])]
+    #[Groups(['attribute_definition:read', 'attribute_definition:write', 'value:read'])]
     private ?string $helpText = null;
 
     #[ORM\Column]

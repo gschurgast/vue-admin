@@ -3,19 +3,30 @@
 namespace App\Entity\Attribute;
 
 use ApiPlatform\Doctrine\Orm\Filter\SearchFilter;
+use ApiPlatform\Doctrine\Orm\State\CollectionProvider;
+use ApiPlatform\Doctrine\Orm\State\ItemProvider;
 use ApiPlatform\Metadata\ApiFilter;
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Delete;
 use ApiPlatform\Metadata\Get;
 use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Link;
+use ApiPlatform\Metadata\McpTool;
+use ApiPlatform\Metadata\McpToolCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
+use App\ApiResource\Mcp\AttributeOptionCreateInput;
+use App\ApiResource\Mcp\AttributeOptionSearch;
+use App\ApiResource\Mcp\AttributeOptionUpdateInput;
+use App\ApiResource\Mcp\IdentifierInput;
+use App\State\Mcp\AttributeOptionCreateProcessor;
+use App\State\Mcp\AttributeOptionUpdateProcessor;
 use App\Attribute\MenuGroup;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Serializer\Annotation\Groups;
-use Symfony\Component\Serializer\Annotation\MaxDepth;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\MaxDepth;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AppAssert;
 
@@ -36,6 +47,30 @@ use App\Validator as AppAssert;
         new Post(),
         new Patch(),
         new Delete()
+    ],
+    mcp: [
+        'list_attribute_options' => new McpToolCollection(
+            description: 'List attribute options (used by enum and multienum attributes). Filter by parent attributeDefinition id or code (partial).',
+            input: AttributeOptionSearch::class,
+            provider: CollectionProvider::class,
+        ),
+        'get_attribute_option' => new McpTool(
+            description: 'Get a single attribute option by id, including its translations.',
+            uriTemplate: '/attribute_options/{id}',
+            uriVariables: ['id' => new Link(fromClass: self::class, identifiers: ['id'])],
+            input: IdentifierInput::class,
+            provider: ItemProvider::class,
+        ),
+        'create_attribute_option' => new McpTool(
+            description: 'Create a new option for an enum/multienum AttributeDefinition. Code must be unique within the parent attribute.',
+            input: AttributeOptionCreateInput::class,
+            processor: AttributeOptionCreateProcessor::class,
+        ),
+        'update_attribute_option' => new McpTool(
+            description: 'Update an existing attribute option. Translations must be managed separately.',
+            input: AttributeOptionUpdateInput::class,
+            processor: AttributeOptionUpdateProcessor::class,
+        ),
     ],
     normalizationContext: ['groups' => ['option:read'], 'enable_max_depth' => true],
     denormalizationContext: ['groups' => ['option:write']]

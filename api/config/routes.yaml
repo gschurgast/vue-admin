@@ -7,3 +7,7 @@ controllers:
 api_login:
     path: /api/login
     methods: ['POST']
+
+mcp:
+    resource: .
+    type: mcp

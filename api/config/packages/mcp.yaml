@@ -1,0 +1,24 @@
+mcp:
+    app: 'antigravity'
+    version: '1.0.0'
+    description: 'Antigravity API - MCP Server exposing API Platform resources'
+    website_url: 'http://localhost:8080'
+    pagination_limit: 50
+    instructions: |
+        This MCP server provides access to the Antigravity API Platform resources.
+        Use the available tools to perform CRUD operations on entities.
+
+    client_transports:
+        stdio: true
+        http: true
+
+    http:
+        path: /_mcp
+        session:
+            store: file
+            directory: '%kernel.cache_dir%/mcp-sessions'
+            ttl: 3600
+
+    discovery:
+        scan_dirs:
+            - src
