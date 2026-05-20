@@ -39,15 +39,14 @@ const router = createRouter({
 })
 
 // Navigation guard for authentication
-router.beforeEach((to, from, next) => {
+router.beforeEach((to) => {
     const isAuthenticated = apiPlatform.isAuthenticated()
 
     if (to.meta.requiresAuth && !isAuthenticated) {
-        next({ name: 'login', query: { redirect: to.fullPath } })
-    } else if (to.name === 'login' && isAuthenticated) {
-        next({ name: 'home' })
-    } else {
-        next()
+        return { name: 'login', query: { redirect: to.fullPath } }
+    }
+    if (to.name === 'login' && isAuthenticated) {
+        return { name: 'home' }
     }
 })
 
