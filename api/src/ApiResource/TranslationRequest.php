@@ -4,6 +4,7 @@ namespace App\ApiResource;
 
 use ApiPlatform\Metadata\ApiResource;
 use ApiPlatform\Metadata\Post;
+use App\Attribute\MenuGroup;
 use App\State\TranslationRequestProcessor;
 use Symfony\Component\Serializer\Attribute\Groups;
 
@@ -17,6 +18,7 @@ use Symfony\Component\Serializer\Attribute\Groups;
         )
     ]
 )]
+#[MenuGroup('hidden')]
 class TranslationRequest
 {
     #[Groups(['translation:write'])]

@@ -24,21 +24,28 @@ class MenuGroupOpenApiDecorator implements OpenApiFactoryInterface
         // Map of tag names to their menu groups based on MenuGroup attribute
         $menuGroups = $this->getMenuGroupsFromAttributes();
 
-        // Add x-menu-group to each path's GET operation based on its tag
+        // Add x-menu-group to every operation of each path based on its tag
         $paths = $openApi->getPaths();
         $newPaths = new \ApiPlatform\OpenApi\Model\Paths();
 
-        foreach ($paths->getPaths() as $path => $pathItem) {
-            $getOperation = $pathItem->getGet();
+        $methods = ['Get', 'Post', 'Put', 'Patch', 'Delete'];
 
-            if ($getOperation) {
-                $tags = $getOperation->getTags();
+        foreach ($paths->getPaths() as $path => $pathItem) {
+            foreach ($methods as $method) {
+                $getter = 'get' . $method;
+                $setter = 'with' . $method;
+                $operation = $pathItem->{$getter}();
+
+                if (!$operation) {
+                    continue;
+                }
+
+                $tags = $operation->getTags();
                 $tag = $tags[0] ?? null;
 
                 if ($tag && isset($menuGroups[$tag])) {
-                    // Create new operation with x-menu-group extension
-                    $newGetOperation = $getOperation->withExtensionProperty('x-menu-group', $menuGroups[$tag]);
-                    $pathItem = $pathItem->withGet($newGetOperation);
+                    $newOperation = $operation->withExtensionProperty('x-menu-group', $menuGroups[$tag]);
+                    $pathItem = $pathItem->{$setter}($newOperation);
                 }
             }
 

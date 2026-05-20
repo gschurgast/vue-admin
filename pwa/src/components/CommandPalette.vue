@@ -73,13 +73,15 @@ const search = ref('')
 const selectedIndex = ref(0)
 const searchInput = ref(null)
 
-const resources = computed(() => resourcesStore.resources)
+const resources = computed(() =>
+  resourcesStore.resources.filter(r => r.menuGroup !== 'hidden')
+)
 
 const filteredResources = computed(() => {
   if (!search.value) return resources.value
-  
+
   const query = search.value.toLowerCase()
-  return resources.value.filter(resource => 
+  return resources.value.filter(resource =>
     resource.title.toLowerCase().includes(query) ||
     resource.name.toLowerCase().includes(query)
   )

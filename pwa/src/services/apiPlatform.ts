@@ -271,17 +271,18 @@ class ApiPlatformService {
                         })
                     }
 
-                    // Third pass: parse OpenAPI paths for x-menu-group
+                    // Third pass: parse OpenAPI paths for x-menu-group on any HTTP method
+                    // (a single path can host operations with different tags, e.g. GET=Conversation + DELETE=ConversationDelete)
                     if (this.openApiSchema?.paths) {
-                        for (const [path, methods] of Object.entries(this.openApiSchema.paths)) {
-                            const getOperation = (methods as any)?.get
-                            if (getOperation?.['x-menu-group']) {
-                                // Extract resource name from tags
-                                const tag = getOperation.tags?.[0]
+                        for (const [, methods] of Object.entries(this.openApiSchema.paths)) {
+                            for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+                                const operation = (methods as any)?.[method]
+                                if (!operation?.['x-menu-group']) continue
+                                const tag = operation.tags?.[0]
                                 if (tag && this.resources.has(tag)) {
                                     const resource = this.resources.get(tag)
                                     if (resource) {
-                                        resource.menuGroup = getOperation['x-menu-group']
+                                        resource.menuGroup = operation['x-menu-group']
                                         this.resources.set(tag, resource)
                                     }
                                 }
