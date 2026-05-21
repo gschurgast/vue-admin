@@ -79,6 +79,7 @@
 
 <script setup lang="ts">
 import { ref, computed, onMounted, shallowRef, watch } from 'vue'
+import { useRoute } from 'vue-router'
 import { useResource } from '../../../composables/useResource'
 import { useAuthStore } from '../../../stores/auth'
 import apiPlatform from '../../../services/apiPlatform'
@@ -137,6 +138,7 @@ const {
 
 const authStore = useAuthStore()
 
+const route = useRoute()
 const isCreate = computed(() => itemId.value === 'new')
 
 const loading = ref(true)
@@ -284,7 +286,12 @@ async function loadItem() {
   isForbidden.value = false
 
   if (isCreate.value) {
-    formData.value = {}
+    const seed: Record<string, any> = {}
+    for (const [key, value] of Object.entries(route.query)) {
+      if (key === 'redirect' || value == null) continue
+      seed[key] = Array.isArray(value) ? value[0] : value
+    }
+    formData.value = seed
     loading.value = false
     return
   }
