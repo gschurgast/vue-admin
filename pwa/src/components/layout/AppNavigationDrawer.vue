@@ -6,32 +6,50 @@
     @click="rail = false"
     app
   >
-    <v-list density="compact" nav class="mt-2">
+    <div class="brand d-flex align-center px-4 py-4" @click.stop="goHome">
+      <v-avatar size="32" color="primary" class="brand-logo">
+        <v-icon size="20" color="white">mdi-flash</v-icon>
+      </v-avatar>
+      <span v-if="!rail" class="brand-title ml-3">youPim Admin</span>
+    </div>
+
+    <v-divider />
+
+    <v-list nav class="mt-2">
+      <v-list-subheader v-if="!rail" class="text-uppercase text-caption">
+        {{ t('navigation.home') }}
+      </v-list-subheader>
       <v-list-item
         prepend-icon="mdi-home"
         :title="t('navigation.home')"
         to="/"
+        color="primary"
       />
 
-      <v-divider class="my-2" />
-
       <template v-for="(group, groupName) in groupedResources" :key="groupName">
-        <v-list-group v-if="group.length > 0" :value="groupName">
-          <template v-slot:activator="{ props }">
+        <template v-if="group.length > 0">
+          <v-list-subheader v-if="!rail" class="text-uppercase text-caption mt-2">
+            {{ groupName }}
+          </v-list-subheader>
+          <v-list-group :value="groupName">
+            <template v-slot:activator="{ props }">
+              <v-list-item
+                v-bind="props"
+                :prepend-icon="getGroupIcon(groupName)"
+                :title="groupName"
+                color="primary"
+              />
+            </template>
             <v-list-item
-              v-bind="props"
-              :prepend-icon="getGroupIcon(groupName)"
-              :title="groupName"
+              v-for="resource in group"
+              :key="resource.name"
+              :title="resource.title"
+              :to="`/resource/${resource.name}`"
+              color="primary"
+              class="pl-8"
             />
-          </template>
-          <v-list-item
-            v-for="resource in group"
-            :key="resource.name"
-            :title="resource.title"
-            :to="`/resource/${resource.name}`"
-            class="pl-8"
-          />
-        </v-list-group>
+          </v-list-group>
+        </template>
       </template>
 
       <!-- Resources without a group -->
@@ -41,6 +59,7 @@
         :title="resource.title"
         :to="`/resource/${resource.name}`"
         prepend-icon="mdi-database"
+        color="primary"
       />
 
       <v-progress-linear
@@ -55,11 +74,17 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue'
 import { useI18n } from 'vue-i18n'
+import { useRouter } from 'vue-router'
 import { useResourcesStore } from '../../stores/resources'
 import apiPlatform, { type Resource } from '../../services/apiPlatform'
 
 const { t } = useI18n()
+const router = useRouter()
 const resourcesStore = useResourcesStore()
+
+function goHome() {
+  router.push('/')
+}
 
 const drawer = ref(true)
 const rail = ref(true)
