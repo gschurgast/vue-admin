@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar density="compact" color="blue-grey-darken-1">
+  <v-app-bar density="compact" border="bottom">
     <v-progress-linear
       v-if="loading"
       indeterminate

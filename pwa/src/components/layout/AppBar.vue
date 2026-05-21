@@ -1,5 +1,5 @@
 <template>
-  <v-app-bar elevation="1" color="blue-grey-darken-3" density="compact">
+  <v-app-bar border="bottom">
     <v-btn icon density="compact" size="small" class="ml-2" @click="emit('toggle-drawer')">
       <v-icon>mdi-menu</v-icon>
     </v-btn>
