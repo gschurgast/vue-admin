@@ -3,8 +3,10 @@
     v-model="drawer"
     :rail="rail"
     permanent
+    floating
     @click="rail = false"
     app
+    class="floating-drawer"
   >
     <div class="brand d-flex align-center px-4 py-4" @click.stop="goHome">
       <v-avatar size="32" color="primary" class="brand-logo">
@@ -13,12 +15,8 @@
       <span v-if="!rail" class="brand-title ml-3">You-Pim</span>
     </div>
 
-    <v-divider />
-
-    <v-list nav class="mt-2">
-      <v-list-subheader v-if="!rail" class="text-uppercase text-caption">
-        {{ t('navigation.home') }}
-      </v-list-subheader>
+    <v-list nav class="px-2">
+      <!-- Home -->
       <v-list-item
         prepend-icon="mdi-home"
         :title="t('navigation.home')"
@@ -28,27 +26,17 @@
 
       <template v-for="(group, groupName) in groupedResources" :key="groupName">
         <template v-if="group.length > 0">
-          <v-list-subheader v-if="!rail" class="text-uppercase text-caption mt-2">
+          <v-list-subheader v-if="!rail" class="text-uppercase section-header">
             {{ groupName }}
           </v-list-subheader>
-          <v-list-group :value="groupName">
-            <template v-slot:activator="{ props }">
-              <v-list-item
-                v-bind="props"
-                :prepend-icon="getGroupIcon(groupName)"
-                :title="groupName"
-                color="primary"
-              />
-            </template>
-            <v-list-item
-              v-for="resource in group"
-              :key="resource.name"
-              :title="resource.title"
-              :to="`/resource/${resource.name}`"
-              color="primary"
-              class="pl-8"
-            />
-          </v-list-group>
+          <v-list-item
+            v-for="resource in group"
+            :key="resource.name"
+            :title="resource.title"
+            :to="`/resource/${resource.name}`"
+            :prepend-icon="getResourceIcon(resource.name)"
+            color="primary"
+          />
         </template>
       </template>
 
@@ -121,13 +109,19 @@ const ungroupedResources = computed(() => {
   })
 })
 
-function getGroupIcon(groupName: string): string {
+function getResourceIcon(resourceName: string): string {
   const icons: Record<string, string> = {
-    'Product': 'mdi-package-variant',
-    'Content': 'mdi-file-document-multiple',
-    'Settings': 'mdi-cog'
+    Product: 'mdi-package-variant',
+    ProductVariant: 'mdi-shape-outline',
+    Collection: 'mdi-folder-multiple-outline',
+    AttributeDefinition: 'mdi-format-list-bulleted-type',
+    AttributeOption: 'mdi-tag-outline',
+    ProductAttributeValue: 'mdi-tag-multiple-outline',
+    User: 'mdi-account-outline',
+    Author: 'mdi-account-edit-outline',
+    Book: 'mdi-book-open-variant',
   }
-  return icons[groupName] || 'mdi-folder'
+  return icons[resourceName] || 'mdi-database'
 }
 
 function toggleRail() {
@@ -139,3 +133,36 @@ defineExpose({
   rail
 })
 </script>
+
+<style scoped>
+.brand {
+  cursor: pointer;
+}
+.brand-title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: rgb(var(--v-theme-on-surface));
+}
+.section-header {
+  font-size: 0.7rem !important;
+  font-weight: 600 !important;
+  letter-spacing: 0.06em;
+  color: rgb(var(--v-theme-on-surface-variant)) !important;
+  margin-top: 8px;
+  min-height: 28px !important;
+}
+</style>
+
+<!-- Floating drawer styles must be global because v-navigation-drawer
+     renders outside this component's scoped DOM tree. -->
+<style>
+.v-navigation-drawer.floating-drawer {
+  top: 12px !important;
+  bottom: 12px !important;
+  left: 12px !important;
+  height: calc(100vh - 24px) !important;
+  border-radius: 16px;
+  border: 1px solid rgba(var(--v-theme-on-surface), 0.06) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
+}
+</style>

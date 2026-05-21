@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed, onMounted, watch } from 'vue'
+import { ref, computed, onMounted, onUnmounted, watch } from 'vue'
 import { useRoute } from 'vue-router'
 import { useResourcesStore } from './stores/resources'
 import { useAuthStore } from './stores/auth'
@@ -49,8 +49,20 @@ async function refreshResources() {
   }
 }
 
+function onSearchHotkey(event: KeyboardEvent) {
+  if ((event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k') {
+    event.preventDefault()
+    commandPalette.value?.open()
+  }
+}
+
 onMounted(() => {
   authStore.checkAuth()
+  window.addEventListener('keydown', onSearchHotkey)
+})
+
+onUnmounted(() => {
+  window.removeEventListener('keydown', onSearchHotkey)
 })
 
 // Load resources when authenticated and not on login page (fallback for page refresh)
@@ -81,7 +93,6 @@ watch(
       @toggle-help="toggleHelp"
       @toggle-drawer="navigationDrawer?.toggleRail()"
     />
-    <v-hotkey keys="cmd+k" variant="tonal" platform="auto" @click="commandPalette?.open()" />
 
     <HelpDrawer v-model="helpDrawer" :resource-name="currentResourceName" />
     <ChatBot v-model="chatDrawer" />
