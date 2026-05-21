@@ -40,7 +40,8 @@
           :to="editLink"
           :color="color"
           size="small"
-          variant="tonal"
+          variant="text"
+          style="font-size: 0.75rem;"
         >
           <v-icon start size="small">mdi-pencil-outline</v-icon>
           {{ t('attributes.editOnProduct') }}
@@ -50,7 +51,8 @@
           :color="color"
           :disabled="addDisabled"
           size="small"
-          variant="tonal"
+          variant="text"
+          style="font-size: 0.75rem;"
           @click="emit('add')"
         >
           <v-icon start size="small">mdi-plus</v-icon>

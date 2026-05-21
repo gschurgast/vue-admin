@@ -9,7 +9,8 @@
           <v-btn
             color="primary"
             size="small"
-            variant="tonal"
+            variant="text"
+            style="font-size: 0.75rem;"
             :loading="generatingContent"
             :disabled="!variantIri || generatingContent"
             @click="generateAiContent"
