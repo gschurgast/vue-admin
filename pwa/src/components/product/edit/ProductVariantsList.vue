@@ -1,20 +1,12 @@
 <template>
   <v-card v-if="variants.length > 0">
-    <v-card-item>
-      <template #prepend>
-        <v-avatar color="grey" size="32" variant="tonal">
-          <v-icon>mdi-format-list-bulleted</v-icon>
-        </v-avatar>
-      </template>
-      <v-card-title class="text-subtitle-1 pa-0">
-        {{ t('variantList.title') }}
-        <v-chip size="x-small" variant="tonal" class="ml-2">{{ variants.length }}</v-chip>
-      </v-card-title>
-      <v-card-subtitle class="pa-0">
-        {{ t('variantList.subtitle') }}
-      </v-card-subtitle>
-    </v-card-item>
-    <v-divider />
+    <v-card-title class="d-flex align-center">
+      <span>{{ t('variantList.title') }}</span>
+      <v-chip size="x-small" variant="tonal" class="ml-2">{{ variants.length }}</v-chip>
+    </v-card-title>
+    <v-card-subtitle class="pb-3">
+      {{ t('variantList.subtitle') }}
+    </v-card-subtitle>
     <v-list density="compact" class="py-0">
       <v-list-item
         v-for="variant in sortedVariants"

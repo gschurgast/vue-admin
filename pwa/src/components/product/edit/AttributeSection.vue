@@ -1,70 +1,61 @@
 <template>
-  <v-card :variant="empty ? 'outlined' : 'elevated'" :border="empty">
-    <v-card-item :class="`bg-${color}-lighten-5`">
-      <template #prepend>
-        <v-avatar :color="color" size="36" variant="tonal">
-          <v-icon>{{ icon }}</v-icon>
-        </v-avatar>
-      </template>
-      <v-card-title class="d-flex align-center pa-0">
-        <span class="text-subtitle-1 font-weight-medium">{{ title }}</span>
-        <v-chip
-          :color="color"
-          size="x-small"
-          variant="flat"
-          class="ml-2 text-uppercase"
-        >
-          {{ scopeLabel }}
-        </v-chip>
-        <v-chip
-          v-if="readonly"
-          size="x-small"
-          variant="tonal"
-          color="grey"
-          class="ml-2"
-          prepend-icon="mdi-lock-outline"
-        >
-          {{ t('common.readonly') }}
-        </v-chip>
-        <v-chip
-          v-if="attributes.length > 0"
-          size="x-small"
-          variant="tonal"
-          class="ml-2"
-        >
-          {{ attributes.length }}
-        </v-chip>
-        <v-spacer />
-        <v-btn
-          v-if="readonly && editLink"
-          :to="editLink"
-          :color="color"
-          size="small"
-          variant="text"
-          style="font-size: 0.75rem;"
-        >
-          <v-icon start size="small">mdi-pencil-outline</v-icon>
-          {{ t('attributes.editOnProduct') }}
-        </v-btn>
-        <v-btn
-          v-else-if="!readonly"
-          :color="color"
-          :disabled="addDisabled"
-          size="small"
-          variant="text"
-          style="font-size: 0.75rem;"
-          @click="emit('add')"
-        >
-          <v-icon start size="small">mdi-plus</v-icon>
-          {{ t('common.add') }}
-        </v-btn>
-      </v-card-title>
-      <v-card-subtitle class="pa-0 mt-1">
-        {{ subtitle }}
-      </v-card-subtitle>
-    </v-card-item>
-
-    <v-divider />
+  <v-card>
+    <v-card-title class="d-flex align-center">
+      <span>{{ title }}</span>
+      <v-chip
+        :color="color"
+        size="x-small"
+        variant="flat"
+        class="ml-2 text-uppercase"
+      >
+        {{ scopeLabel }}
+      </v-chip>
+      <v-chip
+        v-if="readonly"
+        size="x-small"
+        variant="tonal"
+        color="grey"
+        class="ml-2"
+        prepend-icon="mdi-lock-outline"
+      >
+        {{ t('common.readonly') }}
+      </v-chip>
+      <v-chip
+        v-if="attributes.length > 0"
+        size="x-small"
+        variant="tonal"
+        class="ml-2"
+      >
+        {{ attributes.length }}
+      </v-chip>
+      <v-spacer />
+      <v-btn
+        v-if="readonly && editLink"
+        :to="editLink"
+        :color="color"
+        size="small"
+        variant="text"
+        style="font-size: 0.75rem;"
+      >
+        <v-icon start size="small">mdi-pencil-outline</v-icon>
+        {{ t('attributes.editOnProduct') }}
+      </v-btn>
+      <v-btn
+        v-else-if="!readonly"
+        :color="color"
+        :disabled="addDisabled"
+        size="small"
+        variant="text"
+        style="font-size: 0.75rem;"
+        @click="emit('add')"
+      >
+        <v-icon start size="small">mdi-plus</v-icon>
+        {{ t('common.add') }}
+      </v-btn>
+    </v-card-title>
+    <v-card-subtitle class="pb-3">
+      {{ subtitle }}
+    </v-card-subtitle>
 
     <v-card-text :class="{ 'py-3': !empty, 'py-2': empty }">
       <template v-if="!empty">
