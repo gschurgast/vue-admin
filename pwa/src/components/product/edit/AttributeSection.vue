@@ -63,7 +63,7 @@
           <div
             v-for="(attrValue, index) in attributes"
             :key="`${scopeLabel}-${attrValue.id || attrValue._tempId || index}`"
-            class="d-flex align-start attribute-row"
+            class="d-flex attribute-row"
           >
             <div class="flex-grow-1">
               <InlineAttributeValueEditor
@@ -77,7 +77,7 @@
               size="small"
               variant="text"
               color="error"
-              class="mt-3 ml-2"
+              class="ml-2 delete-btn"
               @click="emit('delete', index)"
             />
           </div>
@@ -165,6 +165,12 @@ function formatValue(attrValue: any): string {
   border-top: 1px dashed rgba(var(--v-border-color), 0.12);
   padding-top: 8px;
   margin-top: 4px;
+}
+.attribute-row .delete-btn {
+  align-self: flex-start;
+  /* Vertically center the icon button against the outlined input
+     (height ≈ 52px with density=comfortable, btn ≈ 32px → 10px offset) */
+  margin-top: 10px;
 }
 .readonly-list {
   display: grid;

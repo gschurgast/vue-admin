@@ -122,6 +122,12 @@ export default createVuetify({
             rounded: 'lg',
             color: 'primary',
         },
+        VNumberInput: {
+            variant: 'outlined',
+            density: 'comfortable',
+            rounded: 'lg',
+            color: 'primary',
+        },
         VTextarea: {
             variant: 'outlined',
             density: 'comfortable',
