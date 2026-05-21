@@ -65,6 +65,7 @@ class ApiPlatformService {
     public resources: Map<string, Resource>
     private fetchPromise: Promise<HydraSchema> | null
     private onUnauthorized: (() => void) | null = null
+    private resourcePathCache: Map<string, string> = new Map()
 
     constructor() {
         this.client = axios.create({
@@ -343,10 +344,27 @@ class ApiPlatformService {
     }
 
     getResourcePath(resourceName: string): string {
-        // Convert PascalCase to snake_case (e.g. ChatMessage -> chat_message)
+        const cached = this.resourcePathCache.get(resourceName)
+        if (cached) return cached
+
+        // Prefer real path from OpenAPI: find a path tagged with this resource that has no {id}
+        const paths = this.openApiSchema?.paths
+        if (paths) {
+            for (const [path, methods] of Object.entries(paths)) {
+                if (path.includes('{')) continue
+                for (const method of ['get', 'post', 'put', 'patch', 'delete']) {
+                    const op = (methods as any)?.[method]
+                    if (op?.tags?.includes(resourceName)) {
+                        this.resourcePathCache.set(resourceName, path)
+                        return path
+                    }
+                }
+            }
+        }
+
+        // Fallback: naive snake_case + 's' (used before schema is loaded)
         const snakeCaseName = resourceName
             .replace(/[A-Z]/g, (letter, index) => index === 0 ? letter.toLowerCase() : `_${letter.toLowerCase()}`)
-
         return `/api/${snakeCaseName}s`
     }
 

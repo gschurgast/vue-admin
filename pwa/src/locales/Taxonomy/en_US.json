@@ -1,0 +1,25 @@
+{
+  "resources": {
+    "taxonomy": {
+      "name": "Taxonomy",
+      "fields": {
+        "id": "ID",
+        "code": "Code",
+        "parent": "Parent",
+        "position": "Position",
+        "children": "Children",
+        "translations": "Translations"
+      }
+    }
+  },
+  "taxonomy": {
+    "empty": "No taxonomies yet. Click Create to start.",
+    "expandAll": "Expand all",
+    "collapseAll": "Collapse all",
+    "addChild": "Add child",
+    "dragHint": "Drag to reorder",
+    "dropToRoot": "Drop here to move to root",
+    "dropError": "Cannot drop: would create a cycle",
+    "reorderFailed": "Reorder failed"
+  }
+}

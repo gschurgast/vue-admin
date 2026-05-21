@@ -1,0 +1,15 @@
+{
+  "list": {
+    "component": "TaxonomyTree",
+    "fields": [
+      { "code": "" }
+    ]
+  },
+  "edit": {
+    "fields": [
+      { "code": "CodeField" },
+      { "parent": "" },
+      { "translations": "TranslationsField" }
+    ]
+  }
+}

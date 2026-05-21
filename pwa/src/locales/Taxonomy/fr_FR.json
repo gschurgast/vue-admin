@@ -1,0 +1,25 @@
+{
+  "resources": {
+    "taxonomy": {
+      "name": "Taxonomie",
+      "fields": {
+        "id": "ID",
+        "code": "Code",
+        "parent": "Parent",
+        "position": "Position",
+        "children": "Enfants",
+        "translations": "Traductions"
+      }
+    }
+  },
+  "taxonomy": {
+    "empty": "Aucune taxonomie. Cliquez sur Créer pour commencer.",
+    "expandAll": "Tout déplier",
+    "collapseAll": "Tout replier",
+    "addChild": "Ajouter un enfant",
+    "dragHint": "Glissez pour réorganiser",
+    "dropToRoot": "Déposer ici pour placer à la racine",
+    "dropError": "Impossible : créerait un cycle",
+    "reorderFailed": "Échec de la réorganisation"
+  }
+}
