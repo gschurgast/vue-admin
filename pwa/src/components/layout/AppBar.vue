@@ -80,7 +80,9 @@
   border-radius: 16px;
   border: 1px solid rgba(var(--v-theme-on-surface), 0.06);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04);
-  margin-left: 12px;
+  /* Vuetify positions left = drawer width; +12 compensates the drawer's own
+     left offset and +12 more creates a visible gap between drawer and bar */
+  margin-left: 24px;
 }
 </style>
 

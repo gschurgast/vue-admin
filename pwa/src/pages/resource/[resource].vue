@@ -1,19 +1,5 @@
 <template>
-  <ResourceAppBar :breadcrumbs="breadcrumbs">
-    <template v-if="resource" #actions>
-      <!-- Filter -->
-      <v-btn icon density="compact" size="small" class="mr-2" @click="showSearchForm = !showSearchForm">
-        <v-icon>mdi-filter</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}</v-tooltip>
-      </v-btn>
-
-      <!-- Create New -->
-      <v-btn icon density="compact" size="small" class="mr-2" @click="createItem">
-        <v-icon>mdi-plus</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ t('common.create') }}</v-tooltip>
-      </v-btn>
-    </template>
-  </ResourceAppBar>
+  <ResourceAppBar :breadcrumbs="breadcrumbs" />
 
  <v-container fluid>
   <!-- Loading state until resource messages are loaded -->
@@ -37,20 +23,6 @@
 
    <!-- Main content - only show if resource exists and not forbidden -->
    <template v-if="resource && !isForbidden">
-    <!-- Search Form -->
-    <component
-        :is="FilterComponent"
-        v-model="showSearchForm"
-        :filter-fields="filterFields"
-        :filters="searchFilters"
-        :custom-components="customComponents"
-        :resource-name="resourceName"
-        @update:filters="searchFilters = $event"
-        @search="performSearch"
-        @clear="clearSearch"
-    />
-
-
     <component
         :is="ListComponent"
         :items="items"
@@ -61,10 +33,45 @@
         :relation-data="relationData"
         :relations-loaded="relationsLoaded"
         :resource-name="resourceName"
+        :title="resourceTitle"
         @view="showItem"
         @edit="editItem"
         @delete="confirmDelete"
-    />
+    >
+      <template #actions>
+        <v-btn
+          :prepend-icon="showSearchForm ? 'mdi-filter-off-outline' : 'mdi-filter-outline'"
+          variant="tonal"
+          size="small"
+          class="mr-2"
+          @click="showSearchForm = !showSearchForm"
+        >
+          {{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}
+        </v-btn>
+        <v-btn
+          prepend-icon="mdi-plus"
+          color="primary"
+          variant="flat"
+          size="small"
+          @click="createItem"
+        >
+          {{ t('common.create') }}
+        </v-btn>
+      </template>
+      <template #filters>
+        <component
+            :is="FilterComponent"
+            v-model="showSearchForm"
+            :filter-fields="filterFields"
+            :filters="searchFilters"
+            :custom-components="customComponents"
+            :resource-name="resourceName"
+            @update:filters="searchFilters = $event"
+            @search="performSearch"
+            @clear="clearSearch"
+        />
+      </template>
+    </component>
    </template>
 
    <!-- Delete Confirmation Dialog -->

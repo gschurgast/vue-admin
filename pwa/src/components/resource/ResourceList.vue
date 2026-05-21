@@ -1,5 +1,12 @@
 <template>
   <v-card class="resource-list-card">
+    <div v-if="title || $slots.actions" class="list-header d-flex align-center pa-4">
+      <h2 v-if="title" class="text-h6 font-weight-semibold">{{ title }}</h2>
+      <v-spacer />
+      <slot name="actions" />
+    </div>
+    <slot name="filters" />
+    <v-divider v-if="title || $slots.actions || $slots.filters" />
     <v-data-table
       :headers="headers"
       :items="items"
@@ -96,23 +103,23 @@
   text-transform: uppercase;
   letter-spacing: 0.04em;
   color: rgb(var(--v-theme-on-surface-variant)) !important;
-  border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.06) !important;
+  border-bottom: none !important;
   padding-top: 12px !important;
   padding-bottom: 12px !important;
 }
 :deep(.resource-list-table tbody td) {
-  border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.06) !important;
+  border-bottom: none !important;
   padding-top: 10px !important;
   padding-bottom: 10px !important;
 }
-:deep(.resource-list-table tbody tr:last-child td) {
-  border-bottom: none !important;
+:deep(.resource-list-table tbody tr:not(:last-child) td) {
+  box-shadow: inset 0 -1px 0 rgba(var(--v-theme-on-surface), 0.04);
 }
 :deep(.resource-list-table tbody tr:hover) {
   background-color: rgb(var(--v-theme-surface-light));
 }
 :deep(.resource-list-table .v-data-table-footer) {
-  border-top: 1px solid rgba(var(--v-theme-on-surface), 0.06);
+  border-top: none !important;
   padding: 8px 16px;
 }
 </style>
@@ -136,13 +143,15 @@ interface Props {
   relationData?: Record<string, any>
   relationsLoaded?: boolean
   resourceName?: string
+  title?: string
 }
 
 const props = withDefaults(defineProps<Props>(), {
   customComponents: () => ({}),
   relationData: () => ({}),
   relationsLoaded: false,
-  resourceName: ''
+  resourceName: '',
+  title: ''
 })
 
 const pageText = computed(() => {

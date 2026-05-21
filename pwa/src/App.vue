@@ -102,3 +102,37 @@ watch(
     </v-main>
   </v-app>
 </template>
+
+<!-- Global layout adjustments for the floating drawer + app bar.
+     Vuetify's v-main already pads by drawer-width (rail-aware). We add extra
+     padding on the direct child so the content sits clear of the floating
+     drawer's right edge and the floating app bar above. -->
+<style>
+html,
+body,
+.v-application,
+.v-application__wrap {
+  font-family: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.v-main.you-pim-main > * {
+  padding-left: 24px;
+  padding-right: 12px;
+  padding-top: 12px;
+}
+
+/* Soft drop shadow on solid-fill buttons (matches button.png reference) */
+.v-btn.v-btn--variant-flat,
+.v-btn.v-btn--variant-elevated {
+  box-shadow: 0 4px 12px rgba(20, 30, 60, 0.14) !important;
+}
+.v-btn.v-btn--variant-flat:hover,
+.v-btn.v-btn--variant-elevated:hover {
+  box-shadow: 0 6px 16px rgba(20, 30, 60, 0.2) !important;
+}
+.v-btn.v-btn--variant-tonal {
+  box-shadow: 0 2px 6px rgba(20, 30, 60, 0.06) !important;
+}
+.v-btn.v-btn--variant-tonal:hover {
+  box-shadow: 0 4px 10px rgba(20, 30, 60, 0.1) !important;
+}
+</style>

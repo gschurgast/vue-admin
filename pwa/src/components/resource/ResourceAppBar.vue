@@ -1,16 +1,15 @@
 <template>
-  <v-app-bar density="compact" border="bottom">
+  <div class="resource-header d-flex align-center">
     <v-progress-linear
       v-if="loading"
       indeterminate
       color="primary"
-      height="3"
+      height="2"
       absolute
       location="top"
     />
 
-    <!-- Breadcrumbs -->
-    <v-breadcrumbs :items="breadcrumbs" class="py-0">
+    <v-breadcrumbs :items="breadcrumbs" class="px-0 py-0">
       <template v-slot:divider>
         <v-icon size="small">mdi-chevron-right</v-icon>
       </template>
@@ -18,11 +17,17 @@
 
     <v-spacer />
 
-    <template v-slot:append>
-      <slot name="actions" />
-    </template>
-  </v-app-bar>
+    <slot name="actions" />
+  </div>
 </template>
+
+<style scoped>
+.resource-header {
+  position: relative;
+  min-height: 40px;
+  margin-bottom: 12px;
+}
+</style>
 
 <script setup lang="ts">
 interface BreadcrumbItem {

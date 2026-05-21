@@ -1,7 +1,7 @@
 <template>
   <v-expand-transition>
-    <v-card v-show="modelValue" color="blue-grey-lighten-5" >
-      <v-card-text>
+    <div v-show="modelValue" class="resource-filter-panel">
+      <div class="pa-4">
         <v-row>
           <v-col
             v-for="filter in filterFields"
@@ -48,20 +48,24 @@
             />
           </v-col>
         </v-row>
-      </v-card-text>
-     <v-card-actions>
-      <v-spacer></v-spacer>
-
-            <v-btn color="primary" variant="outlined" @click="handleSearch">
-              <v-icon left>mdi-magnify</v-icon>
-              {{ t('common.search') }}
-            </v-btn>
-            <v-btn variant="outlined" @click="handleClear">
-              {{ t('common.clear') }}
-            </v-btn>
-     </v-card-actions>
-
-    </v-card>
+      </div>
+      <div class="d-flex justify-end px-4 pb-4">
+        <v-btn variant="text" size="small" @click="handleClear">
+          {{ t('common.clear') }}
+        </v-btn>
+        <v-btn
+          color="primary"
+          variant="flat"
+          size="small"
+          prepend-icon="mdi-magnify"
+          class="ml-2"
+          @click="handleSearch"
+        >
+          {{ t('common.search') }}
+        </v-btn>
+      </div>
+      <v-divider />
+    </div>
   </v-expand-transition>
 </template>
 

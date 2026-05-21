@@ -1,14 +1,24 @@
 <template>
   <ResourceAppBar :breadcrumbs="breadcrumbs" :loading="saving">
     <template #actions>
-      <v-btn icon density="compact" size="small" class="mr-2" @click="handleCancel" :disabled="saving">
-        <v-icon>mdi-close</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ t('common.cancel') }}</v-tooltip>
+      <v-btn
+        variant="text"
+        size="small"
+        class="mr-2"
+        :disabled="saving"
+        @click="handleCancel"
+      >
+        {{ t('common.cancel') }}
       </v-btn>
-      <v-btn icon density="compact" size="small" class="mr-2" @click="handleSave" :disabled="saving">
-        <v-progress-circular v-if="saving" indeterminate size="18" width="2" />
-        <v-icon v-else>mdi-content-save</v-icon>
-        <v-tooltip activator="parent" location="bottom">{{ t('common.save') }}</v-tooltip>
+      <v-btn
+        prepend-icon="mdi-content-save-outline"
+        color="primary"
+        variant="flat"
+        size="small"
+        :loading="saving"
+        @click="handleSave"
+      >
+        {{ t('common.save') }}
       </v-btn>
     </template>
   </ResourceAppBar>

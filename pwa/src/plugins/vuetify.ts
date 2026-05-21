@@ -93,7 +93,7 @@ export default createVuetify({
     },
     defaults: {
         VMain: {
-            class: 'bg-background',
+            class: 'bg-background you-pim-main',
         },
         VAppBar: {
             color: 'surface',
@@ -110,7 +110,7 @@ export default createVuetify({
             border: 'thin',
         },
         VBtn: {
-            rounded: 'lg',
+            rounded: 'pill',
             style: 'text-transform: none; letter-spacing: 0;',
         },
         VChip: {
