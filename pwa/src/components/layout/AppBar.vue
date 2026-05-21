@@ -19,6 +19,15 @@
     </div>
 
     <template v-slot:append>
+      <v-btn icon variant="text" class="mr-1" @click="toggleTheme">
+        <v-icon>{{ isDark ? 'mdi-weather-sunny' : 'mdi-weather-night' }}</v-icon>
+        <v-tooltip activator="parent" location="bottom">
+          {{ isDark ? t('common.lightMode') : t('common.darkMode') }}
+        </v-tooltip>
+      </v-btn>
+
+      <LanguageSwitcher />
+
       <v-btn icon variant="text" class="mr-1" @click="emit('toggle-chat')">
         <v-icon>mdi-robot</v-icon>
         <v-tooltip activator="parent" location="bottom">
@@ -79,8 +88,11 @@
 import { computed } from 'vue'
 import { useI18n } from 'vue-i18n'
 import UserMenu from './UserMenu.vue'
+import LanguageSwitcher from './LanguageSwitcher.vue'
+import { useThemeMode } from '../../composables/useThemeMode'
 
 const { t } = useI18n()
+const { isDark, toggle: toggleTheme } = useThemeMode()
 
 const emit = defineEmits<{
   'open-search': []

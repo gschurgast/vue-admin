@@ -32,7 +32,9 @@
         "add": "Add",
         "readonly": "Read-only",
         "showFull": "Show full",
-        "showLess": "Show less"
+        "showLess": "Show less",
+        "lightMode": "Light mode",
+        "darkMode": "Dark mode"
     },
     "app": {
         "title": "API Platform Admin",
@@ -112,7 +114,16 @@
         "password": "Password",
         "signIn": "Sign In",
         "invalidEmail": "Invalid email address",
-        "invalidCredentials": "Invalid credentials"
+        "invalidCredentials": "Invalid credentials",
+        "welcomeBack": "Welcome back",
+        "signInToContinue": "Sign in to continue to youPim Admin"
+    },
+    "profile": {
+        "title": "User Profile",
+        "myProfile": "My Profile",
+        "accountSettings": "Account settings",
+        "preferences": "Preferences",
+        "appPreferences": "Theme, language and shortcuts"
     },
     "account": {
         "title": "My Account",

@@ -1,66 +1,90 @@
 <template>
-  <v-container fluid class="fill-height bg-grey-lighten-4">
-    <v-row align="center" justify="center">
-      <v-col cols="12" sm="8" md="4">
-        <v-card class="elevation-12">
-          <v-toolbar color="primary" dark flat>
-            <v-toolbar-title>{{ t('auth.login') }}</v-toolbar-title>
-          </v-toolbar>
+  <v-container fluid class="fill-height login-bg pa-0">
+    <v-row align="center" justify="center" no-gutters class="w-100">
+      <v-col cols="12" sm="8" md="5" lg="4" xl="3" class="pa-6">
+        <div class="d-flex justify-center mb-6">
+          <v-avatar size="48" color="primary">
+            <v-icon size="28" color="white">mdi-flash</v-icon>
+          </v-avatar>
+          <span class="brand-title align-self-center ml-3">youPim Admin</span>
+        </div>
 
-          <v-card-text>
-            <v-form @submit.prevent="handleLogin" ref="formRef">
-              <v-text-field
-                v-model="email"
-                :label="t('auth.email')"
-                prepend-icon="mdi-email"
-                type="email"
-                :rules="[rules.required, rules.email]"
-                :error-messages="authStore.error ? '' : undefined"
-                autocomplete="email"
-                autofocus
-              />
+        <v-card class="pa-6">
+          <h2 class="text-h5 font-weight-semibold text-center mb-1">
+            {{ t('auth.welcomeBack') }}
+          </h2>
+          <p class="text-body-2 text-medium-emphasis text-center mb-6">
+            {{ t('auth.signInToContinue') }}
+          </p>
 
-              <v-text-field
-                v-model="password"
-                :label="t('auth.password')"
-                prepend-icon="mdi-lock"
-                :type="showPassword ? 'text' : 'password'"
-                :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
-                @click:append-inner="showPassword = !showPassword"
-                :rules="[rules.required]"
-                autocomplete="current-password"
-                @keyup.enter="handleLogin"
-              />
+          <v-form ref="formRef" @submit.prevent="handleLogin">
+            <label class="text-body-2 font-weight-medium d-block mb-1" for="login-email">
+              {{ t('auth.email') }}
+            </label>
+            <v-text-field
+              id="login-email"
+              v-model="email"
+              type="email"
+              :rules="[rules.required, rules.email]"
+              autocomplete="email"
+              autofocus
+              class="mb-2"
+            />
 
-              <v-alert
-                v-if="authStore.error"
-                type="error"
-                variant="tonal"
-                density="compact"
-                class="mt-4"
-              >
-                {{ authStore.error }}
-              </v-alert>
-            </v-form>
-          </v-card-text>
+            <label class="text-body-2 font-weight-medium d-block mb-1" for="login-password">
+              {{ t('auth.password') }}
+            </label>
+            <v-text-field
+              id="login-password"
+              v-model="password"
+              :type="showPassword ? 'text' : 'password'"
+              :append-inner-icon="showPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              :rules="[rules.required]"
+              autocomplete="current-password"
+              @click:append-inner="showPassword = !showPassword"
+              @keyup.enter="handleLogin"
+            />
 
-          <v-card-actions>
-            <v-spacer />
+            <v-alert
+              v-if="authStore.error"
+              type="error"
+              variant="tonal"
+              density="compact"
+              class="mt-2 mb-4"
+            >
+              {{ authStore.error }}
+            </v-alert>
+
             <v-btn
+              block
               color="primary"
-              variant="elevated"
+              variant="flat"
+              size="large"
               :loading="authStore.loading"
               :disabled="!isValid"
+              class="mt-2"
               @click="handleLogin"
             >
               {{ t('auth.signIn') }}
             </v-btn>
-          </v-card-actions>
+          </v-form>
         </v-card>
       </v-col>
     </v-row>
   </v-container>
 </template>
+
+<style scoped>
+.login-bg {
+  background-color: rgb(var(--v-theme-background));
+  min-height: 100vh;
+}
+.brand-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: rgb(var(--v-theme-on-surface));
+}
+</style>
 
 <script setup lang="ts">
 import { ref, computed } from 'vue'

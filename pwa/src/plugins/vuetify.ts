@@ -38,6 +38,39 @@ const youPimTheme = {
     },
 }
 
+const youPimDark = {
+    dark: true,
+    colors: {
+        background: '#171c23',
+        surface: '#2A3447',
+        'surface-light': '#333E55',
+        'surface-variant': '#333F55',
+        'on-surface': '#EAEFF4',
+        'on-surface-variant': '#7C8FAC',
+        primary: '#5D87FF',
+        'primary-darken-1': '#4570EA',
+        secondary: '#49BEFF',
+        'secondary-darken-1': '#23AFDB',
+        success: '#13DEB9',
+        info: '#539BFF',
+        warning: '#FFAE1F',
+        error: '#FA896B',
+        'on-primary': '#FFFFFF',
+        'on-secondary': '#FFFFFF',
+        'on-success': '#FFFFFF',
+        'on-warning': '#FFFFFF',
+        'on-error': '#FFFFFF',
+    },
+    variables: {
+        'border-color': '#333F55',
+        'border-opacity': 1,
+        'high-emphasis-opacity': 0.87,
+        'medium-emphasis-opacity': 0.65,
+        'disabled-opacity': 0.38,
+        'theme-on-background': '#EAEFF4',
+    },
+}
+
 export default createVuetify({
     components: {
         ...components,
@@ -55,6 +88,7 @@ export default createVuetify({
         defaultTheme: 'youPimTheme',
         themes: {
             youPimTheme,
+            youPimDark,
         },
     },
     defaults: {
