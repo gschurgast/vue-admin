@@ -12,7 +12,7 @@
       </v-btn>
       <v-btn
         prepend-icon="mdi-content-save-outline"
-        color="primary"
+        color="success"
         variant="flat"
         size="small"
         :loading="saving"

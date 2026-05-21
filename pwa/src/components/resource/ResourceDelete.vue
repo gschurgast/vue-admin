@@ -5,8 +5,15 @@
       <v-card-text>{{ t('resource.confirmDelete', { resource: resourceTitle.toLowerCase() }) }}</v-card-text>
       <v-card-actions>
         <v-spacer></v-spacer>
-        <v-btn @click="handleCancel">{{ t('common.cancel') }}</v-btn>
-        <v-btn color="error" @click="handleConfirm">{{ t('common.delete') }}</v-btn>
+        <v-btn variant="text" @click="handleCancel">{{ t('common.cancel') }}</v-btn>
+        <v-btn
+          prepend-icon="mdi-delete-outline"
+          color="error"
+          variant="flat"
+          @click="handleConfirm"
+        >
+          {{ t('common.delete') }}
+        </v-btn>
       </v-card-actions>
     </v-card>
   </v-dialog>
