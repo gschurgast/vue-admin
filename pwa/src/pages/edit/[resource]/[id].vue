@@ -324,10 +324,12 @@ async function loadItem() {
 
 async function loadRelations() {
   const relationFields = resource.value?.properties.filter(prop => prop.isRelation) || []
-  
+  const seen = new Set<string>()
+
   for (const relationField of relationFields) {
     const relatedResource = relationField.relatedResource
-    if (!relatedResource) continue
+    if (!relatedResource || seen.has(relatedResource)) continue
+    seen.add(relatedResource)
 
     loadingRelations.value[relatedResource] = true
     try {
