@@ -538,6 +538,13 @@ async function loadRelations() {
 async function loadData(searchFilters = {}) {
  if (!resource.value) return
 
+ // Skip the default paginated fetch when a custom list component handles its own data
+ if (resourceConfig.value?.list?.standalone) {
+  items.value = []
+  loading.value = false
+  return
+ }
+
  loading.value = true
  isForbidden.value = false
  try {

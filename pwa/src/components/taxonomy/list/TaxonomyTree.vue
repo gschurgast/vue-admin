@@ -138,7 +138,6 @@ async function fetchAll() {
 }
 
 onMounted(fetchAll)
-watch(() => props.items, () => { fetchAll() })
 
 const effectiveItems = computed<TaxonomyItem[]>(() => fetchedItems.value ?? props.items)
 const effectiveLoading = computed(() => fetching.value || props.loading)
