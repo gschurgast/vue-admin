@@ -1,5 +1,5 @@
 <template>
-  <v-card-text>
+  <v-card class="resource-list-card">
     <v-data-table
       :headers="headers"
       :items="items"
@@ -7,7 +7,8 @@
       :items-per-page="itemsPerPage"
       :items-per-page-text="t('resource.itemsPerPage')"
       :page-text="pageText"
-      class="elevation-1"
+      :hover="true"
+      class="resource-list-table"
     >
       <!-- Custom cell rendering for each column -->
       <template v-for="header in headers" :key="header.key" #[`item.${header.key}`]="{ item, value }">
@@ -75,8 +76,46 @@
         <span v-else>{{ value }}</span>
       </template>
     </v-data-table>
-  </v-card-text>
+  </v-card>
 </template>
+
+<style scoped>
+.resource-list-card {
+  overflow: hidden;
+}
+:deep(.resource-list-table) {
+  background-color: transparent;
+}
+:deep(.resource-list-table .v-data-table__thead),
+:deep(.resource-list-table thead) {
+  background-color: rgb(var(--v-theme-surface-light));
+}
+:deep(.resource-list-table thead th) {
+  font-size: 0.75rem !important;
+  font-weight: 600 !important;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: rgb(var(--v-theme-on-surface-variant)) !important;
+  border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.06) !important;
+  padding-top: 12px !important;
+  padding-bottom: 12px !important;
+}
+:deep(.resource-list-table tbody td) {
+  border-bottom: 1px solid rgba(var(--v-theme-on-surface), 0.06) !important;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+}
+:deep(.resource-list-table tbody tr:last-child td) {
+  border-bottom: none !important;
+}
+:deep(.resource-list-table tbody tr:hover) {
+  background-color: rgb(var(--v-theme-surface-light));
+}
+:deep(.resource-list-table .v-data-table-footer) {
+  border-top: 1px solid rgba(var(--v-theme-on-surface), 0.06);
+  padding: 8px 16px;
+}
+</style>
 
 <script setup lang="ts">
 import { computed } from 'vue'
