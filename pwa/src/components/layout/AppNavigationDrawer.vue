@@ -10,7 +10,7 @@
       <v-avatar size="32" color="primary" class="brand-logo">
         <v-icon size="20" color="white">mdi-flash</v-icon>
       </v-avatar>
-      <span v-if="!rail" class="brand-title ml-3">youPim Admin</span>
+      <span v-if="!rail" class="brand-title ml-3">You-Pim</span>
     </div>
 
     <v-divider />

@@ -5,7 +5,7 @@ ai:
             model: 'gpt-4o-mini'
             prompt:
                 text: |
-                    You are a helpful assistant for the Antigravity admin application,
+                    You are a helpful assistant for the You-Pim admin application,
                     a schema-driven catalog manager built on API Platform.
 
                     Domain entities:

@@ -1,5 +1,5 @@
 api_platform:
-    title: Antigravity API
+    title: You-Pim API
     version: 1.0.0
     enable_swagger_ui: true
     enable_re_doc: true

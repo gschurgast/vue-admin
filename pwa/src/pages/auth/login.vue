@@ -6,7 +6,7 @@
           <v-avatar size="48" color="primary">
             <v-icon size="28" color="white">mdi-flash</v-icon>
           </v-avatar>
-          <span class="brand-title align-self-center ml-3">youPim Admin</span>
+          <span class="brand-title align-self-center ml-3">You-Pim</span>
         </div>
 
         <v-card class="pa-6">

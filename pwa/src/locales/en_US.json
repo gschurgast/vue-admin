@@ -37,7 +37,7 @@
         "darkMode": "Dark mode"
     },
     "app": {
-        "title": "API Platform Admin",
+        "title": "You-Pim",
         "manageResources": "Manage your resources"
     },
     "navigation": {
@@ -116,7 +116,7 @@
         "invalidEmail": "Invalid email address",
         "invalidCredentials": "Invalid credentials",
         "welcomeBack": "Welcome back",
-        "signInToContinue": "Sign in to continue to youPim Admin"
+        "signInToContinue": "Sign in to continue to You-Pim"
     },
     "profile": {
         "title": "User Profile",

@@ -1,11 +1,11 @@
 mcp:
-    app: 'antigravity'
+    app: 'you-pim'
     version: '1.0.0'
-    description: 'Antigravity API - MCP Server exposing API Platform resources'
+    description: 'You-Pim API - MCP Server exposing API Platform resources'
     website_url: 'http://localhost:8080'
     pagination_limit: 50
     instructions: |
-        This MCP server provides access to the Antigravity API Platform resources.
+        This MCP server provides access to the You-Pim API Platform resources.
         Use the available tools to perform CRUD operations on entities.
 
     client_transports:
