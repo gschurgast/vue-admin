@@ -24,7 +24,7 @@
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  gap: 8px;
+  gap: 16px;
   min-height: 48px;
 }
 </style>

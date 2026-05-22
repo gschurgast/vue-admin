@@ -26,7 +26,7 @@
   position: relative;
   min-height: 48px;
   margin-bottom: 12px;
-  gap: 8px;
+  gap: 16px;
 }
 </style>
 

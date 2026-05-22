@@ -4,7 +4,6 @@
       <PageActionBtn
         kind="secondary"
         :prepend-icon="showSearchForm ? 'mdi-filter-off-outline' : 'mdi-filter-outline'"
-        class="mr-2"
         @click="showSearchForm = !showSearchForm"
       >
         {{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}
