@@ -120,6 +120,18 @@ body,
   padding-top: 12px;
 }
 
+/* Extra vertical breathing room on standard buttons.
+   Icon buttons stay square (Vuetify fixes width = height for them). */
+.v-btn:not(.v-btn--icon) {
+  padding-block: 0.5rem;
+}
+.v-btn--size-x-small:not(.v-btn--icon) { min-height: 28px; }
+.v-btn--size-small:not(.v-btn--icon)   { min-height: 36px; }
+.v-btn--size-default:not(.v-btn--icon),
+.v-btn:not(.v-btn--icon):not([class*="v-btn--size-"]) { min-height: 48px; }
+.v-btn--size-large:not(.v-btn--icon)   { min-height: 56px; }
+.v-btn--size-x-large:not(.v-btn--icon) { min-height: 64px; }
+
 /* Soft drop shadow on solid-fill buttons (matches button.png reference) */
 .v-btn.v-btn--variant-flat,
 .v-btn.v-btn--variant-elevated {
