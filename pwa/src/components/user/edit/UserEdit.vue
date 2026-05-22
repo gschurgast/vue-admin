@@ -68,7 +68,7 @@
           </v-tab>
         </v-tabs>
 
-        <v-tabs-window v-model="activeTab">
+        <v-tabs-window v-model="activeTab" class="user-edit-tabs-window">
           <v-tabs-window-item value="profile">
             <ResourceForm
               v-model="localFormData"
@@ -81,8 +81,6 @@
           </v-tabs-window-item>
 
           <v-tabs-window-item v-if="isCurrentUser" value="password">
-            <h4 class="text-subtitle-1 mb-4">{{ t('account.changePassword') }}</h4>
-
             <v-text-field
               v-model="newPassword"
               :label="t('account.newPassword')"
@@ -315,3 +313,15 @@ async function handleDeletePicture() {
   }
 }
 </script>
+
+<style scoped>
+/* v-tabs-window clips overflow; outlined v-text-field labels protrude
+   slightly above the field box, so we add a small top padding inside the
+   window items to prevent the notched label (e.g. "Prénom") from being cut. */
+.user-edit-tabs-window :deep(.v-window-item) {
+  padding-top: 8px;
+  padding-left: 2px;
+  padding-right: 2px;
+}
+</style>
+
