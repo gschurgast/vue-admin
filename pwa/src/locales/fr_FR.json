@@ -119,6 +119,8 @@
         "firstName": "Prénom",
         "lastName": "Nom",
         "email": "Email",
+        "profileTab": "Profil",
+        "passwordTab": "Mot de passe",
         "changePicture": "Changer la photo",
         "saveSuccess": "Profil mis à jour avec succès",
         "fileTooLarge": "Fichier trop volumineux. Taille maximale : 5 Mo",

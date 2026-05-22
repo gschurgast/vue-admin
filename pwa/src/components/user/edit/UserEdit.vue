@@ -1,7 +1,7 @@
 <template>
   <div>
     <v-row>
-      <!-- Profile Picture Section -->
+      <!-- Profile Picture Section (always visible, left column) -->
       <v-col cols="12" md="4" class="text-center">
         <div class="mb-4">
           <v-avatar size="150" class="elevation-4">
@@ -57,51 +57,61 @@
         </v-alert>
       </v-col>
 
-      <!-- Profile Form Section -->
+      <!-- Right column: tabs (profile fields / password) -->
       <v-col cols="12" md="8">
-        <ResourceForm
-          v-model="localFormData"
-          :fields="filteredFields"
-          :custom-components="customComponents"
-          :relation-data="relationData"
-          :loading-relations="loadingRelations"
-          :field-errors="fieldErrors"
-        />
+        <v-tabs v-model="activeTab" color="primary" class="mb-4">
+          <v-tab value="profile" prepend-icon="mdi-account-outline">
+            {{ t('account.profileTab') }}
+          </v-tab>
+          <v-tab v-if="isCurrentUser" value="password" prepend-icon="mdi-lock-outline">
+            {{ t('account.passwordTab') }}
+          </v-tab>
+        </v-tabs>
 
-        <!-- Password Change Section (only for current user) -->
-        <v-divider v-if="isCurrentUser" class="my-4" />
+        <v-tabs-window v-model="activeTab">
+          <v-tabs-window-item value="profile">
+            <ResourceForm
+              v-model="localFormData"
+              :fields="filteredFields"
+              :custom-components="customComponents"
+              :relation-data="relationData"
+              :loading-relations="loadingRelations"
+              :field-errors="fieldErrors"
+            />
+          </v-tabs-window-item>
 
-        <div v-if="isCurrentUser">
-          <h4 class="text-subtitle-1 mb-3">{{ t('account.changePassword') }}</h4>
+          <v-tabs-window-item v-if="isCurrentUser" value="password">
+            <h4 class="text-subtitle-1 mb-4">{{ t('account.changePassword') }}</h4>
 
-          <v-text-field
-            v-model="newPassword"
-            :label="t('account.newPassword')"
-            :type="showNewPassword ? 'text' : 'password'"
-            :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            @click:append-inner="showNewPassword = !showNewPassword"
-            prepend-icon="mdi-lock"
-            variant="outlined"
-            density="comfortable"
-            class="mb-3"
-            :rules="newPassword ? [rules.minLength] : []"
-            autocomplete="new-password"
-          />
+            <v-text-field
+              v-model="newPassword"
+              :label="t('account.newPassword')"
+              :type="showNewPassword ? 'text' : 'password'"
+              :append-inner-icon="showNewPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="showNewPassword = !showNewPassword"
+              prepend-icon="mdi-lock"
+              variant="outlined"
+              density="comfortable"
+              class="mb-3"
+              :rules="newPassword ? [rules.minLength] : []"
+              autocomplete="new-password"
+            />
 
-          <v-text-field
-            v-model="confirmPassword"
-            :label="t('account.confirmPassword')"
-            :type="showConfirmPassword ? 'text' : 'password'"
-            :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
-            @click:append-inner="showConfirmPassword = !showConfirmPassword"
-            prepend-icon="mdi-lock-check"
-            variant="outlined"
-            density="comfortable"
-            :rules="confirmPassword ? [rules.passwordMatch] : []"
-            :error-messages="passwordMismatchError"
-            autocomplete="new-password"
-          />
-        </div>
+            <v-text-field
+              v-model="confirmPassword"
+              :label="t('account.confirmPassword')"
+              :type="showConfirmPassword ? 'text' : 'password'"
+              :append-inner-icon="showConfirmPassword ? 'mdi-eye-off' : 'mdi-eye'"
+              @click:append-inner="showConfirmPassword = !showConfirmPassword"
+              prepend-icon="mdi-lock-check"
+              variant="outlined"
+              density="comfortable"
+              :rules="confirmPassword ? [rules.passwordMatch] : []"
+              :error-messages="passwordMismatchError"
+              autocomplete="new-password"
+            />
+          </v-tabs-window-item>
+        </v-tabs-window>
       </v-col>
     </v-row>
   </div>
@@ -139,6 +149,7 @@ const emit = defineEmits<{
 const { t } = useI18n()
 const authStore = useAuthStore()
 
+const activeTab = ref<'profile' | 'password'>('profile')
 const localFormData = ref({ ...props.formData })
 
 // Check if we're editing the current user

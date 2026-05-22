@@ -130,6 +130,8 @@
         "firstName": "First Name",
         "lastName": "Last Name",
         "email": "Email",
+        "profileTab": "Profile",
+        "passwordTab": "Password",
         "changePicture": "Change Picture",
         "saveSuccess": "Profile updated successfully",
         "fileTooLarge": "File too large. Maximum size: 5MB",
