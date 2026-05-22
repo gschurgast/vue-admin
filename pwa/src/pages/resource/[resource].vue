@@ -38,6 +38,7 @@
    <template v-if="resource && !isForbidden">
     <component
         :is="ListComponent"
+        :key="resourceName"
         :items="items"
         :headers="headersWithCellType"
         :loading="loading"
@@ -198,6 +199,11 @@ watch(resourceName, () => {
   resourceMessagesLoaded.value = false
   resourceConfig.value = null
   isForbidden.value = false
+  // Reset list/filter components so the next page doesn't briefly render the
+  // previous resource's custom component before the new config loads.
+  ListComponent.value = ResourceList
+  FilterComponent.value = ResourceFilter
+  items.value = []
  }
 }, {flush: 'sync'})
 
