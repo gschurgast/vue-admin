@@ -3,7 +3,7 @@
     v-model="selectedValue"
     :label="label"
     :items="items"
-    :item-title="displayField"
+    :item-title="getDisplayValue"
     item-value="@id"
     :loading="loading"
     :search="searchQuery"
@@ -13,16 +13,15 @@
     @update:search="onSearch"
     @update:model-value="onSelectionChange"
   >
-    <template #item="{ item, props: itemProps }">
-      <v-list-item v-bind="itemProps">
-        <template #subtitle v-if="subtitleField && item.raw[subtitleField]">
-          {{ item.raw[subtitleField] }}
-        </template>
-      </v-list-item>
+    <template #item="slotProps">
+      <v-list-item
+        v-bind="slotProps?.props ?? {}"
+        :subtitle="subtitleField ? (slotProps?.item?.raw?.[subtitleField] ?? '') : ''"
+      />
     </template>
-    <template #chip="{ item }">
+    <template #chip="slotProps">
       <v-chip size="small">
-        {{ item.raw[displayField] || item.raw['@id'] }}
+        {{ getDisplayValue(slotProps?.item?.raw ?? slotProps?.item) }}
       </v-chip>
     </template>
   </v-autocomplete>
@@ -30,6 +29,7 @@
 
 <script setup lang="ts">
 import { ref, computed, watch, onMounted } from 'vue'
+import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../services/apiPlatform'
 
 interface Props {
@@ -38,12 +38,14 @@ interface Props {
   label?: string
   displayField?: string
   subtitleField?: string
+  extraParams?: Record<string, any>
 }
 
 const props = withDefaults(defineProps<Props>(), {
   label: 'Select relation',
   displayField: 'code',
-  subtitleField: ''
+  subtitleField: '',
+  extraParams: () => ({})
 })
 
 const emit = defineEmits<{
@@ -55,6 +57,7 @@ const items = ref<any[]>([])
 const loading = ref(false)
 const searchQuery = ref('')
 const searchTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
+const { locale } = useI18n()
 
 const noDataText = computed(() => {
   if (!props.endpoint) return 'No endpoint configured'
@@ -63,14 +66,29 @@ const noDataText = computed(() => {
   return 'No results found'
 })
 
-// Determine the best display field based on the item properties
+// Pick the localized label from a translations[] collection.
+// Tries current locale first, then any translation, returns null otherwise.
+function pickTranslatedLabel(translations: any): string | null {
+  if (!Array.isArray(translations) || translations.length === 0) return null
+  const current = locale.value
+  const match = translations.find((t: any) => t?.locale === current && t?.label)
+  if (match?.label) return match.label
+  const any = translations.find((t: any) => t?.label)
+  return any?.label ?? null
+}
+
+// Determine the best display value for a relation item.
+// Priority: localized translation > explicit displayField > common fields > @id.
 function getDisplayValue(item: any): string {
-  // Try common display fields in order of preference
+  if (!item || typeof item !== 'object') return typeof item === 'string' ? item : ''
+  const translated = pickTranslatedLabel(item.translations)
+  if (translated) return translated
   const displayFields = [props.displayField, 'code', 'name', 'title', 'label', 'skuRoot', '@id']
   for (const field of displayFields) {
-    if (item[field]) return item[field]
+    const value = item?.[field]
+    if (value) return String(value)
   }
-  return item['@id'] || 'Unknown'
+  return ''
 }
 
 async function searchItems(query: string) {

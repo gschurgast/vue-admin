@@ -15,12 +15,11 @@
     <template #prepend-inner>
       <v-icon color="primary">mdi-link</v-icon>
     </template>
-    <template #item="{ item, props: itemProps }">
-      <v-list-item v-bind="itemProps">
-        <template #subtitle>
-          {{ item.raw.path }}
-        </template>
-      </v-list-item>
+    <template #item="slotProps">
+      <v-list-item
+        v-bind="slotProps?.props ?? {}"
+        :subtitle="slotProps?.item?.raw?.path ?? ''"
+      />
     </template>
   </v-autocomplete>
 </template>

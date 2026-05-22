@@ -1,4 +1,10 @@
 {
+  "filters": {
+    "fields": [
+      { "attribute": "AttributeWithOptionsFilter" },
+      { "code": "" }
+    ]
+  },
   "list": {
     "fields": [
       { "attribute": "" },

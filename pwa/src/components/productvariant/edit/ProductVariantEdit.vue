@@ -1,24 +1,13 @@
 <template>
   <v-row>
+    <v-col cols="12">
+      <LocaleSelectorBar v-model="formLocale" />
+    </v-col>
+
     <!-- Left side: Form -->
     <v-col cols="12" md="6">
       <v-card>
-        <v-card-title class="d-flex align-center">
-          <span>Variant Details</span>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            size="small"
-            variant="text"
-            style="font-size: 0.75rem;"
-            :loading="generatingContent"
-            :disabled="!variantIri || generatingContent"
-            @click="generateAiContent"
-          >
-            <v-icon start size="small">mdi-creation</v-icon>
-            Generate Description
-          </v-btn>
-        </v-card-title>
+        <v-card-title>Variant Details</v-card-title>
         <v-card-text>
           <div class="d-flex">
             <!-- Variant Image -->
@@ -80,10 +69,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, provide } from 'vue'
 import ResourceForm from '../../resource/ResourceForm.vue'
 import ProductAttributeValuesPanel from '../../product/edit/ProductAttributeValuesPanel.vue'
 import ProductVariantsList from '../../product/edit/ProductVariantsList.vue'
+import LocaleSelectorBar from '../../common/LocaleSelectorBar.vue'
+import { provideFormLocale } from '../../../composables/useFormLocale'
 import apiPlatform from '../../../services/apiPlatform'
 
 interface Props {
@@ -112,6 +103,7 @@ const localFormData = ref({ ...props.formData })
 const attributeValuesPanel = ref<InstanceType<typeof ProductAttributeValuesPanel> | null>(null)
 const generatingContent = ref(false)
 const variantImage = ref<string | null>(null)
+const formLocale = provideFormLocale()
 
 const productIri = computed(() => {
   // Get the product IRI from formData
@@ -158,34 +150,35 @@ function onAttributesLoaded(attributes: { productAttributes: any[], variantAttri
   variantImage.value = imageAttr?.value || null
 }
 
-// Generate AI content for variant description
-async function generateAiContent() {
-  if (!variantIri.value) return
-
+// Generate AI content for variant description.
+// Returns the generated HTML without persisting; the rich text editor applies it locally.
+async function generateAiContent(): Promise<string | undefined> {
+  if (!variantIri.value) return undefined
   const variantId = localFormData.value.id
-  if (!variantId) return
+  if (!variantId) return undefined
 
   generatingContent.value = true
   try {
     const response = await apiPlatform.client.post(`/api/product_variants/${variantId}/generate-content`, {
-      locale: 'fr_FR'
+      locale: formLocale.value
     })
-
-    const { generatedContent, attributeValueId } = response.data
-
-    // Emit event to parent
-    emit('content-generated', { content: generatedContent, attributeValueId })
-
-    // Reload attribute values to show the new description
-    if (attributeValuesPanel.value) {
-      await attributeValuesPanel.value.reload()
-    }
+    return response.data?.generatedContent as string | undefined
   } catch (error) {
     console.error('Failed to generate AI content:', error)
+    return undefined
   } finally {
     generatingContent.value = false
   }
 }
+
+const generateDisabled = computed(() => !variantIri.value || generatingContent.value)
+
+provide('richTextGenerate', {
+  run: () => generateAiContent(),
+  isLoading: generatingContent,
+  disabled: generateDisabled,
+  label: ref('Générer'),
+})
 
 // Public method to save attribute values
 async function saveAttributeValues(): Promise<void> {

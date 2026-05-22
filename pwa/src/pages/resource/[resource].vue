@@ -289,11 +289,23 @@ const filterFields = computed(() => {
      type = value
    }
 
+   // Enrich relation filters with the related resource endpoint
+   let endpoint: string | null = null
+   if (resource.value) {
+    const prop = resource.value.properties.find((p: any) =>
+     (p.property?.label || p.title) === field
+    )
+    if (prop?.isRelation && prop.relatedResource) {
+     endpoint = apiPlatform.getResourcePath(prop.relatedResource)
+    }
+   }
+
    return {
     field,
     type,
     label: null,
-    customComponent: component
+    customComponent: component,
+    endpoint
    }
   }).filter(Boolean)
 })
@@ -633,7 +645,7 @@ async function deleteItem() {
   await apiPlatform.delete(resourcePath.value, itemToDelete.value.id)
   showSnackbar('Item deleted successfully')
   showDeleteDialog.value = false
-  loadData()
+  performSearch()
  } catch (error) {
   showSnackbar('Failed to delete item', 'error')
  }

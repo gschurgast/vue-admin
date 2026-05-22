@@ -5,7 +5,6 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\GenerateVariantContentRequest;
-use App\Entity\Attribute\AttributeDefinition;
 use App\Entity\Product\Product;
 use App\Entity\Product\ProductAttributeValue;
 use App\Entity\Product\ProductVariant;
@@ -69,25 +68,37 @@ class GenerateVariantContentProcessor implements ProcessorInterface
         // Build context combining product and variant data
         $productData = $this->buildContext($product, $variant, $productAttributeValues, $variantAttributeValues);
 
-        // Generate content
+        // Generate content (no persistence — caller decides when to save)
         $generatedContent = $this->generateSeoContent($productData, $locale);
 
-        // Find or create description attribute value for this variant
-        $descriptionAttrValue = $this->findOrCreateDescriptionAttribute($product, $variant, $variantAttributeValues, $locale);
+        $existingDescription = $this->findExistingVariantDescription($variantAttributeValues, $locale);
 
-        // Update the description
-        $descriptionAttrValue->setValue($generatedContent);
-        $this->entityManager->persist($descriptionAttrValue);
-        $this->entityManager->flush();
-
-        // Return response
         $response = new GenerateVariantContentRequest();
         $response->variantId = $variantId;
         $response->locale = $locale;
         $response->generatedContent = $generatedContent;
-        $response->attributeValueId = (string) $descriptionAttrValue->getId();
+        $response->attributeValueId = $existingDescription ? (string) $existingDescription->getId() : null;
 
         return $response;
+    }
+
+    private function findExistingVariantDescription(array $variantAttributeValues, string $locale): ?ProductAttributeValue
+    {
+        foreach ($variantAttributeValues as $attrValue) {
+            /** @var ProductAttributeValue $attrValue */
+            $definition = $attrValue->getAttributeDefinition();
+            if ($definition->getCode() !== 'description') {
+                continue;
+            }
+            if ($definition->getIsLocalizable()) {
+                if ($attrValue->getLocale() === $locale) {
+                    return $attrValue;
+                }
+            } else {
+                return $attrValue;
+            }
+        }
+        return null;
     }
 
     private function buildContext(Product $product, ProductVariant $variant, array $productAttributeValues, array $variantAttributeValues): array
@@ -194,42 +205,4 @@ class GenerateVariantContentProcessor implements ProcessorInterface
         return $response->asText();
     }
 
-    private function findOrCreateDescriptionAttribute(Product $product, ProductVariant $variant, array $variantAttributeValues, string $locale): ProductAttributeValue
-    {
-        // Find existing description attribute for this variant
-        foreach ($variantAttributeValues as $attrValue) {
-            /** @var ProductAttributeValue $attrValue */
-            $definition = $attrValue->getAttributeDefinition();
-            if ($definition->getCode() === 'description') {
-                // Check locale match if attribute is localizable
-                if ($definition->getIsLocalizable()) {
-                    if ($attrValue->getLocale() === $locale) {
-                        return $attrValue;
-                    }
-                } else {
-                    return $attrValue;
-                }
-            }
-        }
-
-        // Find description attribute definition
-        $descriptionDef = $this->entityManager->getRepository(AttributeDefinition::class)
-            ->findOneBy(['code' => 'description']);
-
-        if (!$descriptionDef) {
-            throw new NotFoundHttpException('Description attribute definition not found. Please create an attribute with code "description".');
-        }
-
-        // Create new attribute value for this variant
-        $newAttrValue = new ProductAttributeValue();
-        $newAttrValue->setProduct($product);
-        $newAttrValue->setVariant($variant);
-        $newAttrValue->setAttributeDefinition($descriptionDef);
-
-        if ($descriptionDef->getIsLocalizable()) {
-            $newAttrValue->setLocale($locale);
-        }
-
-        return $newAttrValue;
-    }
 }

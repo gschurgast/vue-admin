@@ -130,7 +130,13 @@
         "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
         "passwordMismatch": "Les mots de passe ne correspondent pas"
     },
+    "locale": {
+        "editingIn": "Édition en",
+        "uiUnchanged": "L'interface reste dans votre langue"
+    },
     "attributes": {
+        "translateAll": "Traduire dans toutes les langues",
+        "translateSaveFirst": "Enregistrez d'abord pour activer la traduction",
         "productTitle": "Attributs du produit",
         "variantTitle": "Attributs de la variante",
         "scopeProduct": "Produit",

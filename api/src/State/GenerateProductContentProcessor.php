@@ -5,7 +5,6 @@ namespace App\State;
 use ApiPlatform\Metadata\Operation;
 use ApiPlatform\State\ProcessorInterface;
 use App\ApiResource\GenerateProductContentRequest;
-use App\Entity\Attribute\AttributeDefinition;
 use App\Entity\Product\Product;
 use App\Entity\Product\ProductAttributeValue;
 use Doctrine\ORM\EntityManagerInterface;
@@ -54,25 +53,37 @@ class GenerateProductContentProcessor implements ProcessorInterface
         // Build product context for AI
         $productData = $this->buildProductContext($product, $attributeValues);
 
-        // Generate content
+        // Generate content (no persistence — caller decides when to save)
         $generatedContent = $this->generateSeoContent($productData, $locale);
 
-        // Find or create description attribute value
-        $descriptionAttrValue = $this->findOrCreateDescriptionAttribute($product, $attributeValues, $locale);
+        $existingDescription = $this->findExistingDescriptionAttribute($attributeValues, $locale);
 
-        // Update the description
-        $descriptionAttrValue->setValue($generatedContent);
-        $this->entityManager->persist($descriptionAttrValue);
-        $this->entityManager->flush();
-
-        // Return response
         $response = new GenerateProductContentRequest();
         $response->productId = $productId;
         $response->locale = $locale;
         $response->generatedContent = $generatedContent;
-        $response->attributeValueId = (string) $descriptionAttrValue->getId();
+        $response->attributeValueId = $existingDescription ? (string) $existingDescription->getId() : null;
 
         return $response;
+    }
+
+    private function findExistingDescriptionAttribute(array $attributeValues, string $locale): ?ProductAttributeValue
+    {
+        foreach ($attributeValues as $attrValue) {
+            /** @var ProductAttributeValue $attrValue */
+            $definition = $attrValue->getAttributeDefinition();
+            if ($definition->getCode() !== 'description') {
+                continue;
+            }
+            if ($definition->getIsLocalizable()) {
+                if ($attrValue->getLocale() === $locale) {
+                    return $attrValue;
+                }
+            } else {
+                return $attrValue;
+            }
+        }
+        return null;
     }
 
     private function buildProductContext(Product $product, array $attributeValues): array
@@ -167,41 +178,4 @@ class GenerateProductContentProcessor implements ProcessorInterface
         return $response->asText();
     }
 
-    private function findOrCreateDescriptionAttribute(Product $product, array $attributeValues, string $locale): ProductAttributeValue
-    {
-        // Find existing description attribute
-        foreach ($attributeValues as $attrValue) {
-            /** @var ProductAttributeValue $attrValue */
-            $definition = $attrValue->getAttributeDefinition();
-            if ($definition->getCode() === 'description') {
-                // Check locale match if attribute is localizable
-                if ($definition->getIsLocalizable()) {
-                    if ($attrValue->getLocale() === $locale) {
-                        return $attrValue;
-                    }
-                } else {
-                    return $attrValue;
-                }
-            }
-        }
-
-        // Find description attribute definition
-        $descriptionDef = $this->entityManager->getRepository(AttributeDefinition::class)
-            ->findOneBy(['code' => 'description']);
-
-        if (!$descriptionDef) {
-            throw new NotFoundHttpException('Description attribute definition not found. Please create an attribute with code "description".');
-        }
-
-        // Create new attribute value
-        $newAttrValue = new ProductAttributeValue();
-        $newAttrValue->setProduct($product);
-        $newAttrValue->setAttributeDefinition($descriptionDef);
-
-        if ($descriptionDef->getIsLocalizable()) {
-            $newAttrValue->setLocale($locale);
-        }
-
-        return $newAttrValue;
-    }
 }

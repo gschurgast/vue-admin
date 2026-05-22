@@ -63,23 +63,47 @@
           <div
             v-for="(attrValue, index) in attributes"
             :key="`${scopeLabel}-${attrValue.id || attrValue._tempId || index}`"
-            class="d-flex attribute-row"
+            class="attribute-row"
           >
-            <div class="flex-grow-1">
-              <InlineAttributeValueEditor
-                :attribute-value="attrValue"
-                :label="attrValue.attributeDefinition?.code || 'Unknown'"
-                @change="emit('change', attrValue, $event)"
+            <div class="d-flex">
+              <div class="flex-grow-1">
+                <InlineAttributeValueEditor
+                  :attribute-value="attrValue"
+                  :label="attrValue.attributeDefinition?.code || 'Unknown'"
+                  @change="emit('change', attrValue, $event)"
+                />
+              </div>
+              <v-btn
+                icon="mdi-delete-outline"
+                size="small"
+                variant="text"
+                color="error"
+                class="ml-2 delete-btn"
+                @click="emit('delete', index)"
               />
             </div>
-            <v-btn
-              icon="mdi-delete-outline"
-              size="small"
-              variant="text"
-              color="error"
-              class="ml-2 delete-btn"
-              @click="emit('delete', index)"
-            />
+            <div
+              v-if="attrValue.attributeDefinition?.isLocalizable"
+              class="attribute-row__translate"
+            >
+              <v-btn
+                size="x-small"
+                variant="text"
+                :color="color"
+                :loading="!!translatingIds[attrValue.id]"
+                :disabled="!attrValue.id || !hasValue(attrValue)"
+                @click="emit('translate', attrValue)"
+              >
+                <v-icon start size="x-small">mdi-translate</v-icon>
+                {{ t('attributes.translateAll') }}
+              </v-btn>
+              <span
+                v-if="!attrValue.id"
+                class="text-caption text-medium-emphasis ml-2"
+              >
+                {{ t('attributes.translateSaveFirst') }}
+              </span>
+            </div>
           </div>
         </v-form>
 
@@ -127,19 +151,30 @@ interface Props {
   readonly?: boolean
   editLink?: string | null
   addDisabled?: boolean
+  /** Map of PAV id → boolean indicating an in-flight translate request. */
+  translatingIds?: Record<string | number, boolean>
 }
 
 const props = withDefaults(defineProps<Props>(), {
   readonly: false,
   editLink: null,
-  addDisabled: false
+  addDisabled: false,
+  translatingIds: () => ({})
 })
 
 const emit = defineEmits<{
   add: []
   change: [attrValue: any, data: { value?: string | null, option?: string | null, values?: string[] | null }]
   delete: [index: number]
+  translate: [attrValue: any]
 }>()
+
+function hasValue(attrValue: any): boolean {
+  if (attrValue.value !== null && attrValue.value !== undefined && attrValue.value !== '') return true
+  if (Array.isArray(attrValue.values) && attrValue.values.length > 0) return true
+  if (attrValue.option) return true
+  return false
+}
 
 const empty = computed(() => props.attributes.length === 0)
 
@@ -171,6 +206,11 @@ function formatValue(attrValue: any): string {
   /* Vertically center the icon button against the outlined input
      (height ≈ 52px with density=comfortable, btn ≈ 32px → 10px offset) */
   margin-top: 10px;
+}
+.attribute-row__translate {
+  display: flex;
+  align-items: center;
+  margin: -8px 0 6px 4px;
 }
 .readonly-list {
   display: grid;

@@ -141,7 +141,13 @@
         "passwordMinLength": "Password must be at least 6 characters",
         "passwordMismatch": "Passwords do not match"
     },
+    "locale": {
+        "editingIn": "Editing in",
+        "uiUnchanged": "Your interface language stays unchanged"
+    },
     "attributes": {
+        "translateAll": "Translate to all locales",
+        "translateSaveFirst": "Save first to enable translation",
         "productTitle": "Product attributes",
         "variantTitle": "Variant attributes",
         "scopeProduct": "Product",

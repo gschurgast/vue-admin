@@ -25,10 +25,12 @@
         :attributes="variantAttributeValues"
         :empty-text="t('attributes.emptyVariant')"
         :add-disabled="!variantIri"
+        :translating-ids="translatingIds"
         class="mb-4"
         @add="openAddDialog('variant')"
         @change="onValueChange"
         @delete="deleteVariantAttribute"
+        @translate="translateAttribute"
       />
 
       <!-- Product-level attributes: read-only on variant page, editable on product page -->
@@ -43,9 +45,11 @@
         :empty-text="isVariant ? t('attributes.emptySharedOnVariant') : t('attributes.emptyProduct')"
         :readonly="isVariant"
         :edit-link="isVariant ? productEditLink : null"
+        :translating-ids="translatingIds"
         @add="openAddDialog('product')"
         @change="onValueChange"
         @delete="deleteProductAttribute"
+        @translate="translateAttribute"
       />
     </template>
 
@@ -85,11 +89,13 @@ import { ref, computed, watch, onMounted } from 'vue'
 import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../../services/apiPlatform'
 import { useAttributeOptions } from '../../../composables/useAttributeOptions'
+import { useFormLocale } from '../../../composables/useFormLocale'
 import AttributeValueField from '../../fields/AttributeValueField.vue'
 import AttributeSection from './AttributeSection.vue'
 
 const { t } = useI18n()
 const { ensureLoaded: ensureOptionsLoaded } = useAttributeOptions()
+const formLocale = useFormLocale()
 
 interface Props {
   productIri: string | null
@@ -115,6 +121,36 @@ const attributeDefinitionsCache = ref<Record<string, any>>({})
 const pendingUpdates = ref<Record<string | number, Record<string, any>>>({})
 const pendingCreates = ref<any[]>([])
 const pendingDeletes = ref<Record<string | number, boolean>>({})
+
+// Map of PAV id → boolean while a translate-to-all call is in flight.
+const translatingIds = ref<Record<string | number, boolean>>({})
+
+async function translateAttribute(attrValue: any) {
+  if (!attrValue?.id) return
+  const id = attrValue.id
+
+  try {
+    translatingIds.value = { ...translatingIds.value, [id]: true }
+
+    // Persist any local edits first so the server translates the latest value.
+    if (hasPendingChanges()) {
+      await saveChanges()
+    }
+
+    await apiPlatform.client.post(
+      '/api/translate_pavs',
+      { sourceAttributeValue: `/api/product_attribute_values/${id}` },
+      { headers: { 'Content-Type': 'application/ld+json' } }
+    )
+
+    await loadAttributeValues()
+  } catch (error) {
+    console.error('Translate-to-all failed:', error)
+  } finally {
+    const { [id]: _removed, ...rest } = translatingIds.value
+    translatingIds.value = rest
+  }
+}
 
 // Add dialog state
 const addDialog = ref(false)
@@ -152,7 +188,7 @@ async function loadAttributeValues() {
 
   loading.value = true
   try {
-    const params: Record<string, any> = {}
+    const params: Record<string, any> = { locale: formLocale.value }
     if (props.variantIri) {
       const variantId = extractIdFromIri(props.variantIri)
       if (variantId) {
@@ -227,6 +263,12 @@ async function addAttributeValue() {
   const createData: Record<string, any> = {
     product: props.productIri,
     attributeDefinition: newAttributeDefinition.value
+  }
+
+  // Localizable attributes are stored per-locale; tag the row with the form locale.
+  if (attrDef?.isLocalizable) {
+    createData.locale = formLocale.value
+    newAttr.locale = formLocale.value
   }
 
   if (addDialogType.value === 'variant' && props.variantIri) {
@@ -348,9 +390,10 @@ defineExpose({
   reload: loadAttributeValues
 })
 
-// Combined watcher for both productIri and variantIri
+// Reload whenever the product, variant or selected locale changes so the
+// panel shows localizable attribute values for the current locale.
 watch(
-  () => [props.productIri, props.variantIri] as const,
+  () => [props.productIri, props.variantIri, formLocale.value] as const,
   () => {
     loadAttributeValues()
   }

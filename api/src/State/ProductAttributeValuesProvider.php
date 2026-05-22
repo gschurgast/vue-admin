@@ -23,6 +23,7 @@ class ProductAttributeValuesProvider implements ProviderInterface
         $productId = $uriVariables['productId'] ?? null;
         $request = $this->requestStack->getCurrentRequest();
         $variantId = $request?->query->get('variantId');
+        $locale = $request?->query->get('locale');
 
         $response = new ProductAttributeValuesRequest();
         $response->productId = $productId ? (int) $productId : null;
@@ -34,34 +35,43 @@ class ProductAttributeValuesProvider implements ProviderInterface
 
         $repository = $this->entityManager->getRepository(ProductAttributeValue::class);
 
-        // Get product-level attributes (variant is null)
-        $productAttributes = $repository->createQueryBuilder('pav')
+        // Get product-level attributes (variant is null).
+        // When a locale is specified, keep non-localizable PAVs (locale IS NULL)
+        // plus localizable PAVs whose locale matches the selection.
+        $qb = $repository->createQueryBuilder('pav')
             ->select('pav', 'ad', 'ao')
             ->leftJoin('pav.attributeDefinition', 'ad')
             ->leftJoin('pav.option', 'ao')
             ->where('pav.product = :productId')
             ->andWhere('pav.variant IS NULL')
-            ->setParameter('productId', $productId)
-            ->getQuery()
-            ->getResult();
+            ->setParameter('productId', $productId);
 
-        // Normalize entities to arrays with proper structure
+        if ($locale) {
+            $qb->andWhere('(ad.isLocalizable = false AND pav.locale IS NULL) OR (ad.isLocalizable = true AND pav.locale = :locale)')
+               ->setParameter('locale', $locale);
+        }
+
+        $productAttributes = $qb->getQuery()->getResult();
+
         $response->productAttributes = $this->normalizeAttributeValues($productAttributes);
 
         // Get variant-level attributes if variantId is provided
         if ($variantId) {
-            $variantAttributes = $repository->createQueryBuilder('pav')
+            $vqb = $repository->createQueryBuilder('pav')
                 ->select('pav', 'ad', 'ao')
                 ->leftJoin('pav.attributeDefinition', 'ad')
                 ->leftJoin('pav.option', 'ao')
                 ->where('pav.product = :productId')
                 ->andWhere('pav.variant = :variantId')
                 ->setParameter('productId', $productId)
-                ->setParameter('variantId', $variantId)
-                ->getQuery()
-                ->getResult();
+                ->setParameter('variantId', $variantId);
 
-            $response->variantAttributes = $this->normalizeAttributeValues($variantAttributes);
+            if ($locale) {
+                $vqb->andWhere('(ad.isLocalizable = false AND pav.locale IS NULL) OR (ad.isLocalizable = true AND pav.locale = :locale)')
+                    ->setParameter('locale', $locale);
+            }
+
+            $response->variantAttributes = $this->normalizeAttributeValues($vqb->getQuery()->getResult());
         }
 
         return $response;
@@ -99,6 +109,8 @@ class ProductAttributeValuesProvider implements ProviderInterface
                     'unit' => $definition->getUnit(),
                     'relationEndpoint' => $definition->getRelationEndpoint(),
                     'isRequired' => $definition->getIsRequired(),
+                    'isLocalizable' => $definition->getIsLocalizable(),
+                    'isScopable' => $definition->getIsScopable(),
                     'validationRules' => $definition->getValidationRules(),
                     'defaultValue' => $definition->getDefaultValue(),
                     'helpText' => $definition->getHelpText(),

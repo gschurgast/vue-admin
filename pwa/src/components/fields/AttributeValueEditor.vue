@@ -32,6 +32,7 @@
     v-else-if="attributeType === 'richtext'"
     v-model="localValue"
     :label="label || 'Value (Rich Text)'"
+    :enable-generate="definition?.code === 'description'"
     @update:model-value="emitValue"
   />
 

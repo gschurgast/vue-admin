@@ -25,11 +25,13 @@ use App\Attribute\MenuGroup;
 use App\Enum\AttributeType;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AppAssert;
 
 #[ORM\Entity]
+#[UniqueEntity(fields: ['relationEndpoint'], message: 'Un AttributeDefinition existe déjà pour cet endpoint relation.', ignoreNull: true)]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'code' => 'ipartial', 'type' => 'exact'])]
 #[ApiResource(
     operations: [

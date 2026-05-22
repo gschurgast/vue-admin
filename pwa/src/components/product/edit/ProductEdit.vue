@@ -1,24 +1,13 @@
 <template>
   <v-row>
+    <v-col cols="12">
+      <LocaleSelectorBar v-model="formLocale" />
+    </v-col>
+
     <!-- Left side: Image + Form -->
     <v-col cols="12" md="6">
       <v-card>
-        <v-card-title class="d-flex align-center">
-          <span>Product Details</span>
-          <v-spacer />
-          <v-btn
-            color="primary"
-            size="small"
-            variant="text"
-            style="font-size: 0.75rem;"
-            :loading="generatingContent"
-            :disabled="!productIri || generatingContent"
-            @click="generateAiContent"
-          >
-            <v-icon start size="small">mdi-creation</v-icon>
-            Generate Description
-          </v-btn>
-        </v-card-title>
+        <v-card-title>Product Details</v-card-title>
         <v-card-text>
           <div class="d-flex">
             <!-- Product Image -->
@@ -74,10 +63,12 @@
 </template>
 
 <script setup lang="ts">
-import { ref, computed, watch } from 'vue'
+import { ref, computed, watch, provide } from 'vue'
 import ResourceForm from '../../resource/ResourceForm.vue'
 import ProductAttributeValuesPanel from './ProductAttributeValuesPanel.vue'
 import ProductVariantsList from './ProductVariantsList.vue'
+import LocaleSelectorBar from '../../common/LocaleSelectorBar.vue'
+import { provideFormLocale } from '../../../composables/useFormLocale'
 import apiPlatform from '../../../services/apiPlatform'
 
 interface Props {
@@ -106,6 +97,7 @@ const localFormData = ref({ ...props.formData })
 const attributeValuesPanel = ref<InstanceType<typeof ProductAttributeValuesPanel> | null>(null)
 const productImage = ref<string | null>(null)
 const generatingContent = ref(false)
+const formLocale = provideFormLocale()
 
 const productIri = computed(() => {
   // Get the product IRI from formData (either @id or construct from id)
@@ -142,30 +134,33 @@ function onAttributesLoaded(attributes: { productAttributes: any[], variantAttri
   productImage.value = imageAttr?.value || null
 }
 
-// Generate AI content for product description
-async function generateAiContent() {
-  if (!productIri.value) return
+const generateDisabled = computed(() => !productIri.value || generatingContent.value)
+
+provide('richTextGenerate', {
+  run: () => generateAiContent(),
+  isLoading: generatingContent,
+  disabled: generateDisabled,
+  label: ref('Générer'),
+})
+
+// Generate AI content for product description.
+// Returns the generated HTML without persisting — the rich text editor receives
+// it and the user must save the form to commit the change.
+async function generateAiContent(): Promise<string | undefined> {
+  if (!productIri.value) return undefined
 
   const productId = localFormData.value.id
-  if (!productId) return
+  if (!productId) return undefined
 
   generatingContent.value = true
   try {
     const response = await apiPlatform.client.post(`/api/products/${productId}/generate-content`, {
-      locale: 'fr_FR'
+      locale: formLocale.value
     })
-
-    const { generatedContent, attributeValueId } = response.data
-
-    // Emit event to parent so it can handle the update
-    emit('content-generated', { content: generatedContent, attributeValueId })
-
-    // Reload attribute values to show the new description
-    if (attributeValuesPanel.value) {
-      await attributeValuesPanel.value.reload()
-    }
+    return response.data?.generatedContent as string | undefined
   } catch (error) {
     console.error('Failed to generate AI content:', error)
+    return undefined
   } finally {
     generatingContent.value = false
   }
