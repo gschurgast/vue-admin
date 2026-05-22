@@ -1,25 +1,22 @@
 <template>
   <ResourceAppBar :breadcrumbs="breadcrumbs" :loading="saving">
     <template #actions>
-      <v-btn
-        variant="text"
-        size="small"
+      <PageActionBtn
+        kind="ghost"
         class="mr-2"
         :disabled="saving"
         @click="handleCancel"
       >
         {{ t('common.cancel') }}
-      </v-btn>
-      <v-btn
+      </PageActionBtn>
+      <PageActionBtn
+        kind="success"
         prepend-icon="mdi-content-save-outline"
-        color="success"
-        variant="flat"
-        size="small"
         :loading="saving"
         @click="handleSave"
       >
         {{ t('common.save') }}
-      </v-btn>
+      </PageActionBtn>
     </template>
   </ResourceAppBar>
 
@@ -86,6 +83,7 @@ import apiPlatform from '../../../services/apiPlatform'
 import ResourceForm from '../../../components/resource/ResourceForm.vue'
 import ResourceForbidden from '../../../components/common/ResourceForbidden.vue'
 import ResourceAppBar from '../../../components/resource/ResourceAppBar.vue'
+import PageActionBtn from '../../../components/common/PageActionBtn.vue'
 
 // Pre-load component modules using import.meta.glob for Vite compatibility
 const fieldComponents = import.meta.glob('../../../components/fields/*.vue')

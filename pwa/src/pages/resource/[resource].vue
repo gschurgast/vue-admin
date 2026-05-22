@@ -1,5 +1,19 @@
 <template>
-  <ResourceAppBar :breadcrumbs="breadcrumbs" />
+  <ResourceAppBar :breadcrumbs="breadcrumbs">
+    <template v-if="resource && !isForbidden && resourceMessagesLoaded" #actions>
+      <PageActionBtn
+        kind="secondary"
+        :prepend-icon="showSearchForm ? 'mdi-filter-off-outline' : 'mdi-filter-outline'"
+        class="mr-2"
+        @click="showSearchForm = !showSearchForm"
+      >
+        {{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}
+      </PageActionBtn>
+      <PageActionBtn kind="primary" prepend-icon="mdi-plus" @click="createItem">
+        {{ t('common.create') }}
+      </PageActionBtn>
+    </template>
+  </ResourceAppBar>
 
  <v-container fluid>
   <!-- Loading state until resource messages are loaded -->
@@ -38,26 +52,6 @@
         @edit="editItem"
         @delete="confirmDelete"
     >
-      <template #actions>
-        <v-btn
-          :prepend-icon="showSearchForm ? 'mdi-filter-off-outline' : 'mdi-filter-outline'"
-          variant="tonal"
-          size="small"
-          class="mr-2"
-          @click="showSearchForm = !showSearchForm"
-        >
-          {{ showSearchForm ? t('common.hideFilters') : t('common.showFilters') }}
-        </v-btn>
-        <v-btn
-          prepend-icon="mdi-plus"
-          color="primary"
-          variant="flat"
-          size="small"
-          @click="createItem"
-        >
-          {{ t('common.create') }}
-        </v-btn>
-      </template>
       <template #filters>
         <component
             :is="FilterComponent"
@@ -106,6 +100,7 @@ import ResourceDelete from '../../components/resource/ResourceDelete.vue'
 import ResourceNotFound from '../../components/common/ResourceNotFound.vue'
 import ResourceForbidden from '../../components/common/ResourceForbidden.vue'
 import ResourceAppBar from '../../components/resource/ResourceAppBar.vue'
+import PageActionBtn from '../../components/common/PageActionBtn.vue'
 
 // Pre-load component modules using import.meta.glob for Vite compatibility
 const fieldComponents = import.meta.glob('../../components/fields/*.vue')

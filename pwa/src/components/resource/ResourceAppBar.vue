@@ -24,8 +24,9 @@
 <style scoped>
 .resource-header {
   position: relative;
-  min-height: 40px;
+  min-height: 48px;
   margin-bottom: 12px;
+  gap: 8px;
 }
 </style>
 
