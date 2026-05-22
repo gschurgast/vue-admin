@@ -27,6 +27,10 @@ docker compose exec api php bin/console doctrine:fixtures:load
 # Create migration after entity changes
 docker compose exec api php bin/console make:migration
 
+# Regenerate PWA TypeScript types from the OpenAPI spec
+# (run after any API resource / serialization-group / DTO change)
+make generate-types
+
 # Clear cache
 docker compose exec api php bin/console cache:clear
 
