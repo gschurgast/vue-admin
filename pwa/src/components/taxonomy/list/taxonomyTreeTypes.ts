@@ -1,10 +1,13 @@
-export interface TaxonomyItem {
-  id: number
-  '@id'?: string
-  code: string
-  position?: number
-  parent?: { '@id'?: string; id?: number } | string | null
-  translations?: Array<{ locale: string; label: string }>
+import type { Generated__Taxonomy } from '../../../types/schemas'
+
+/**
+ * Live API shape for a taxonomy node. We allow `parent` to be a string IRI in
+ * addition to the generated embedded-object form: the serializer can return
+ * either depending on MaxDepth resolution and how the item was loaded.
+ */
+export type TaxonomyItem = Omit<Generated__Taxonomy, 'parent'> & {
+  parent?: Generated__Taxonomy | string | null
+  // The tree fetches additional ad-hoc fields (e.g. derived label); keep open.
   [key: string]: any
 }
 

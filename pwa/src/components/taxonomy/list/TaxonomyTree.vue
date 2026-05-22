@@ -170,6 +170,7 @@ const treeRoots = computed<TreeNode[]>(() => {
   const source = effectiveItems.value
   const byId = new Map<number, TreeNode>()
   for (const item of source) {
+    if (item.id === undefined) continue
     byId.set(item.id, {
       id: item.id,
       code: item.code,
