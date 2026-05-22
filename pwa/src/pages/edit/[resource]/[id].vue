@@ -1,24 +1,5 @@
 <template>
-  <ResourceAppBar :breadcrumbs="breadcrumbs" :loading="saving">
-    <template #actions>
-      <PageActionBtn
-        kind="ghost"
-        class="mr-2"
-        :disabled="saving"
-        @click="handleCancel"
-      >
-        {{ t('common.cancel') }}
-      </PageActionBtn>
-      <PageActionBtn
-        kind="success"
-        prepend-icon="mdi-content-save-outline"
-        :loading="saving"
-        @click="handleSave"
-      >
-        {{ t('common.save') }}
-      </PageActionBtn>
-    </template>
-  </ResourceAppBar>
+  <ResourceAppBar :breadcrumbs="breadcrumbs" :loading="saving" />
 
   <v-container fluid>
     <!-- Loading state -->
@@ -63,6 +44,24 @@
       </v-card-text>
     </v-card>
 
+    <PageActionsFooter v-if="!loading && !isForbidden">
+      <PageActionBtn
+        kind="ghost"
+        :disabled="saving"
+        @click="handleCancel"
+      >
+        {{ t('common.cancel') }}
+      </PageActionBtn>
+      <PageActionBtn
+        kind="success"
+        prepend-icon="mdi-content-save-outline"
+        :loading="saving"
+        @click="handleSave"
+      >
+        {{ t('common.save') }}
+      </PageActionBtn>
+    </PageActionsFooter>
+
     <v-snackbar v-model="snackbar.show" :color="snackbar.color">
       {{ snackbar.message }}
       <template v-slot:actions>
@@ -84,6 +83,7 @@ import ResourceForm from '../../../components/resource/ResourceForm.vue'
 import ResourceForbidden from '../../../components/common/ResourceForbidden.vue'
 import ResourceAppBar from '../../../components/resource/ResourceAppBar.vue'
 import PageActionBtn from '../../../components/common/PageActionBtn.vue'
+import PageActionsFooter from '../../../components/common/PageActionsFooter.vue'
 
 // Pre-load component modules using import.meta.glob for Vite compatibility
 const fieldComponents = import.meta.glob('../../../components/fields/*.vue')
