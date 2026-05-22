@@ -27,6 +27,7 @@ use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Serializer\Attribute\Groups;
 use Symfony\Component\Serializer\Attribute\MaxDepth;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
 use App\Validator as AppAssert;
 
@@ -39,6 +40,11 @@ use App\Validator as AppAssert;
             columns: ['attribute_definition_id', 'code']
         )
     ]
+)]
+#[UniqueEntity(
+    fields: ['attribute', 'code'],
+    message: 'An option with this code already exists for this attribute.',
+    errorPath: 'code'
 )]
 #[ApiResource(
     operations: [
