@@ -13,13 +13,17 @@ services:
       APP_SECRET: "ChangeMe123"
       DATABASE_URL: "postgresql://app:ChangeMe123@database:5432/app?serverVersion=16&charset=utf8"
       REDIS_URL: "redis://redis:6379"
+      MESSENGER_TRANSPORT_DSN: "redis://redis:6379/messages"
+      EMBEDDER_URL: "http://embedder:8000"
     depends_on:
       - database
       - redis
     tty: true
 
   database:
-    image: postgres:16-alpine
+    # pgvector ships the official PostgreSQL image + the `vector` extension pre-installed.
+    # Data volume is compatible with the previous postgres:16-alpine.
+    image: pgvector/pgvector:pg16
     ports:
       - "5432:5432"
     environment:
@@ -44,6 +48,35 @@ services:
     ports:
       - "5173:5173"
     command: npm run dev -- --host
+
+  embedder:
+    build:
+      context: ./embedder
+    # Not exposed publicly — only the api container needs to reach it.
+    # Uncomment the ports stanza for local debugging via curl.
+    # ports:
+    #   - "8001:8000"
+    restart: unless-stopped
+
+  worker:
+    # Reuses the api image; runs a long-lived messenger consumer.
+    # --time-limit recycles the process every hour to avoid memory creep.
+    image: antigravity-api
+    volumes:
+      - ./api:/app
+    environment:
+      APP_RUNTIME: Symfony\Component\Runtime\SymfonyRuntime
+      APP_SECRET: "ChangeMe123"
+      DATABASE_URL: "postgresql://app:ChangeMe123@database:5432/app?serverVersion=16&charset=utf8"
+      REDIS_URL: "redis://redis:6379"
+      MESSENGER_TRANSPORT_DSN: "redis://redis:6379/messages"
+      EMBEDDER_URL: "http://embedder:8000"
+    depends_on:
+      - api
+      - redis
+      - embedder
+    command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=512M -vv
+    restart: unless-stopped
 
 volumes:
   db-data:

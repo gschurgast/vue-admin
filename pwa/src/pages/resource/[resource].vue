@@ -39,6 +39,7 @@
     <component
         :is="ListComponent"
         :key="resourceName"
+        ref="listComponentRef"
         :items="items"
         :headers="headersWithCellType"
         :loading="loading"
@@ -192,6 +193,7 @@ const breadcrumbs = computed(() => [
 // Dynamic components for List and Filter
 const ListComponent = shallowRef(ResourceList)
 const FilterComponent = shallowRef(ResourceFilter)
+const listComponentRef = ref<any>(null)
 
 // Reset state synchronously when resource changes to prevent stale data/warnings
 watch(resourceName, () => {
@@ -645,7 +647,13 @@ async function deleteItem() {
   await apiPlatform.delete(resourcePath.value, itemToDelete.value.id)
   showSnackbar('Item deleted successfully')
   showDeleteDialog.value = false
-  performSearch()
+  // When the list is standalone (manages its own data), ask it to refresh
+  // directly — performSearch() short-circuits in that mode.
+  if (resourceConfig.value?.list?.standalone && typeof listComponentRef.value?.refresh === 'function') {
+   listComponentRef.value.refresh()
+  } else {
+   performSearch()
+  }
  } catch (error) {
   showSnackbar('Failed to delete item', 'error')
  }

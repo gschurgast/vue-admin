@@ -177,5 +177,27 @@
         "invalidFormat": "Invalid format",
         "min": "Min {limit}",
         "max": "Max {limit}"
+    },
+    "asset": {
+        "dragHint": "Drag & drop files here or click to browse",
+        "dropHere": "Drop files here",
+        "supportedTypes": "Images, PDF, video, documents",
+        "empty": "No assets yet — drop files above to start.",
+        "noPreview": "No inline preview available",
+        "code": "Code",
+        "type": "Type",
+        "mimeType": "MIME type",
+        "size": "Size",
+        "dimensions": "Dimensions",
+        "duration": "Duration",
+        "flags": "Flags",
+        "duplicate": "Already in the library — existing asset reused.",
+        "embeddingStatus": "Visual fingerprint",
+        "status_pending": "pending",
+        "status_ready": "ready",
+        "status_failed": "failed",
+        "status_skipped": "n/a",
+        "similarTitle": "Visually similar",
+        "duplicateOfWarning": "This asset was flagged as a likely duplicate of #{id}."
     }
 }

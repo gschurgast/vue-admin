@@ -166,5 +166,27 @@
         "invalidFormat": "Format invalide",
         "min": "Minimum {limit}",
         "max": "Maximum {limit}"
+    },
+    "asset": {
+        "dragHint": "Glissez-déposez vos fichiers ici ou cliquez pour parcourir",
+        "dropHere": "Déposez les fichiers ici",
+        "supportedTypes": "Images, PDF, vidéos, documents",
+        "empty": "Aucun asset pour le moment — déposez des fichiers ci-dessus pour démarrer.",
+        "noPreview": "Aperçu non disponible",
+        "code": "Code",
+        "type": "Type",
+        "mimeType": "Type MIME",
+        "size": "Taille",
+        "dimensions": "Dimensions",
+        "duration": "Durée",
+        "flags": "Flags",
+        "duplicate": "Déjà présent dans la bibliothèque — asset existant réutilisé.",
+        "embeddingStatus": "Empreinte visuelle",
+        "status_pending": "en attente",
+        "status_ready": "prêt",
+        "status_failed": "échec",
+        "status_skipped": "non applicable",
+        "similarTitle": "Visuellement similaires",
+        "duplicateOfWarning": "Cet asset a été signalé comme probable doublon de #{id}."
     }
 }

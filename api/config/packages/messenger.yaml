@@ -1,0 +1,29 @@
+framework:
+    messenger:
+        failure_transport: failed
+
+        transports:
+            # Asynchronous transport for heavy work (image embedding, etc.).
+            # Backed by Redis Streams — already running in our Docker stack.
+            async:
+                dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                retry_strategy:
+                    max_retries: 3
+                    delay: 2000        # ms
+                    multiplier: 2
+                    max_delay: 60000
+
+            # Sync fallback for messages we don't want async.
+            sync: 'sync://'
+
+            # Dead-letter queue for jobs that exhausted retries.
+            failed: 'redis://redis:6379/messages_failed'
+
+        routing:
+            App\Message\ComputeEmbeddingMessage: async
+
+when@test:
+    framework:
+        messenger:
+            transports:
+                async: 'in-memory://'

@@ -1,0 +1,32 @@
+{
+  "filters": {
+    "fields": [
+      { "code": "" },
+      { "filename": "" },
+      { "type": "" }
+    ]
+  },
+  "list": {
+    "component": "AssetGrid",
+    "standalone": true,
+    "fields": []
+  },
+  "edit": {
+    "fields": [
+      { "code": "CodeField" },
+      { "filename": "" },
+      { "flags": "RelationSearchField" }
+    ]
+  },
+  "show": {
+    "component": "AssetShow",
+    "fields": [
+      { "code": "" },
+      { "filename": "" },
+      { "type": "" },
+      { "mimeType": "" },
+      { "size": "" },
+      { "flags": "" }
+    ]
+  }
+}

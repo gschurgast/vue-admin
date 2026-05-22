@@ -239,6 +239,15 @@ onMounted(() => {
   loadItem()
 })
 
+// Reload when the user navigates to a different show page (same route, new params).
+// Without this watcher, clicking a similar asset would change the URL but keep the
+// previously-loaded item visible.
+watch(itemId, (newId, oldId) => {
+  if (newId && newId !== oldId) {
+    loadItem()
+  }
+})
+
 // Watch for locale changes to reload resource-specific translations
 watch(locale, async (newLocale) => {
   if (resourceName.value) {

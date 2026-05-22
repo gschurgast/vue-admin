@@ -4,6 +4,146 @@
  */
 
 export interface paths {
+    "/api/assets": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves the collection of Asset resources.
+         * @description Retrieves the collection of Asset resources.
+         */
+        get: operations["api_assets_get_collection"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/assets/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a Asset resource.
+         * @description Retrieves a Asset resource.
+         */
+        get: operations["api_assets_id_get"];
+        put?: never;
+        post?: never;
+        /**
+         * Removes the Asset resource.
+         * @description Removes the Asset resource.
+         */
+        delete: operations["api_assets_id_delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Updates the Asset resource.
+         * @description Updates the Asset resource.
+         */
+        patch: operations["api_assets_id_patch"];
+        trace?: never;
+    };
+    "/api/asset_flags": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves the collection of AssetFlag resources.
+         * @description Retrieves the collection of AssetFlag resources.
+         */
+        get: operations["api_asset_flags_get_collection"];
+        put?: never;
+        /**
+         * Creates a AssetFlag resource.
+         * @description Creates a AssetFlag resource.
+         */
+        post: operations["api_asset_flags_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/asset_flags/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a AssetFlag resource.
+         * @description Retrieves a AssetFlag resource.
+         */
+        get: operations["api_asset_flags_id_get"];
+        put?: never;
+        post?: never;
+        /**
+         * Removes the AssetFlag resource.
+         * @description Removes the AssetFlag resource.
+         */
+        delete: operations["api_asset_flags_id_delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Updates the AssetFlag resource.
+         * @description Updates the AssetFlag resource.
+         */
+        patch: operations["api_asset_flags_id_patch"];
+        trace?: never;
+    };
+    "/api/asset_similarities": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves the collection of AssetSimilarity resources.
+         * @description Retrieves the collection of AssetSimilarity resources.
+         */
+        get: operations["api_asset_similarities_get_collection"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/asset_similarities/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a AssetSimilarity resource.
+         * @description Retrieves a AssetSimilarity resource.
+         */
+        get: operations["api_asset_similarities_id_get"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/attribute_definitions": {
         parameters: {
             query?: never;
@@ -844,6 +984,26 @@ export interface paths {
         patch: operations["api_taxonomy_translations_id_patch"];
         trace?: never;
     };
+    "/api/translate_pavs": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Creates a TranslatePavRequest resource.
+         * @description Creates a TranslatePavRequest resource.
+         */
+        post: operations["api_translate_pavs_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/translate": {
         parameters: {
             query?: never;
@@ -940,6 +1100,90 @@ export interface paths {
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        "Asset-asset.write.jsonMergePatch": {
+            code?: string;
+            /** @enum {string} */
+            type?: "image" | "pdf" | "video" | "doc";
+            filename?: string;
+            flags?: string[];
+        };
+        "Asset.jsonld-asset.read": {
+            duplicateOf?: components["schemas"]["Asset.jsonld-asset.read"] | null;
+            flags?: components["schemas"]["AssetFlag.jsonld-asset.read"][];
+            /** Format: date-time */
+            readonly createdAt?: string;
+            /** Format: date-time */
+            readonly updatedAt?: string;
+        } & (components["schemas"]["HydraItemBaseSchema"] & {
+            readonly id?: number;
+            code: string;
+            /** @enum {string} */
+            type: "image" | "pdf" | "video" | "doc";
+            mimeType: string;
+            filename: string;
+            /** @default 0 */
+            size: number | string;
+            s3Key?: string | null;
+            s3Bucket?: string | null;
+            width?: number | null;
+            height?: number | null;
+            /** @description Duration in seconds (video / audio). */
+            duration?: number | null;
+            /** @description SHA-256 checksum of the binary content (for deduplication). */
+            checksum?: string | null;
+            /**
+             * @description Embedding model identifier (e.g. "clip-ViT-B-32"). Lets us detect stale
+             *     vectors when the model is upgraded — they can then be recomputed.
+             */
+            embeddingModel?: string | null;
+            /**
+             * @description One of: pending | ready | failed | skipped.
+             * @default pending
+             */
+            embeddingStatus: string;
+        });
+        "AssetFlag-asset_flag.write": {
+            code: string;
+            label: string;
+            color?: string | null;
+        };
+        "AssetFlag-asset_flag.write.jsonMergePatch": {
+            code?: string;
+            label?: string;
+            color?: string | null;
+        };
+        "AssetFlag.jsonld-asset.read": components["schemas"]["HydraItemBaseSchema"] & {
+            readonly id?: number;
+            code: string;
+            label: string;
+            color?: string | null;
+        };
+        "AssetFlag.jsonld-asset_flag.read": components["schemas"]["HydraItemBaseSchema"] & {
+            readonly id?: number;
+            code: string;
+            label: string;
+            color?: string | null;
+        };
+        /**
+         * @description Undirected similarity edge between two assets.
+         *
+         *     Enforces (assetA.id < assetB.id) so (1↔2) and (2↔1) cannot coexist; this is
+         *     also guaranteed by a CHECK constraint on the table.
+         */
+        "AssetSimilarity.jsonld-asset_similarity.read": components["schemas"]["HydraItemBaseSchema"] & {
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            readonly assetA?: string;
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            readonly assetB?: string;
+            /** @description Cosine similarity in [0, 1] (vectors are L2-normalised before being stored). */
+            score?: number;
+        };
         "AttributeDefinition-attribute_definition.write": {
             code: string;
             /** @enum {string} */
@@ -1585,6 +1829,27 @@ export interface components {
             locale?: "en_US" | "en_GB" | "fr_FR" | "de_DE" | "es_ES" | "it_IT" | "pt_PT" | "pt_BR" | "da_DK" | "nb_NO" | "sv_SE" | "pl_PL" | "zh_CN" | "zh_TW" | "ja_JP" | "ar_SA" | "he_IL";
             label?: string;
         };
+        "TranslatePavRequest-translate_pav.write": {
+            /** @description IRI of the source ProductAttributeValue (e.g. "/api/product_attribute_values/42"). */
+            sourceAttributeValue?: string | null;
+            /** @description Numeric id alternative to the IRI above. */
+            sourceAttributeValueId?: number | null;
+            /**
+             * @description If true, overwrite existing PAVs in target locales. Defaults to false (only fill gaps).
+             * @default false
+             */
+            overwriteExisting: boolean;
+        };
+        "TranslatePavRequest.jsonld-translate_pav.read": components["schemas"]["HydraItemBaseSchema"] & {
+            /** @default 0 */
+            createdCount: number;
+            /** @default 0 */
+            skippedCount: number;
+            /** @description List of locale codes that were created (translated). */
+            createdLocales?: (string | null)[];
+            /** @description List of locale codes that already had a value and were skipped. */
+            skippedLocales?: (string | null)[];
+        };
         "TranslationRequest-translation.write": {
             text?: string | null;
             sourceLocale?: string | null;
@@ -1627,6 +1892,476 @@ export interface components {
 }
 export type $defs = Record<string, never>;
 export interface operations {
+    api_assets_get_collection: {
+        parameters: {
+            query?: {
+                /** @description The collection page number */
+                page?: number;
+                id?: number;
+                "id[]"?: number[];
+                code?: string;
+                type?: string;
+                "type[]"?: string[];
+                filename?: string;
+                mimeType?: string;
+                "mimeType[]"?: string[];
+                "flags.code"?: string;
+                "flags.code[]"?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Asset collection */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["HydraCollectionBaseSchema"] & {
+                        member: components["schemas"]["Asset.jsonld-asset.read"][];
+                    };
+                };
+            };
+        };
+    };
+    api_assets_id_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Asset identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Asset resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Asset.jsonld-asset.read"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_assets_id_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Asset identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description Asset resource deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_assets_id_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description Asset identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The updated Asset resource */
+        requestBody: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["Asset-asset.write.jsonMergePatch"];
+            };
+        };
+        responses: {
+            /** @description Asset resource updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Asset.jsonld-asset.read"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_asset_flags_get_collection: {
+        parameters: {
+            query?: {
+                /** @description The collection page number */
+                page?: number;
+                code?: string;
+                label?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetFlag collection */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["HydraCollectionBaseSchema"] & {
+                        member: components["schemas"]["AssetFlag.jsonld-asset_flag.read"][];
+                    };
+                };
+            };
+        };
+    };
+    api_asset_flags_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The new AssetFlag resource */
+        requestBody: {
+            content: {
+                "application/ld+json": components["schemas"]["AssetFlag-asset_flag.write"];
+            };
+        };
+        responses: {
+            /** @description AssetFlag resource created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetFlag.jsonld-asset_flag.read"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_asset_flags_id_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetFlag identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetFlag resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetFlag.jsonld-asset_flag.read"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_asset_flags_id_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetFlag identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetFlag resource deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_asset_flags_id_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetFlag identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The updated AssetFlag resource */
+        requestBody: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["AssetFlag-asset_flag.write.jsonMergePatch"];
+            };
+        };
+        responses: {
+            /** @description AssetFlag resource updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetFlag.jsonld-asset_flag.read"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_asset_similarities_get_collection: {
+        parameters: {
+            query?: {
+                /** @description The collection page number */
+                page?: number;
+                assetA?: string;
+                "assetA[]"?: string[];
+                assetB?: string;
+                "assetB[]"?: string[];
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetSimilarity collection */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["HydraCollectionBaseSchema"] & {
+                        member: components["schemas"]["AssetSimilarity.jsonld-asset_similarity.read"][];
+                    };
+                };
+            };
+        };
+    };
+    api_asset_similarities_id_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetSimilarity identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetSimilarity resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetSimilarity.jsonld-asset_similarity.read"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
     api_attribute_definitions_get_collection: {
         parameters: {
             query?: {
@@ -4675,6 +5410,53 @@ export interface operations {
             };
             /** @description Not found */
             404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_translate_pavs_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The new TranslatePavRequest resource */
+        requestBody: {
+            content: {
+                "application/ld+json": components["schemas"]["TranslatePavRequest-translate_pav.write"];
+            };
+        };
+        responses: {
+            /** @description TranslatePavRequest resource created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["TranslatePavRequest.jsonld-translate_pav.read"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
                 headers: {
                     [name: string]: unknown;
                 };

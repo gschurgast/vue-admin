@@ -4,6 +4,8 @@
 # Put parameters here that don't need to change on each machine where the app is deployed
 # https://symfony.com/doc/current/best_practices.html#use-parameters-for-application-configuration
 parameters:
+    app.embedder_url: '%env(default:app.embedder_url_default:EMBEDDER_URL)%'
+    app.embedder_url_default: 'http://embedder:8000'
 
 services:
     # default configuration for services in *this* file
@@ -33,6 +35,19 @@ services:
     App\Service\ConversationService:
         arguments:
             $redisUrl: '%env(REDIS_URL)%'
+
+    # S3 client used in prod by Flysystem (assets.storage).
+    # Only instantiated in prod; dev/test use the local adapter instead.
+    assets.s3_client:
+        class: Aws\S3\S3Client
+        arguments:
+            - region: '%env(default::S3_REGION)%'
+              version: 'latest'
+              endpoint: '%env(default::S3_ENDPOINT)%'
+              use_path_style_endpoint: '%env(bool:default::S3_USE_PATH_STYLE)%'
+              credentials:
+                  key: '%env(default::S3_ACCESS_KEY)%'
+                  secret: '%env(default::S3_SECRET_KEY)%'
 
 
 

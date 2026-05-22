@@ -1,0 +1,29 @@
+# Read the documentation at https://github.com/thephpleague/flysystem-bundle/blob/master/docs/1-getting-started.md
+#
+# Dev/test: local filesystem under var/assets (no AWS credentials needed).
+# Prod: AWS S3 via the assets.s3_client service defined in services.yaml.
+
+when@dev:
+    flysystem:
+        storages:
+            assets.storage:
+                adapter: 'local'
+                options:
+                    directory: '%kernel.project_dir%/var/assets'
+
+when@test:
+    flysystem:
+        storages:
+            assets.storage:
+                adapter: 'local'
+                options:
+                    directory: '%kernel.project_dir%/var/assets-test'
+
+when@prod:
+    flysystem:
+        storages:
+            assets.storage:
+                adapter: 'aws'
+                options:
+                    client: 'assets.s3_client'
+                    bucket: '%env(S3_ASSETS_BUCKET)%'
