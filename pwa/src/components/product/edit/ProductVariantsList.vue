@@ -44,12 +44,9 @@
 import { ref, computed, watch } from 'vue'
 import { useI18n } from 'vue-i18n'
 import apiPlatform from '../../../services/apiPlatform'
+import type { Generated__ProductVariant } from '../../../types/schemas'
 
-interface Variant {
-  id: number
-  sku: string
-  isDefault: boolean
-}
+type Variant = Generated__ProductVariant
 
 interface Props {
   productIri: string | null
@@ -65,7 +62,7 @@ const variants = ref<Variant[]>([])
 
 const sortedVariants = computed(() =>
   [...variants.value].sort(
-    (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0) || a.sku.localeCompare(b.sku)
+    (a, b) => (b.isDefault ? 1 : 0) - (a.isDefault ? 1 : 0) || (a.sku ?? '').localeCompare(b.sku ?? '')
   )
 )
 

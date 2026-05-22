@@ -1,15 +1,10 @@
 import { defineStore } from 'pinia'
 import { ref, computed } from 'vue'
 import apiPlatform from '../services/apiPlatform'
+import type { Generated__User } from '../types/schemas'
 
-export interface User {
-    id?: number
-    email: string
-    firstName?: string
-    lastName?: string
-    picture?: string
-    roles: string[]
-}
+// JWT-derived user lacks Hydra envelope fields, so the store keeps a relaxed view.
+export type User = Partial<Generated__User>
 
 export const useAuthStore = defineStore('auth', () => {
     const token = ref<string | null>(localStorage.getItem('auth_token'))
