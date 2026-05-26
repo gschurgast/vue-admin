@@ -187,6 +187,19 @@
         "status_failed": "échec",
         "status_skipped": "non applicable",
         "similarTitle": "Visuellement similaires",
-        "duplicateOfWarning": "Cet asset a été signalé comme probable doublon de #{id}."
+        "duplicateOfWarning": "Cet asset a été signalé comme probable doublon de #{id}.",
+        "viewOriginal": "Voir l'original",
+        "deleteDuplicate": "Supprimer ce doublon",
+        "deleteDuplicateTitle": "Supprimer ce doublon ?",
+        "deleteDuplicateBody": "Le fichier sera définitivement retiré du stockage. L'original #{id} est conservé.",
+        "tabDetails": "Détails",
+        "tabSimilar": "Similaires",
+        "noSimilar": "Aucun asset visuellement similaire trouvé.",
+        "flagsPlaceholder": "Ajouter des flags…",
+        "flagsDisabledHint": "Les flags se gèrent sur l'asset original.",
+        "showUpload": "Uploader",
+        "hideUpload": "Masquer l'upload",
+        "filename": "Nom du fichier",
+        "renameTooltip": "Renommer"
     }
 }

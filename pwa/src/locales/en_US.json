@@ -198,6 +198,19 @@
         "status_failed": "failed",
         "status_skipped": "n/a",
         "similarTitle": "Visually similar",
-        "duplicateOfWarning": "This asset was flagged as a likely duplicate of #{id}."
+        "duplicateOfWarning": "This asset was flagged as a likely duplicate of #{id}.",
+        "viewOriginal": "View original",
+        "deleteDuplicate": "Delete duplicate",
+        "deleteDuplicateTitle": "Delete this duplicate?",
+        "deleteDuplicateBody": "The file will be permanently removed from storage. The original #{id} is kept.",
+        "tabDetails": "Details",
+        "tabSimilar": "Similar",
+        "noSimilar": "No visually similar assets found.",
+        "flagsPlaceholder": "Add flags…",
+        "flagsDisabledHint": "Flags are managed on the original asset.",
+        "showUpload": "Upload",
+        "hideUpload": "Hide upload",
+        "filename": "Filename",
+        "renameTooltip": "Rename"
     }
 }

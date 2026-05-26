@@ -1101,10 +1101,8 @@ export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
         "Asset-asset.write.jsonMergePatch": {
-            code?: string;
             /** @enum {string} */
             type?: "image" | "pdf" | "video" | "doc";
-            filename?: string;
             flags?: string[];
         };
         "Asset.jsonld-asset.read": {
@@ -1116,7 +1114,6 @@ export interface components {
             readonly updatedAt?: string;
         } & (components["schemas"]["HydraItemBaseSchema"] & {
             readonly id?: number;
-            code: string;
             /** @enum {string} */
             type: "image" | "pdf" | "video" | "doc";
             mimeType: string;
@@ -1899,7 +1896,6 @@ export interface operations {
                 page?: number;
                 id?: number;
                 "id[]"?: number[];
-                code?: string;
                 type?: string;
                 "type[]"?: string[];
                 filename?: string;

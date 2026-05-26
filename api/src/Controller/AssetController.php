@@ -110,7 +110,7 @@ class AssetController
         $limit = max(1, min(50, (int) $request->query->get('limit', '20')));
 
         $rows = $this->em->getConnection()->fetchAllAssociative(
-            'SELECT a.id, a.code, a.filename, a.mime_type, a.type, a.size, a.width, a.height,
+            'SELECT a.id, a.filename, a.mime_type, a.type, a.size, a.width, a.height,
                     1 - (a.embedding <=> b.embedding) AS similarity
              FROM asset a, asset b
              WHERE b.id = :id
@@ -128,7 +128,6 @@ class AssetController
             return [
                 'id' => (int) $row['id'],
                 '@id' => '/api/assets/' . (int) $row['id'],
-                'code' => $row['code'],
                 'filename' => $row['filename'],
                 'mimeType' => $row['mime_type'],
                 'type' => $row['type'],

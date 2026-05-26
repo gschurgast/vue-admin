@@ -10,7 +10,6 @@ use League\Flysystem\FilesystemOperator;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Messenger\MessageBusInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 /**
  * Persists an uploaded file as an Asset entity and writes its binary content
@@ -29,7 +28,6 @@ class AssetUploader
         private readonly EntityManagerInterface $em,
         #[Autowire(service: 'assets.storage')]
         private readonly FilesystemOperator $storage,
-        private readonly SluggerInterface $slugger,
         private readonly AssetMetadataExtractor $metadataExtractor,
         private readonly MessageBusInterface $messageBus,
         #[Autowire(env: 'default::S3_ASSETS_BUCKET')]
@@ -43,10 +41,9 @@ class AssetUploader
     public function uploadResult(
         UploadedFile $file,
         ?AssetType $type = null,
-        ?string $code = null,
         ?array $flagCodes = null,
     ): AssetUploadResult {
-        return $this->doUpload($file, $type, $code, $flagCodes);
+        return $this->doUpload($file, $type, $flagCodes);
     }
 
     /**
@@ -55,10 +52,9 @@ class AssetUploader
     public function upload(
         UploadedFile $file,
         ?AssetType $type = null,
-        ?string $code = null,
         ?array $flagCodes = null,
     ): Asset {
-        return $this->doUpload($file, $type, $code, $flagCodes)->asset;
+        return $this->doUpload($file, $type, $flagCodes)->asset;
     }
 
     /**
@@ -67,7 +63,6 @@ class AssetUploader
     private function doUpload(
         UploadedFile $file,
         ?AssetType $type,
-        ?string $code,
         ?array $flagCodes,
     ): AssetUploadResult {
         if (!$file->isValid()) {
@@ -114,7 +109,6 @@ class AssetUploader
         $metadata = $this->metadataExtractor->extract($file->getPathname(), $resolvedType, $mimeType);
 
         $asset = new Asset();
-        $asset->setCode($code ?? $this->generateCode($originalName));
         $asset->setType($resolvedType);
         $asset->setMimeType($mimeType);
         $asset->setFilename($originalName);
@@ -185,14 +179,6 @@ class AssetUploader
         }
         $this->em->remove($asset);
         $this->em->flush();
-    }
-
-    private function generateCode(string $originalName): string
-    {
-        $base = pathinfo($originalName, PATHINFO_FILENAME);
-        $slug = strtolower((string) $this->slugger->slug($base));
-        $slug = substr($slug, 0, 32) ?: 'asset';
-        return sprintf('%s-%s', $slug, bin2hex(random_bytes(4)));
     }
 
     private function resolveExtension(UploadedFile $file, string $originalName): string

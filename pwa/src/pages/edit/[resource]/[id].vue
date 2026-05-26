@@ -29,6 +29,9 @@
           :loading-relations="loadingRelations"
           :field-errors="fieldErrors"
           :resource-name="resourceName"
+          :saving="saving"
+          :on-save="handleSave"
+          :on-cancel="handleCancel"
         />
         
         <!-- Default ResourceForm -->
@@ -44,7 +47,14 @@
       </v-card-text>
     </v-card>
 
-    <PageActionsFooter v-if="!loading && !isForbidden">
+    <!-- Anchor for custom-action footers teleported from custom edit components
+         (see e.g. AssetEdit). Keeps the bar at the same DOM level as the default
+         footer so positioning stays consistent across all edit pages. -->
+    <div id="edit-actions-anchor"></div>
+
+    <!-- Default footer; custom edit components can opt out via resourceConfig.edit.customActions
+         and render their own (e.g. AssetEdit needs Cancel / Download / Save|DeleteDuplicate). -->
+    <PageActionsFooter v-if="!loading && !isForbidden && !resourceConfig?.edit?.customActions">
       <PageActionBtn
         kind="ghost"
         :disabled="saving"

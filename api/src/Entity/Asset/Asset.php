@@ -12,7 +12,6 @@ use ApiPlatform\Metadata\Patch;
 use App\Attribute\MenuGroup;
 use App\Enum\AssetType;
 use App\State\AssetDeleteProcessor;
-use App\Validator as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
@@ -25,11 +24,9 @@ use Symfony\Component\Validator\Constraints as Assert;
 #[ORM\Entity]
 #[ORM\Table(name: 'asset')]
 #[ORM\HasLifecycleCallbacks]
-#[UniqueEntity(fields: ['code'], message: 'Un asset avec ce code existe déjà.')]
 #[UniqueEntity(fields: ['s3Key'], message: 'Un asset utilise déjà cette clé de stockage.', ignoreNull: true)]
 #[ApiFilter(SearchFilter::class, properties: [
     'id' => 'exact',
-    'code' => 'ipartial',
     'type' => 'exact',
     'filename' => 'ipartial',
     'mimeType' => 'exact',
@@ -53,12 +50,6 @@ class Asset
     #[ORM\Column]
     #[Groups(['asset:read'])]
     private ?int $id = null;
-
-    #[ORM\Column(length: 50, unique: true)]
-    #[Assert\NotBlank]
-    #[AppAssert\Code]
-    #[Groups(['asset:read', 'asset:write'])]
-    private ?string $code = null;
 
     #[ORM\Column(length: 20, enumType: AssetType::class)]
     #[Assert\NotNull]
@@ -165,12 +156,40 @@ class Asset
         $this->flags = new ArrayCollection();
     }
 
+    /**
+     * Validation: duplicates can't carry flags — manage them on the original.
+     * Triggered by API Platform on every write (POST/PATCH).
+     */
+    #[\Symfony\Component\Validator\Constraints\Callback]
+    public function validateDuplicateHasNoFlags(\Symfony\Component\Validator\Context\ExecutionContextInterface $context): void
+    {
+        if ($this->duplicateOf !== null && !$this->flags->isEmpty()) {
+            $context->buildViolation('Flags cannot be assigned to a duplicate asset; manage them on the original.')
+                ->atPath('flags')
+                ->addViolation();
+        }
+    }
+
     #[ORM\PrePersist]
     public function onPrePersist(): void
     {
         $now = new \DateTimeImmutable();
         $this->createdAt = $now;
         $this->updatedAt = $now;
+    }
+
+    /**
+     * Duplicates are read-only: silently reverts any filename change on update.
+     * Stronger than UI alone (covers direct API PATCHes too).
+     */
+    #[ORM\PreUpdate]
+    public function lockDuplicateFilename(\Doctrine\ORM\Event\PreUpdateEventArgs $args): void
+    {
+        if ($this->duplicateOf !== null && $args->hasChangedField('filename')) {
+            $original = $args->getOldValue('filename');
+            $this->filename = $original;
+            $args->setNewValue('filename', $original);
+        }
     }
 
     #[ORM\PreUpdate]
@@ -193,17 +212,6 @@ class Asset
     public function getId(): ?int
     {
         return $this->id;
-    }
-
-    public function getCode(): ?string
-    {
-        return $this->code;
-    }
-
-    public function setCode(string $code): static
-    {
-        $this->code = $code;
-        return $this;
     }
 
     public function getType(): ?AssetType

@@ -1,7 +1,6 @@
 {
   "filters": {
     "fields": [
-      { "code": "" },
       { "filename": "" },
       { "type": "" }
     ]
@@ -12,20 +11,10 @@
     "fields": []
   },
   "edit": {
+    "component": "AssetEdit",
+    "customActions": true,
     "fields": [
-      { "code": "CodeField" },
       { "filename": "" },
-      { "flags": "RelationSearchField" }
-    ]
-  },
-  "show": {
-    "component": "AssetShow",
-    "fields": [
-      { "code": "" },
-      { "filename": "" },
-      { "type": "" },
-      { "mimeType": "" },
-      { "size": "" },
       { "flags": "" }
     ]
   }

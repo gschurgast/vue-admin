@@ -8,6 +8,16 @@
       </v-chip>
       <v-spacer />
       <v-btn
+        :prepend-icon="showUploadZone ? 'mdi-cloud-upload' : 'mdi-cloud-upload-outline'"
+        size="small"
+        :variant="showUploadZone ? 'flat' : 'tonal'"
+        :color="showUploadZone ? 'primary' : undefined"
+        class="mr-2"
+        @click="showUploadZone = !showUploadZone"
+      >
+        {{ showUploadZone ? t('asset.hideUpload', 'Hide upload') : t('asset.showUpload', 'Upload') }}
+      </v-btn>
+      <v-btn
         prepend-icon="mdi-refresh"
         size="small"
         variant="tonal"
@@ -22,8 +32,10 @@
     <!-- Filters slot (from [resource].vue) -->
     <slot name="filters" />
 
-    <!-- Drag & drop zone -->
-    <div
+    <!-- Drag & drop zone (collapsible, hidden by default) -->
+    <v-expand-transition>
+      <div
+      v-show="showUploadZone"
       class="upload-zone pa-6 ma-4"
       :class="{ 'upload-zone--active': isDragging }"
       @dragenter.prevent="onDragEnter"
@@ -48,7 +60,8 @@
           {{ t('asset.supportedTypes', 'Images, PDF, video, documents') }}
         </div>
       </div>
-    </div>
+      </div>
+    </v-expand-transition>
 
     <!-- Upload progress -->
     <div v-if="uploads.length" class="px-4 pb-2">
@@ -108,7 +121,7 @@
         :key="item.id"
         class="asset-tile"
         variant="outlined"
-        @click="$emit('view', item)"
+        @click="$emit('edit', item)"
       >
         <div class="asset-tile__preview">
           <img
@@ -212,6 +225,7 @@ const loading = ref(false)
 const currentPage = ref(1)
 const itemsPerPage = ref(24)
 
+const showUploadZone = ref(false)
 const isDragging = ref(false)
 let dragCounter = 0
 const fileInput = ref<HTMLInputElement | null>(null)
