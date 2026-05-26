@@ -45,8 +45,10 @@ Permettre aux équipes métier de gérer le catalogue (produits, attributs, asse
 **Target features:**
 - Définition de transformations nommées (`code`) composées de steps ordonnées paramétrables
 - Route publique avec conversion forcée par extension d'URL (png/jpg/webp/avif) et cache S3 versionné par hash de steps
-- Handlers Imagine pour resize/crop/rotate/format_convert/add_background
-- Suppression d'arrière-plan via le service `embedder` étendu (rembg + u2net)
+- **Toute la manipulation d'image en Python** dans le service `embedder` (perf supérieure à Imagine PHP) — un endpoint par step type
+- Steps classiques (resize, crop, rotate, format_convert, add_background color/asset) via Pillow / OpenCV
+- Suppression d'arrière-plan via **BiRefNet** (licence MIT, usage commercial OK)
+- Ajout de fond **par IA** via Stable Diffusion (add_background type:ai_prompt) — chemin async obligatoire (CPU 30-120s/image)
 - Éditeur drag-and-drop des steps avec preview live dans la PWA
 - Warmup async (Messenger), commande de GC du cache, métriques
 
@@ -73,8 +75,12 @@ Permettre aux équipes métier de gérer le catalogue (produits, attributs, asse
 | Route publique `/t/{code}/{id}.{ext}` | Cache CDN-friendly, immutable, l'original reste protégé | — Pending |
 | Conversion forcée par extension d'URL | Une URL = un format déterministe, simplifie le caching | — Pending |
 | Steps modifiables + versioning par hash sha1 | UX éditeur sans casser le cache, GC séparé pour les orphelins | — Pending |
-| bgremover intégré au service `embedder` | Éviter un 3e container ML, mutualiser ressources | — Pending |
-| Imagine pour transformations classiques | Mature, intégration Symfony native | — Pending |
+| Toute la manipulation d'image en Python (pas Imagine PHP) | Perf supérieure ; mutualisation du container `embedder` ; accès direct aux modèles ML | — Pending |
+| Un endpoint Python par step type | Modularité, debugging facilité ; le PHP orchestre via HTTP | — Pending |
+| BiRefNet (MIT) pour remove_background | RMBG-1.4/2.0 non-commercial — incompatible avec usage commercial Vente-Unique | — Pending |
+| Stable Diffusion pour add_background type:ai_prompt | Génération IA de fond contextuel | — Pending |
+| Async obligatoire pour les steps AI (SD) | CPU 30-120s/image incompatible avec sync 8s ; 202 + polling pour les variants AI | — Pending |
+| Sync-first 8s pour steps non-AI uniquement | UX `<img src>` directe préservée pour 95 % des cas | — Pending |
 
 ## Evolution
 
