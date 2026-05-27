@@ -70,7 +70,7 @@ Plans:
   5. Désactiver le feature flag `transformations.public_route.enabled` fait passer la route à 404 immédiatement ; les en-têtes CORS autorisent `<img>` cross-origin ; un asset non public ou un code inconnu retourne 404 (jamais 403)
 **Plans:** 3 plans
 Plans:
-- [ ] 03-01-PLAN.md — DTO StepParams + factory + Doctrine validation listener + migration warnings JSONB + alpha-flatten-on-jpeg derivation
+- [x] 03-01-PLAN.md — DTO StepParams + factory + Doctrine validation listener + migration warnings JSONB + alpha-flatten-on-jpeg derivation
 - [ ] 03-02-PLAN.md — StepHandlerInterface + 5 handlers HTTP (embedder.client RetryableHttpClient) + PipelineRunner cap 8s + format_convert implicite
 - [ ] 03-03-PLAN.md — PublicTransformationController + route /t/* + lock Redis + cache S3 + feature flag + CORS + tests concurrence
 

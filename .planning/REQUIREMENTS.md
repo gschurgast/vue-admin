@@ -33,9 +33,9 @@
 
 - [ ] **HANDLERS-01** : Le système applique séquentiellement les steps via un `PipelineRunner` qui orchestre des `StepHandlerInterface` taggés
 - [ ] **HANDLERS-02** : Chaque handler PHP appelle l'endpoint Python correspondant via `RetryableHttpClient` (3 retries, exponential backoff, timeout step-dépendant)
-- [ ] **HANDLERS-03** : Chaque type de step a un DTO Validator côté PHP (`ResizeStepParams`, `CropStepParams`, …) garantissant la validation à la persistance
+- [x] **HANDLERS-03** : Chaque type de step a un DTO Validator côté PHP (`ResizeStepParams`, `CropStepParams`, …) garantissant la validation à la persistance
 - [ ] **HANDLERS-04** : Le `PipelineRunner` détecte au démarrage si la transformation contient un step `requires_async` et bascule sur le chemin asynchrone
-- [ ] **HANDLERS-05** : Le format de sortie cible JPEG sans `add_background` aval déclenche un alpha-flatten implicite sur fond blanc + warning visible côté éditeur
+- [x] **HANDLERS-05** : Le format de sortie cible JPEG sans `add_background` aval déclenche un alpha-flatten implicite sur fond blanc + warning visible côté éditeur
 - [ ] **HANDLERS-06** : Le step `add_background` accepte `{ type: "color" }`, `{ type: "asset", assetId }`, ou `{ type: "ai_prompt", prompt, ... }` ; `ai_prompt` flagge la transformation `requires_async`
 
 ### ROUTE — Route publique et cache
@@ -47,7 +47,7 @@
 - [ ] **ROUTE-05** : Pour une transformation **avec step AI** (`requires_async`), la 1ère requête dispatch un `GenerateAITransformationMessage` sur le transport `transformations_ai` et retourne **202 Accepted + Location + Retry-After**
 - [ ] **ROUTE-06** : Les requêtes ultérieures sur un variant AI en cours retournent **503 + Retry-After** tant que non prête, puis **200 + image** dès que disponible
 - [ ] **ROUTE-07** : Les réponses 200 incluent `Cache-Control: public, max-age=31536000, immutable` + `ETag`
-- [ ] **ROUTE-08** : Seuls les assets dont `isPublic=true` (ou flag équivalent) sont accessibles via la route publique ; sinon 404
+- [x] **ROUTE-08** : Seuls les assets dont `isPublic=true` (ou flag équivalent) sont accessibles via la route publique ; sinon 404
 - [ ] **ROUTE-09** : La route est désactivable via feature flag `transformations.public_route.enabled`
 - [ ] **ROUTE-10** : Les en-têtes CORS sont configurés pour permettre `<img>` cross-origin sur `/t/*`
 
@@ -143,9 +143,9 @@ Coverage: **62/62 REQ-IDs** mapped to exactly one phase. No orphans.
 | IMGSVC-10 | Phase 2 | Pending |
 | HANDLERS-01 | Phase 3 | Pending |
 | HANDLERS-02 | Phase 3 | Pending |
-| HANDLERS-03 | Phase 3 | Pending |
+| HANDLERS-03 | Phase 3 | Complete |
 | HANDLERS-04 | Phase 5 | Pending |
-| HANDLERS-05 | Phase 3 | Pending |
+| HANDLERS-05 | Phase 3 | Complete |
 | HANDLERS-06 | Phase 6 | Pending |
 | ROUTE-01 | Phase 3 | Pending |
 | ROUTE-02 | Phase 3 | Pending |
@@ -154,7 +154,7 @@ Coverage: **62/62 REQ-IDs** mapped to exactly one phase. No orphans.
 | ROUTE-05 | Phase 5 | Pending |
 | ROUTE-06 | Phase 5 | Pending |
 | ROUTE-07 | Phase 3 | Pending |
-| ROUTE-08 | Phase 3 | Pending |
+| ROUTE-08 | Phase 3 | Complete |
 | ROUTE-09 | Phase 3 | Pending |
 | ROUTE-10 | Phase 3 | Pending |
 | BGREMOVE-01 | Phase 4 | Pending |

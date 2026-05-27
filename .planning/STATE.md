@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Phase 3 context gathered (22 decisions, 4 areas + cross-cutting)
-last_updated: "2026-05-27T09:57:40.431Z"
-last_activity: 2026-05-27 -- Phase 3 planning complete
+stopped_at: Completed 03-01-PLAN.md
+last_updated: "2026-05-27T12:12:19.982Z"
+last_activity: 2026-05-27
 progress:
   total_phases: 7
   completed_phases: 2
   total_plans: 13
-  completed_plans: 10
-  percent: 77
+  completed_plans: 11
+  percent: 85
 ---
 
 # Project State
@@ -21,14 +21,14 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Gestion catalogue sans dépendance dev via introspection API
-**Current focus:** Phase 2 — Python Image Service (classical endpoints)
+**Current focus:** Phase 03 — php-orchestrator-public-route-cache-lock-sync-only
 
 ## Current Position
 
-Phase: 2 (Python Image Service (classical endpoints)) — EXECUTING
-Plan: 1 of 5
+Phase: 03 (php-orchestrator-public-route-cache-lock-sync-only) — EXECUTING
+Plan: 2 of 3
 Status: Ready to execute
-Last activity: 2026-05-27 -- Phase 3 planning complete
+Last activity: 2026-05-27
 
 Progress: [░░░░░░░░░░] 0%
 
@@ -49,6 +49,7 @@ Progress: [░░░░░░░░░░] 0%
 **Recent Trend:** —
 
 *Updated after each plan completion*
+| Phase 03 P01 | 6m | 3 tasks | 15 files |
 
 ## Accumulated Context
 
@@ -69,6 +70,8 @@ Recent decisions (post-pivot 2026-05-26) affecting current work:
 - Backfill lazy only (commande `transformations:warm` en Phase 7, pas de backfill auto au deploy).
 - **Hard gate Phase 4 → Phase 5** : BiRefNet doit être live et stable en prod (RAM, latence, `/health`) avant tout déploiement de Stable Diffusion.
 - **Soft gate Phase 5 → Phase 6** : l'endpoint `/img/generate-background` doit être déployé avant le step PHP `ai_prompt`.
+- [Phase 03]: DTO Validators (5 readonly DTOs) + StepParamsFactory + Doctrine prePersist/preUpdate listener (D-14/D-15/D-16)
+- [Phase 03]: Asset.is_public BOOLEAN default false matérialisé (ROUTE-08 prerequisite for /t/* public route)
 
 ### Pending Todos
 
@@ -83,6 +86,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T09:36:50.097Z
-Stopped at: Phase 3 context gathered (22 decisions, 4 areas + cross-cutting)
-Resume file: .planning/phases/03-php-orchestrator-public-route-cache-lock-sync-only/03-CONTEXT.md
+Last session: 2026-05-27T12:12:19.980Z
+Stopped at: Completed 03-01-PLAN.md
+Resume file: None
