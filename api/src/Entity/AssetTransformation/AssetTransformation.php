@@ -11,6 +11,7 @@ use ApiPlatform\Metadata\GetCollection;
 use ApiPlatform\Metadata\Patch;
 use ApiPlatform\Metadata\Post;
 use App\Attribute\MenuGroup;
+use App\Validator as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -45,6 +46,7 @@ class AssetTransformation
 
     #[ORM\Column(length: 50, unique: true)]
     #[Assert\NotBlank]
+    #[AppAssert\TransformationCode]
     #[Groups(['asset_transformation:read', 'asset_transformation:write'])]
     private ?string $code = null;
 
