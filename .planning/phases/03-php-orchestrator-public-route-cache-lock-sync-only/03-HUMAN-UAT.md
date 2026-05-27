@@ -38,7 +38,7 @@ expected: Exactement 1 fichier S3 écrit, embedder logs montrent 1 seul appel pa
 
 Steps : 10 curl parallèles via `xargs -P10` sur une variante froide nouvellement créée
 
-result: [pending]
+result: passed (2026-05-27) — Cold variant supprimée (rm -rf transformations/7-v5677ea2c), puis 10 curl parallèles via xargs -P10 → distribution : 1 × HTTP 200 + 9 × HTTP 503. Exactement 1 fichier écrit (transformations/7-v5677ea2c/0/2.webp). Embedder logs : 2 calls (POST /img/resize + POST /img/format-convert), tous depuis le même socket source (un seul worker PHP-FPM). Preuve runtime du lock Redis inter-process anti-thundering-herd (SC3).
 
 ### 5. Variants S3 non-publics (WR-04 fix)
 expected: `aws s3api get-object-acl` montre uniquement le bucket-owner ; un GET direct sur l'URL S3 sans signature retourne 403
@@ -67,9 +67,9 @@ result: [pending]
 ## Summary
 
 total: 8
-passed: 4
+passed: 5
 issues: 0
-pending: 4
+pending: 3
 skipped: 0
 blocked: 0
 
