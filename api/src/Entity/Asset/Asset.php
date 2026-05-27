@@ -135,6 +135,15 @@ class Asset
     private ?Asset $duplicateOf = null;
 
     /**
+     * Public visibility flag. When false, the asset cannot be served via the
+     * public transformation route /t/{code}/{id}.{ext} (ROUTE-08). Default
+     * false — the safest state; admins must explicitly opt-in.
+     */
+    #[ORM\Column(type: 'boolean', options: ['default' => false])]
+    #[Groups(['asset:read', 'asset:write'])]
+    private bool $isPublic = false;
+
+    /**
      * @var Collection<int, AssetFlag>
      */
     #[ORM\ManyToMany(targetEntity: AssetFlag::class)]
@@ -354,6 +363,17 @@ class Asset
     public function setDuplicateOf(?Asset $duplicateOf): static
     {
         $this->duplicateOf = $duplicateOf;
+        return $this;
+    }
+
+    public function isPublic(): bool
+    {
+        return $this->isPublic;
+    }
+
+    public function setIsPublic(bool $isPublic): static
+    {
+        $this->isPublic = $isPublic;
         return $this;
     }
 
