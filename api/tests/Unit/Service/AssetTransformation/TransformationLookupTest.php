@@ -54,12 +54,27 @@ final class TransformationLookupTest extends TestCase
         $this->assertNotInstanceOf(AccessDeniedException::class, $thrown);
     }
 
-    public function testRemoveBackgroundStepRaisesNotFound(): void
+    public function testRemoveBackgroundIsServedSyncAfterPhase4(): void
     {
+        // Phase 4 (D-16): remove_background is now sync, must NOT 404.
         $tx = $this->makeTx(code: 'rmbg', steps: [
-            $this->makeStep(StepType::REMOVE_BACKGROUND, []),
+            $this->makeStep(StepType::REMOVE_BACKGROUND, ['model' => 'birefnet']),
         ]);
         $asset = $this->makeAsset(isPublic: true);
+        $lookup = $this->makeLookup(tx: $tx, asset: $asset);
+
+        [$resolvedTx, $resolvedAsset] = $lookup->findOr404('rmbg', 1);
+        $this->assertSame($tx, $resolvedTx);
+        $this->assertSame($asset, $resolvedAsset);
+    }
+
+    public function testRemoveBackgroundStill404IfAssetIsPrivate(): void
+    {
+        // ROUTE-08 invariant unchanged: isPublic=false → 404 even with sync steps.
+        $tx = $this->makeTx(code: 'rmbg', steps: [
+            $this->makeStep(StepType::REMOVE_BACKGROUND, ['model' => 'birefnet']),
+        ]);
+        $asset = $this->makeAsset(isPublic: false);
         $lookup = $this->makeLookup(tx: $tx, asset: $asset);
 
         $thrown = $this->capture(fn () => $lookup->findOr404('rmbg', 1));

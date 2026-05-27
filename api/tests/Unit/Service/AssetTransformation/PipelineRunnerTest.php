@@ -219,7 +219,11 @@ final class PipelineRunnerTest extends TestCase
 
     public function testUnsupportedStepTypeRaises(): void
     {
-        // remove_background is intentionally not registered in Phase 3 (sync-only).
+        // Synthetic unit test: simulate a runtime where the handler map does
+        // NOT contain a handler for the step's type (e.g. mis-wired DI). In
+        // Phase 4 every StepType has a real handler in services.yaml, so this
+        // test deliberately uses a handler map containing only RESIZE while
+        // the step asks for REMOVE_BACKGROUND.
         $calls = [];
         $handlers = [
             StepType::RESIZE->value => $this->makeHandler(StepType::RESIZE, 'r', 'image/png', 2000, 0, $calls),

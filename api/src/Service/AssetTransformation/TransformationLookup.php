@@ -17,9 +17,10 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * AccessDeniedException (D-10, T-03-11): we leak no information about whether
  * the code/asset exists.
  *
- * Phase 3 is sync-only: transformations containing an AI step
- * (REMOVE_BACKGROUND or ADD_BACKGROUND with type=ai_prompt) are also rejected
- * with 404 (D-05). The async 202+Location path is introduced in Phase 5.
+ * Phase 4 (D-16): REMOVE_BACKGROUND is now served sync via the BiRefNet
+ * endpoint (Plan 04-02 + Plan 04-04). Only ADD_BACKGROUND with
+ * `type=ai_prompt` (Stable Diffusion, Phase 5+) still requires the async
+ * 202+Location path and is therefore rejected with 404 here.
  */
 class TransformationLookup
 {
@@ -37,8 +38,9 @@ class TransformationLookup
             throw new NotFoundHttpException();
         }
 
-        // D-05 — sync-only AI gating. Phase 3 cannot serve transformations
-        // that require the async 202+Location flow.
+        // D-05 + Phase 4 D-16 — sync-only AI gating. Phase 4 introduces a sync
+        // remove_background handler (BiRefNet/isnet, < 8s wall-clock); only the
+        // SD-backed `add_background type:ai_prompt` still requires the async path.
         foreach ($tx->getSteps() as $step) {
             if ($this->isAsyncStep($step)) {
                 throw new NotFoundHttpException();
@@ -60,11 +62,8 @@ class TransformationLookup
 
     private function isAsyncStep(TransformationStep $step): bool
     {
-        $type = $step->getType();
-        if ($type === StepType::REMOVE_BACKGROUND) {
-            return true;
-        }
-        if ($type === StepType::ADD_BACKGROUND) {
+        // Phase 4 (D-16): REMOVE_BACKGROUND is now sync (handled by Plan 04-02/04-04).
+        if ($step->getType() === StepType::ADD_BACKGROUND) {
             $params = $step->getParams();
             return ($params['type'] ?? null) === 'ai_prompt';
         }
