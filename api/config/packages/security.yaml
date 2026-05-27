@@ -13,6 +13,13 @@ security:
             pattern: ^/(_(profiler|wdt)|css|images|js)/
             security: false
 
+        # Phase 03 Plan 03 — public transformation route (D-22).
+        # Stateless, no JWT, no user provider. The controller enforces its own
+        # gates (feature flag + Asset.isPublic). All rejections → 404 (D-10).
+        public_transformations:
+            pattern: ^/t/
+            security: false
+
         login:
             pattern: ^/api/login
             stateless: true

@@ -23,6 +23,16 @@ parameters:
     transformations.embedder_timeout_add_background_ms: '%env(int:default:embedder_default_ab_ms:EMBEDDER_TIMEOUT_ADD_BACKGROUND_MS)%'
     env(embedder_default_ab_ms): '4000'
 
+    # Phase 03 — Public route feature flag (Plan 03-03, D-12). Default OFF in
+    # prod (`env(trf_route_default): '0'`). dev/test override via .env*.
+    transformations.public_route.enabled: '%env(bool:default:trf_route_default:TRANSFORMATIONS_PUBLIC_ROUTE_ENABLED)%'
+    env(trf_route_default): '0'
+
+    # Redis DSN for the symfony/lock RedisStore (Plan 03-03, D-01). Reuses the
+    # `redis` service from docker-compose (same instance as Messenger).
+    transformations.redis_dsn: '%env(default:transformations_redis_default:REDIS_URL)%'
+    env(transformations_redis_default): 'redis://redis:6379'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -100,6 +110,68 @@ services:
             $client: '@embedder.scoping'
             $strategy: '@embedder.retry_strategy'
             $maxRetries: 3
+
+    # ---- Phase 03 — Public route lock infrastructure (Plan 03-03, D-01/D-04) ----
+    # Native phpredis (\Redis) client wired to the docker-compose `redis` service.
+    # Used by symfony/lock RedisStore. We deliberately use a fresh client (not a
+    # shared one) — symfony/lock holds short-lived connections and the
+    # ConversationService uses Predis on its own URL.
+    lock.transformations.redis:
+        class: Redis
+        calls:
+            - connect: ['%env(string:default:transformations_redis_host:REDIS_HOST)%', '%env(int:default:transformations_redis_port:REDIS_PORT)%']
+
+    lock.transformations.store:
+        class: Symfony\Component\Lock\Store\RedisStore
+        arguments: ['@lock.transformations.redis']
+
+    lock.transformations.factory:
+        class: Symfony\Component\Lock\LockFactory
+        arguments: ['@lock.transformations.store']
+        public: true
+
+    # Allow autowiring `LockFactory` in PublicTransformationController via service id.
+    Symfony\Component\Lock\LockFactory $transformationsLockFactory: '@lock.transformations.factory'
+
+    # ---- Phase 03 — Variant cache + lookup (Plan 03-03) ----
+    App\Service\AssetTransformation\VariantCache:
+        arguments:
+            $storage: '@assets.storage'
+
+    App\Service\AssetTransformation\TransformationLookup: ~
+
+when@test:
+    parameters:
+        env(transformations_redis_host): 'redis'
+        env(transformations_redis_port): '6379'
+
+    services:
+        # W2 (GATING) — keep a REAL RedisStore in test so inter-process
+        # contention is genuinely simulable. The `redis` docker-compose
+        # service is reachable from the api test container.
+        lock.transformations.redis:
+            class: Redis
+            calls:
+                - connect: ['%env(string:default:transformations_redis_host:REDIS_HOST)%', '%env(int:default:transformations_redis_port:REDIS_PORT)%']
+
+        lock.transformations.store:
+            class: Symfony\Component\Lock\Store\RedisStore
+            arguments: ['@lock.transformations.redis']
+
+        lock.transformations.factory:
+            class: Symfony\Component\Lock\LockFactory
+            arguments: ['@lock.transformations.store']
+            public: true
+
+when@dev:
+    parameters:
+        env(transformations_redis_host): 'redis'
+        env(transformations_redis_port): '6379'
+
+when@prod:
+    parameters:
+        env(transformations_redis_host): 'redis'
+        env(transformations_redis_port): '6379'
 
 
 

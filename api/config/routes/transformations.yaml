@@ -1,0 +1,18 @@
+# Public transformation route — Plan 03-03 (ROUTE-01..04, D-22).
+#
+# Lives OUTSIDE /api on purpose: no JWT, CDN-friendly, gated by a feature flag
+# (PublicTransformationController checks `transformations.public_route.enabled`
+# as its first instruction).
+#
+# Requirements regex (T-03-12):
+#   - code: kebab-case, 3..64 chars (same shape enforced by TransformationCode validator)
+#   - id:   digits only
+#   - ext:  png|jpg|jpeg|webp|avif — anything else → router 404
+public_transformation_serve:
+    path: /t/{code}/{id}.{ext}
+    controller: App\Controller\PublicTransformationController::serve
+    methods: [GET, HEAD]
+    requirements:
+        code: '[a-z][a-z0-9-]{1,62}[a-z0-9]'
+        id: '\d+'
+        ext: 'png|jpe?g|webp|avif'

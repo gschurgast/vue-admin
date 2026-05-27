@@ -7,4 +7,14 @@ nelmio_cors:
         expose_headers: ['Link']
         max_age: 3600
     paths:
+        # Phase 03 Plan 03 — public transformation route (D-13).
+        # Wildcard origin + cross-origin resource policy: variants are served
+        # to any frontend as <img src>. No credentials, no exotic headers.
+        '^/t/':
+            allow_origin: ['*']
+            allow_methods: ['GET', 'HEAD', 'OPTIONS']
+            allow_headers: []
+            expose_headers: ['ETag', 'X-Transformation-Warnings']
+            max_age: 3600
+            allow_credentials: false
         '^/': null
