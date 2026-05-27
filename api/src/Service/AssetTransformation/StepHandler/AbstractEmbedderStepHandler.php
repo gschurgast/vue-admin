@@ -49,7 +49,21 @@ abstract class AbstractEmbedderStepHandler implements StepHandlerInterface
                 'body' => $form->bodyToIterable(),
             ]);
             $status = $response->getStatusCode(); // triggers I/O / retry strategy
+
+            if ($status >= 400) {
+                $body = $response->getContent(false);
+                throw new TransformationPipelineException(
+                    sprintf('embedder %s → %d: %s', $path, $status, $body),
+                    TransformationPipelineException::CODE_EMBEDDER_ERROR,
+                );
+            }
+
+            $rh = $response->getHeaders(false);
+            $bytes = $response->getContent();
         } catch (TransportExceptionInterface $e) {
+            // Transport errors can be raised by getStatusCode(), getContent(),
+            // or getHeaders() when buffering the body or after a server-side
+            // reset. Wrap them all uniformly so the controller maps to 502.
             throw new TransformationPipelineException(
                 sprintf('embedder %s transport error after retries: %s', $path, $e->getMessage()),
                 TransformationPipelineException::CODE_EMBEDDER_ERROR,
@@ -57,20 +71,12 @@ abstract class AbstractEmbedderStepHandler implements StepHandlerInterface
             );
         }
 
-        if ($status >= 400) {
-            throw new TransformationPipelineException(
-                sprintf('embedder %s → %d: %s', $path, $status, $response->getContent(false)),
-                TransformationPipelineException::CODE_EMBEDDER_ERROR,
-            );
-        }
-
-        $rh = $response->getHeaders(false);
         $contentType = $rh['content-type'][0] ?? 'application/octet-stream';
         $renderMs = isset($rh['x-render-duration-ms'][0])
             ? (int) $rh['x-render-duration-ms'][0]
             : ((int) (microtime(true) * 1000) - $start);
 
-        return new HandlerResult($response->getContent(), $contentType, $renderMs);
+        return new HandlerResult($bytes, $contentType, $renderMs);
     }
 
     /**
