@@ -25,6 +25,10 @@ Permettre aux équipes métier de gérer le catalogue (produits, attributs, asse
 - ✓ Détection de similarité ≥0.95 (duplicate) et ≥0.75 (similar) sur les images — v0
 - ✓ Composants list/show/edit personnalisables par resource via JSON config — v0
 - ✓ i18n 14 langues — v0
+- ✓ Domaine versioning : entités AssetTransformation/TransformationStep + StepType enum + listener `TransformationHashListener` qui calcule `versionHash` (SHA-1 canonique des steps) — Phase 1
+- ✓ Service Python `embedder` étendu avec 5 endpoints classiques (`/img/resize`, `/img/crop`, `/img/rotate`, `/img/format-convert`, `/img/add-background`) via Pillow — Phase 2
+- ✓ Orchestrateur PHP synchrone : `PipelineRunner` (cap 8s), 5 `StepHandler`s HTTP vers embedder, DTO validators par step type — Phase 3
+- ✓ Route publique `GET /t/{code}/{id}.{ext}` derrière feature flag, lock Redis anti-thundering-herd, cache S3 versionné, ETag déterministe, header `X-Transformation-Warnings` — Phase 3
 
 ### Active
 
