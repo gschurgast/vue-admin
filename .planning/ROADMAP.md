@@ -84,7 +84,13 @@ Plans:
   3. La latence cible < 3s sur photo produit 2048×2048 (CPU) est mesurée en prod ; au-delà, le paramètre `fallbackOnTimeout` bascule sur `isnet-general-use` plus rapide
   4. Une transformation contenant `remove_background` + `format_convert png` est requêtable via `/t/...` et retourne un PNG transparent en sync < 8s, via `RetryableHttpClient` (3 retries, backoff exponentiel)
   5. **Deploy gate** : avant tout deploy de Phase 5, l'image embedder est live en prod, `/health` confirme `birefnet.loaded=true`, le quota RAM est validé (~CLIP + BiRefNet ≈ 2-3 GB), et le step PHP `remove_background` est validé sur 3+ assets réels — checklist signée en console ops
-**Plans**: TBD
+**Plans:** 5 plans
+Plans:
+- [ ] 04-01-PLAN.md — Wave 0 test infrastructure (pin ORT 1.22.0, integration_ml marker, fixtures, 12 Python stubs xfail + 6 PHP stubs)
+- [ ] 04-02-PLAN.md — Python endpoint POST /img/remove-background (BiRefNet + isnet, asyncio.Lock, downscale, timeout 5s + fallback opt-in)
+- [ ] 04-03-PLAN.md — Dockerfile multi-stage avec model-downloader + /health enrichi (birefnet/isnet/inflight/last_inference_ms) + --workers 1
+- [ ] 04-04-PLAN.md — PHP RemoveBackgroundHandler + DTO + StepParamsFactory routing + TransformationLookup inversion (sync-gate)
+- [ ] 04-05-PLAN.md — 04-DEPLOY-CHECKLIST.md (Webfacto signoff D-13) + bench_bgremove.sh + warning remove-background-requires-png
 
 ### Phase 5: Stable Diffusion Endpoint + Async Path
 **Goal**: Ajouter au service `embedder` l'endpoint `POST /img/generate-background` (Stable Diffusion inpainting via `diffusers`, modèle pré-téléchargé ~4-7 GB), provisionner le transport Messenger dédié `transformations_ai`, et implémenter côté Symfony le chemin async complet sur `/t/*` (202 Accepted + Location + Retry-After, polling 503 → 200) pour toute transformation flaggée `requires_async`.
@@ -135,7 +141,7 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 | 1. Domain & Versioning Foundation | 5/5 | Complete | 2026-05-26 |
 | 2. Python Image Service (classical endpoints) | 5/5 | Complete | 2026-05-27 |
 | 3. PHP Orchestrator + Public Route + Cache + Lock | 3/3 | Complete | 2026-05-27 |
-| 4. BiRefNet Endpoint + remove_background — DEPLOY GATE | 0/TBD | Not started | - |
+| 4. BiRefNet Endpoint + remove_background — DEPLOY GATE | 0/5 | Not started | - |
 | 5. Stable Diffusion Endpoint + Async Path | 0/TBD | Not started | - |
 | 6. add_background type:ai_prompt + UX async | 0/TBD | Not started | - |
 | 7. Editor PWA, Warmup, GC, Observability | 0/TBD | Not started | - |
