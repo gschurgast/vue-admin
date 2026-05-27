@@ -82,7 +82,7 @@ use App\Validator as AppAssert;
     denormalizationContext: ['groups' => ['option:write']]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'code' => 'ipartial', 'attribute' => 'exact'])]
-#[MenuGroup('Settings')]
+#[MenuGroup('Attribute')]
 class AttributeOption
 {
     #[ORM\Id]

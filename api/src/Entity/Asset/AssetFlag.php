@@ -32,7 +32,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['asset_flag:read']],
     denormalizationContext: ['groups' => ['asset_flag:write']],
 )]
-#[MenuGroup('Settings')]
+#[MenuGroup('Asset')]
 class AssetFlag
 {
     #[ORM\Id]

@@ -13,7 +13,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
-#[MenuGroup('Content')]
+#[MenuGroup('Book')]
 #[ApiFilter(SearchFilter::class, properties: ['title' => 'ipartial'])]
 #[ApiFilter(DateFilter::class, properties: ['publicationDate'])]
 class Book

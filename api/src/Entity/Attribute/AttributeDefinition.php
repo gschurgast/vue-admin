@@ -68,7 +68,7 @@ use App\Validator as AppAssert;
     normalizationContext: ['groups' => ['attribute_definition:read']],
     denormalizationContext: ['groups' => ['attribute_definition:write']]
 )]
-#[MenuGroup('Settings')]
+#[MenuGroup('Attribute')]
 #[AppAssert\RelationEndpointImmutableIfUsed]
 class AttributeDefinition
 {

@@ -15,7 +15,7 @@ use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity]
 #[ApiResource]
-#[MenuGroup('Content')]
+#[MenuGroup('Book')]
 #[ApiFilter(SearchFilter::class, properties: ['name' => 'ipartial', 'bio' => 'ipartial', 'isAlive' => 'exact'])]
 #[ApiFilter(DateFilter::class, properties: ['birthDate', 'deathDate'])]
 class Author

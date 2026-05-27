@@ -35,7 +35,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['asset_transformation:read'], 'enable_max_depth' => true],
     denormalizationContext: ['groups' => ['asset_transformation:write']],
 )]
-#[MenuGroup('Settings')]
+#[MenuGroup('Asset')]
 class AssetTransformation
 {
     #[ORM\Id]

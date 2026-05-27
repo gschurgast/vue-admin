@@ -42,7 +42,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     normalizationContext: ['groups' => ['asset:read'], 'enable_max_depth' => true],
     denormalizationContext: ['groups' => ['asset:write']],
 )]
-#[MenuGroup('Catalog')]
+#[MenuGroup('Asset')]
 class Asset
 {
     #[ORM\Id]

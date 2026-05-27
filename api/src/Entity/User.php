@@ -43,7 +43,7 @@ use Symfony\Component\Validator\Constraints as Assert;
     denormalizationContext: ['groups' => ['user:write']]
 )]
 #[ApiFilter(SearchFilter::class, properties: ['id' => 'exact', 'email' => 'ipartial', 'firstName' => 'ipartial', 'lastName' => 'ipartial'])]
-#[MenuGroup('Settings')]
+#[MenuGroup('System')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
