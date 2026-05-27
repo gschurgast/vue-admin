@@ -24,14 +24,14 @@ expected: 2ème : 200 servie depuis S3/cache (compteur embedder inchangé, laten
 
 Steps : 2ème requête immédiate sur la même URL puis 3ème avec `If-None-Match: "{ETag}"`
 
-result: [pending]
+result: passed (2026-05-27, scripts/smoke-phase-03.sh) — 2ème requête HTTP 200 en 29ms (cache hit), 3ème requête avec If-None-Match retourne HTTP 304 + body=0B.
 
 ### 3. Feature flag OFF runtime
 expected: HTTP 404 immédiat + Cache-Control: public, max-age=300 ; logs Doctrine ne montrent AUCUNE requête SQL pour asset_transformation
 
 Steps : Bascule `TRANSFORMATIONS_PUBLIC_ROUTE_ENABLED=0` + `docker compose restart api` ; `curl /t/{code}/{id}.webp`
 
-result: [pending]
+result: passed (2026-05-27, scripts/smoke-phase-03.sh) — `TRANSFORMATIONS_PUBLIC_ROUTE_ENABLED=0` dans api/.env.local + `docker compose restart api` → HTTP 404, Cache-Control: max-age=300, public, 0 SQL hits sur `asset_transformation` confirmé via `docker compose logs`.
 
 ### 4. Charge concurrente Redis inter-process
 expected: Exactement 1 fichier S3 écrit, embedder logs montrent 1 seul appel par endpoint, les 9 autres requêtes reçoivent soit 200 (post-release) soit 503 + Retry-After: 2
@@ -50,7 +50,7 @@ expected: 200 + Access-Control-Allow-Origin: * + Access-Control-Allow-Methods in
 
 Steps : `curl -X OPTIONS -H 'Origin: https://example.com' -H 'Access-Control-Request-Method: GET' /t/{code}/{id}.webp`
 
-result: [pending]
+result: passed (2026-05-27, scripts/smoke-phase-03.sh) — Preflight OPTIONS → HTTP 200, Allow-Origin: https://example.com, Allow-Methods: GET, HEAD, OPTIONS. Sur la réponse GET (header normal, pas preflight) : Access-Control-Expose-Headers: etag, x-transformation-warnings.
 
 ### 7. Header X-Transformation-Warnings runtime
 expected: 200 + `X-Transformation-Warnings: alpha-flatten-on-jpeg`
@@ -67,9 +67,9 @@ result: [pending]
 ## Summary
 
 total: 8
-passed: 1
+passed: 4
 issues: 0
-pending: 7
+pending: 4
 skipped: 0
 blocked: 0
 
