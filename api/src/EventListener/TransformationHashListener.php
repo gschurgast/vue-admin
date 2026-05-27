@@ -127,12 +127,18 @@ final class TransformationHashListener
     }
 
     /**
-     * Derive persisted warnings from the step chain (HANDLERS-05).
+     * Derive persisted warnings from the step chain (HANDLERS-05, Phase 4 BGREMOVE).
      *
-     * Currently a single heuristic: `alpha-flatten-on-jpeg` — fired when the
-     * pipeline ends with a JPEG format_convert but does NOT contain an
-     * add_background step. The Python embedder will flatten on white in that
-     * case (Phase 2 SC #3), losing any transparency.
+     * Heuristics:
+     *   - `alpha-flatten-on-jpeg` (Phase 3 / HANDLERS-05) — fired when the
+     *     pipeline ends with a JPEG format_convert but does NOT contain an
+     *     add_background step. The Python embedder will flatten on white in
+     *     that case (Phase 2 SC #3), losing any transparency.
+     *   - `remove-background-requires-png` (Phase 4 / Plan 04-05) — fired when
+     *     a remove_background step is present AND the last format_convert
+     *     persisted on the chain targets jpg/jpeg. The remove_background
+     *     intent is silently undone by the lossy JPEG conversion (alpha lost).
+     *     Complementary to `alpha-flatten-on-jpeg` — both can co-exist.
      *
      * @return array<int, array{code: string, stepIndex: int|null}>
      */
@@ -145,21 +151,35 @@ final class TransformationHashListener
 
         $hasJpegConvert = false;
         $hasAddBackground = false;
-        foreach ($steps as $step) {
+        $hasRemoveBg = false;
+        $removeBgIndex = null;
+        $lastFormatConvertFormat = null;
+
+        foreach ($steps as $i => $step) {
             $type = $step->getType();
             if ($type === StepType::FORMAT_CONVERT) {
-                $fmt = $step->getParams()['format'] ?? null;
+                $fmt = strtolower((string) ($step->getParams()['format'] ?? ''));
+                $lastFormatConvertFormat = $fmt;
                 if (\in_array($fmt, ['jpg', 'jpeg'], true)) {
                     $hasJpegConvert = true;
                 }
             } elseif ($type === StepType::ADD_BACKGROUND) {
                 $hasAddBackground = true;
+            } elseif ($type === StepType::REMOVE_BACKGROUND) {
+                $hasRemoveBg = true;
+                $removeBgIndex = $i;
             }
         }
 
         $warnings = [];
         if ($hasJpegConvert && !$hasAddBackground) {
             $warnings[] = ['code' => 'alpha-flatten-on-jpeg', 'stepIndex' => null];
+        }
+        if ($hasRemoveBg && \in_array($lastFormatConvertFormat, ['jpg', 'jpeg'], true)) {
+            $warnings[] = [
+                'code' => 'remove-background-requires-png',
+                'stepIndex' => $removeBgIndex,
+            ];
         }
         return $warnings;
     }

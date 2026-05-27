@@ -102,6 +102,40 @@ final class WarningsDerivationTest extends KernelTestCase
         $this->em->flush();
     }
 
+    public function testRemoveBackgroundFollowedByJpegFormatConvertProducesWarning(): void
+    {
+        $t = (new AssetTransformation())->setCode('rb-jpeg')->setLabel('Test rb→jpeg');
+        $t->addStep((new TransformationStep())->setType(StepType::REMOVE_BACKGROUND)->setParams(['model' => 'birefnet'])->setPosition(0));
+        $t->addStep((new TransformationStep())->setType(StepType::FORMAT_CONVERT)->setParams(['format' => 'jpg', 'quality' => 85])->setPosition(1));
+
+        $this->em->persist($t);
+        $this->em->flush();
+        $id = $t->getId();
+        $this->em->clear();
+
+        /** @var AssetTransformation $reload */
+        $reload = $this->em->find(AssetTransformation::class, $id);
+        $codes = array_column($reload->getWarnings(), 'code');
+        self::assertContains('remove-background-requires-png', $codes);
+    }
+
+    public function testRemoveBackgroundFollowedByPngProducesNoRemoveBgWarning(): void
+    {
+        $t = (new AssetTransformation())->setCode('rb-png')->setLabel('Test rb→png');
+        $t->addStep((new TransformationStep())->setType(StepType::REMOVE_BACKGROUND)->setParams(['model' => 'birefnet'])->setPosition(0));
+        $t->addStep((new TransformationStep())->setType(StepType::FORMAT_CONVERT)->setParams(['format' => 'png'])->setPosition(1));
+
+        $this->em->persist($t);
+        $this->em->flush();
+        $id = $t->getId();
+        $this->em->clear();
+
+        /** @var AssetTransformation $reload */
+        $reload = $this->em->find(AssetTransformation::class, $id);
+        $codes = array_column($reload->getWarnings(), 'code');
+        self::assertNotContains('remove-background-requires-png', $codes);
+    }
+
     public function testAssetIsPublicDefaultsToFalseAndRoundtrips(): void
     {
         $asset = (new Asset())
