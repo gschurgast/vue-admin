@@ -13,6 +13,20 @@ framework:
                     multiplier: 2
                     max_delay: 60000
 
+            # Phase 1 — dedicated transport for bulk/backfill jobs.
+            # Currently routes PurgeTransformationVariantsMessage only.
+            # Phases 3 and 5 will introduce sibling transports `transformations`
+            # and `transformations_ai`.
+            transformations_backfill:
+                dsn: 'redis://redis:6379/messages_transformations_backfill'
+                options:
+                    group: transformations_backfill
+                retry_strategy:
+                    max_retries: 3
+                    delay: 5000
+                    multiplier: 2
+                    max_delay: 120000
+
             # Sync fallback for messages we don't want async.
             sync: 'sync://'
 
@@ -21,9 +35,11 @@ framework:
 
         routing:
             App\Message\ComputeEmbeddingMessage: async
+            App\Message\PurgeTransformationVariantsMessage: transformations_backfill
 
 when@test:
     framework:
         messenger:
             transports:
                 async: 'in-memory://'
+                transformations_backfill: 'in-memory://'
