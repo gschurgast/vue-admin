@@ -90,7 +90,7 @@ Plans:
 - [x] 04-02-PLAN.md — Python endpoint POST /img/remove-background (BiRefNet + isnet, asyncio.Lock, downscale, timeout 5s + fallback opt-in)
 - [x] 04-03-PLAN.md — Dockerfile multi-stage avec model-downloader + /health enrichi (birefnet/isnet/inflight/last_inference_ms) + --workers 1
 - [x] 04-04-PLAN.md — PHP RemoveBackgroundHandler + DTO + StepParamsFactory routing + TransformationLookup inversion (sync-gate)
-- [ ] 04-05-PLAN.md — 04-DEPLOY-CHECKLIST.md (Webfacto signoff D-13) + bench_bgremove.sh + warning remove-background-requires-png
+- [x] 04-05-PLAN.md — 04-DEPLOY-CHECKLIST.md (Webfacto signoff D-13) + bench_bgremove.sh + warning remove-background-requires-png
 
 ### Phase 5: Stable Diffusion Endpoint + Async Path
 **Goal**: Ajouter au service `embedder` l'endpoint `POST /img/generate-background` (Stable Diffusion inpainting via `diffusers`, modèle pré-téléchargé ~4-7 GB), provisionner le transport Messenger dédié `transformations_ai`, et implémenter côté Symfony le chemin async complet sur `/t/*` (202 Accepted + Location + Retry-After, polling 503 → 200) pour toute transformation flaggée `requires_async`.

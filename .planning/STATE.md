@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 04-04-PLAN.md (RemoveBackgroundHandler sync + isAsyncStep inversion, 96 unit tests verts)
-last_updated: "2026-05-27T14:45:37.953Z"
+status: verifying
+stopped_at: Completed 04-05-PLAN.md (bench script + deploy checklist + warning); Phase 4 Complete-pending-deploy awaiting Webfacto signoff
+last_updated: "2026-05-27T14:51:54.761Z"
 last_activity: 2026-05-27
 progress:
   total_phases: 7
-  completed_phases: 3
+  completed_phases: 4
   total_plans: 18
-  completed_plans: 17
-  percent: 94
+  completed_plans: 18
+  percent: 100
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-26)
 
 Phase: 04 (birefnet-endpoint-remove-background-deploy-gate) — EXECUTING
 Plan: 5 of 5
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-27
 
 Progress: [░░░░░░░░░░] 0%
@@ -56,6 +56,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 04 P02 | 25m | 2 tasks | 8 files |
 | Phase 04 P03 | 15m | 2 tasks | 4 files |
 | Phase 04 P04 | 12m | 3 tasks | 10 files |
+| Phase 04 P05 | 4m | 2 tasks | 5 files |
 
 ## Accumulated Context
 
@@ -88,6 +89,7 @@ Recent decisions (post-pivot 2026-05-26) affecting current work:
 - [Phase 04]: [Phase 04] Plan 04-03: Image embedder self-contained (638 MB models) via multi-stage Dockerfile + BuildKit cache mount sur HF cache
 - [Phase 04]: Plan 04-04: RemoveBackgroundHandler timeout 6000ms (D-18, 5s Python + 1s margin), env override EMBEDDER_TIMEOUT_REMOVE_BACKGROUND_MS
 - [Phase 04]: Plan 04-04: isAsyncStep gate inverted — REMOVE_BACKGROUND sync, ADD_BACKGROUND ai_prompt 404 preserved for Phase 5
+- [Phase 04]: Plan 04-05: Stacked warnings — remove-background-requires-png complements alpha-flatten-on-jpeg (both can co-exist); D-13 Webfacto signoff materialised in 04-DEPLOY-CHECKLIST.md
 
 ### Pending Todos
 
@@ -102,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T14:45:37.852Z
-Stopped at: Completed 04-04-PLAN.md (RemoveBackgroundHandler sync + isAsyncStep inversion, 96 unit tests verts)
+Last session: 2026-05-27T14:51:54.758Z
+Stopped at: Completed 04-05-PLAN.md (bench script + deploy checklist + warning); Phase 4 Complete-pending-deploy awaiting Webfacto signoff
 Resume file: None
