@@ -29,6 +29,7 @@ Permettre aux équipes métier de gérer le catalogue (produits, attributs, asse
 - ✓ Service Python `embedder` étendu avec 5 endpoints classiques (`/img/resize`, `/img/crop`, `/img/rotate`, `/img/format-convert`, `/img/add-background`) via Pillow — Phase 2
 - ✓ Orchestrateur PHP synchrone : `PipelineRunner` (cap 8s), 5 `StepHandler`s HTTP vers embedder, DTO validators par step type — Phase 3
 - ✓ Route publique `GET /t/{code}/{id}.{ext}` derrière feature flag, lock Redis anti-thundering-herd, cache S3 versionné, ETag déterministe, header `X-Transformation-Warnings` — Phase 3
+- ✓ Endpoint `POST /img/remove-background` (BiRefNet FP16 + isnet fallback) ONNX Runtime baked-in Docker, asyncio.Lock + timeout 5s, `/health` enrichi, handler PHP sync `RemoveBackgroundHandler` ; hard gate D-13 signé Webfacto — Phase 4
 
 ### Active
 
@@ -104,4 +105,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-26 after initialisation GSD brownfield + démarrage milestone v1.0 Asset Transformations*
+*Last updated: 2026-05-27 — Phase 4 complete (BiRefNet endpoint + remove_background sync + D-13 deploy gate signed)*
