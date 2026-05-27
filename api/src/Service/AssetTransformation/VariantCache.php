@@ -13,7 +13,7 @@ use League\Flysystem\FilesystemOperator;
  * Keys are produced by {@see TransformationStorageKey::forVariant()}:
  *   transformations/{transformationId}-v{hash8}/{shard}/{assetId}.{ext}
  */
-final class VariantCache
+class VariantCache
 {
     public function __construct(private readonly FilesystemOperator $storage) {}
 

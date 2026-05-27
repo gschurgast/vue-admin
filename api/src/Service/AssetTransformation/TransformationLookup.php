@@ -21,7 +21,7 @@ use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
  * (REMOVE_BACKGROUND or ADD_BACKGROUND with type=ai_prompt) are also rejected
  * with 404 (D-05). The async 202+Location path is introduced in Phase 5.
  */
-final class TransformationLookup
+class TransformationLookup
 {
     public function __construct(private readonly EntityManagerInterface $em) {}
 

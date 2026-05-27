@@ -25,7 +25,7 @@ use Symfony\Contracts\HttpClient\Exception\TransportExceptionInterface;
  * persisted `versionHash` stays stable; cache divergence per output extension
  * is the caller's responsibility (storage key includes `.{ext}`).
  */
-final class PipelineRunner
+class PipelineRunner
 {
     /** @var array<string, StepHandlerInterface> */
     private array $handlersByType = [];
