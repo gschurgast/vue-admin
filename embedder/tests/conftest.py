@@ -57,6 +57,13 @@ def mock_birefnet_session(monkeypatch):
         monkeypatch.setattr(m, "run_isnet", _fake)
     except ImportError:
         pytest.skip("core.bgremove_models not yet implemented (Plan 04-02)")
+    # Also patch the names already imported into the router module (Plan 04-02).
+    try:
+        import routers.img_remove_background as r
+        monkeypatch.setattr(r, "run_birefnet", _fake)
+        monkeypatch.setattr(r, "run_isnet", _fake)
+    except ImportError:
+        pass
     return _fake
 
 

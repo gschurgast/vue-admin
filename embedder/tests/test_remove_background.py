@@ -1,12 +1,10 @@
-"""Phase 4 — POST /img/remove-background. STUBS Wave 0: xfail until Plan 04-02 implements."""
+"""Phase 4 — POST /img/remove-background. Plan 04-02: implementations wired."""
 from __future__ import annotations
 
 import io
 
 import pytest
 from PIL import Image
-
-pytestmark = pytest.mark.xfail(reason="Plan 04-02 will implement POST /img/remove-background")
 
 
 def test_remove_background_birefnet_returns_png_rgba(client, product_2048_png, mock_birefnet_session):
@@ -47,8 +45,15 @@ def test_unknown_model_rejected_422(client, product_2048_png):
     assert r.status_code == 422
 
 
-def test_birefnet_timeout_falls_back_to_isnet(client, product_2048_png, monkeypatch):
-    # Plan 04-02 will define the patching hook for asyncio.wait_for
+def test_birefnet_timeout_falls_back_to_isnet(client, product_2048_png, mock_birefnet_session, monkeypatch):
+    import asyncio as _aio
+    import routers.img_remove_background as rbg
+
+    async def _raise_timeout(*args, **kwargs):
+        raise _aio.TimeoutError()
+
+    monkeypatch.setattr(rbg.asyncio, "wait_for", _raise_timeout)
+
     r = client.post(
         "/img/remove-background",
         files={"image": ("p.png", product_2048_png, "image/png")},
@@ -58,7 +63,15 @@ def test_birefnet_timeout_falls_back_to_isnet(client, product_2048_png, monkeypa
     assert r.headers.get("X-Model-Used") == "isnet-general-use"
 
 
-def test_timeout_without_fallback_returns_504(client, product_2048_png):
+def test_timeout_without_fallback_returns_504(client, product_2048_png, mock_birefnet_session, monkeypatch):
+    import asyncio as _aio
+    import routers.img_remove_background as rbg
+
+    async def _raise_timeout(*args, **kwargs):
+        raise _aio.TimeoutError()
+
+    monkeypatch.setattr(rbg.asyncio, "wait_for", _raise_timeout)
+
     r = client.post(
         "/img/remove-background",
         files={"image": ("p.png", product_2048_png, "image/png")},
@@ -109,14 +122,17 @@ def test_rgba_input_alpha_replaced(client, product_with_alpha_png, mock_birefnet
 
 
 def test_lock_serializes_inflight(client, product_2048_png, mock_birefnet_session):
-    # Concurrent inflight via asyncio.gather — plan 04-02 wires the counter
-    # Cette assertion exacte sera affinée en Plan 04-02
-    r1 = client.post(
+    from core.bgremove_state import get_inflight
+
+    assert get_inflight() == 0  # baseline
+    r = client.post(
         "/img/remove-background",
         files={"image": ("p.png", product_2048_png, "image/png")},
         data={"params": '{"model":"birefnet"}'},
     )
-    assert r1.status_code == 200
+    assert r.status_code == 200
+    # After request completes, inflight returns to 0 (decremented in finally).
+    assert get_inflight() == 0
 
 
 def test_structured_log_emitted(client, product_2048_png, mock_birefnet_session, capsys):
