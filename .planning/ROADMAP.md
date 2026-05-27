@@ -71,7 +71,7 @@ Plans:
 **Plans:** 3 plans
 Plans:
 - [x] 03-01-PLAN.md — DTO StepParams + factory + Doctrine validation listener + migration warnings JSONB + alpha-flatten-on-jpeg derivation
-- [ ] 03-02-PLAN.md — StepHandlerInterface + 5 handlers HTTP (embedder.client RetryableHttpClient) + PipelineRunner cap 8s + format_convert implicite
+- [x] 03-02-PLAN.md — StepHandlerInterface + 5 handlers HTTP (embedder.client RetryableHttpClient) + PipelineRunner cap 8s + format_convert implicite
 - [ ] 03-03-PLAN.md — PublicTransformationController + route /t/* + lock Redis + cache S3 + feature flag + CORS + tests concurrence
 
 ### Phase 4: BiRefNet Endpoint + remove_background — DEPLOY GATE

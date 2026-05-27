@@ -31,8 +31,8 @@
 
 ### HANDLERS — Orchestration PHP (clients HTTP vers Python)
 
-- [ ] **HANDLERS-01** : Le système applique séquentiellement les steps via un `PipelineRunner` qui orchestre des `StepHandlerInterface` taggés
-- [ ] **HANDLERS-02** : Chaque handler PHP appelle l'endpoint Python correspondant via `RetryableHttpClient` (3 retries, exponential backoff, timeout step-dépendant)
+- [x] **HANDLERS-01** : Le système applique séquentiellement les steps via un `PipelineRunner` qui orchestre des `StepHandlerInterface` taggés
+- [x] **HANDLERS-02** : Chaque handler PHP appelle l'endpoint Python correspondant via `RetryableHttpClient` (3 retries, exponential backoff, timeout step-dépendant)
 - [x] **HANDLERS-03** : Chaque type de step a un DTO Validator côté PHP (`ResizeStepParams`, `CropStepParams`, …) garantissant la validation à la persistance
 - [ ] **HANDLERS-04** : Le `PipelineRunner` détecte au démarrage si la transformation contient un step `requires_async` et bascule sur le chemin asynchrone
 - [x] **HANDLERS-05** : Le format de sortie cible JPEG sans `add_background` aval déclenche un alpha-flatten implicite sur fond blanc + warning visible côté éditeur
@@ -141,8 +141,8 @@ Coverage: **62/62 REQ-IDs** mapped to exactly one phase. No orphans.
 | IMGSVC-08 | Phase 2 | Pending |
 | IMGSVC-09 | Phase 2 | Pending |
 | IMGSVC-10 | Phase 2 | Pending |
-| HANDLERS-01 | Phase 3 | Pending |
-| HANDLERS-02 | Phase 3 | Pending |
+| HANDLERS-01 | Phase 3 | Complete |
+| HANDLERS-02 | Phase 3 | Complete |
 | HANDLERS-03 | Phase 3 | Complete |
 | HANDLERS-04 | Phase 5 | Pending |
 | HANDLERS-05 | Phase 3 | Complete |
