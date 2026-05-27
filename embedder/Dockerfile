@@ -16,7 +16,13 @@ RUN pip install --no-cache-dir -r requirements.txt
 ENV HF_HOME=/app/.cache/huggingface
 RUN python -c "from sentence_transformers import SentenceTransformer; SentenceTransformer('clip-ViT-B-32')"
 
+COPY requirements-dev.txt .
+RUN pip install --no-cache-dir -r requirements-dev.txt
+
 COPY app.py .
+COPY core ./core
+COPY tests ./tests
+COPY pytest.ini .
 
 EXPOSE 8000
 HEALTHCHECK --interval=30s --timeout=5s --start-period=15s --retries=3 \

@@ -1,21 +1,26 @@
 """
 Image embedding microservice — CLIP ViT-B/32 (sentence-transformers).
 
-Exposes a single POST /embed endpoint that accepts a raw image (multipart
+Exposes a POST /embed endpoint that accepts a raw image (multipart
 or binary body) and returns a 512-dim L2-normalised vector. Because the
 vectors are normalised, cosine similarity is just a dot product, which
 matches the pgvector `<=>` operator after the (1 - distance) transform.
 
 The model is loaded once at startup (~5-10 s) and reused. No network call
 leaves this container.
+
+Phase 2: extends the service with classical image transformation endpoints
+(resize, crop, rotate, format-convert, add-background) — see core/image_utils.py.
 """
 from __future__ import annotations
 
 import io
 import logging
 import os
+from enum import Enum
 from typing import List
 
+import pillow_avif  # noqa: F401  — registers AVIF codec via import side-effect
 from fastapi import FastAPI, File, HTTPException, UploadFile
 from PIL import Image, UnidentifiedImageError
 from sentence_transformers import SentenceTransformer
@@ -26,10 +31,17 @@ EMBEDDING_DIM = 512
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(message)s")
 log = logging.getLogger("embedder")
 
-app = FastAPI(title="Asset Embedder", version="1.0.0")
+app = FastAPI(title="Asset Embedder", version="2.0.0")
 
 # Loaded on the first request OR at boot via the startup hook below.
 _model: SentenceTransformer | None = None
+
+
+class ModelStatus(str, Enum):
+    loaded = "loaded"
+    lazy = "lazy"
+    not_loaded = "not_loaded"
+    failed = "failed"
 
 
 def get_model() -> SentenceTransformer:
@@ -49,11 +61,18 @@ def _warmup() -> None:
 
 @app.get("/health")
 def health() -> dict:
+    clip_status = ModelStatus.loaded if _model is not None else ModelStatus.lazy
     return {
         "status": "ok",
-        "model": MODEL_NAME,
-        "dim": EMBEDDING_DIM,
-        "loaded": _model is not None,
+        "models": {
+            "clip": {
+                "status": clip_status.value,
+                "name": MODEL_NAME,
+                "dim": EMBEDDING_DIM,
+            },
+            "birefnet": {"status": ModelStatus.not_loaded.value},
+            "stable_diffusion": {"status": ModelStatus.not_loaded.value},
+        },
     }
 
 
