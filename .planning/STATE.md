@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-02-PLAN.md (BiRefNet endpoint live, 12/12 tests green)
-last_updated: "2026-05-27T14:31:23.159Z"
+stopped_at: Completed 04-03-PLAN.md (Dockerfile multi-stage + /health enrichi, 70 tests verts)
+last_updated: "2026-05-27T14:39:57.216Z"
 last_activity: 2026-05-27
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 18
-  completed_plans: 15
-  percent: 83
+  completed_plans: 16
+  percent: 89
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-26)
 ## Current Position
 
 Phase: 04 (birefnet-endpoint-remove-background-deploy-gate) — EXECUTING
-Plan: 3 of 5
+Plan: 4 of 5
 Status: Ready to execute
 Last activity: 2026-05-27
 
@@ -54,6 +54,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03-php-orchestrator-public-route-cache-lock-sync-only P03 | 7m | 3 tasks | 14 files |
 | Phase 04 P01 | 15m | 3 tasks | 12 files |
 | Phase 04 P02 | 25m | 2 tasks | 8 files |
+| Phase 04 P03 | 15m | 2 tasks | 4 files |
 
 ## Accumulated Context
 
@@ -82,6 +83,8 @@ Recent decisions (post-pivot 2026-05-26) affecting current work:
 - [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-10/D-19/D-22 Route /t/* stateless firewall, 404 unifie (jamais 403), ETag deterministe {txId}-v{hash8}-{assetId}-{ext}
 - [Phase 04]: [Phase 04] ONNX Runtime pinned to 1.22.0 inline-commented with bug #26261 reference; integration_ml marker registered for real-ONNX heavy tests
 - [Phase 04]: Plan 04-02: mock_birefnet_session must patch BOTH core.bgremove_models AND routers.img_remove_background (router uses 'from … import …' so name binding is fixed at import time)
+- [Phase 04]: [Phase 04] Plan 04-03: TestClient fixture must use context manager (with TestClient(app) as c) so FastAPI on_event(startup) hooks fire — sinon ORT warmup ne se déclenche pas en tests
+- [Phase 04]: [Phase 04] Plan 04-03: Image embedder self-contained (638 MB models) via multi-stage Dockerfile + BuildKit cache mount sur HF cache
 
 ### Pending Todos
 
@@ -96,6 +99,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T14:31:21.111Z
-Stopped at: Completed 04-02-PLAN.md (BiRefNet endpoint live, 12/12 tests green)
+Last session: 2026-05-27T14:39:57.213Z
+Stopped at: Completed 04-03-PLAN.md (Dockerfile multi-stage + /health enrichi, 70 tests verts)
 Resume file: None
