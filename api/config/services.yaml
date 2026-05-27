@@ -7,6 +7,22 @@ parameters:
     app.embedder_url: '%env(default:app.embedder_url_default:EMBEDDER_URL)%'
     app.embedder_url_default: 'http://embedder:8000'
 
+    # Phase 03 — Asset Transformations orchestrator (Plan 03-02)
+    transformations.embedder_base_url: '%env(default:transformations_embedder_default_url:EMBEDDER_BASE_URL)%'
+    env(transformations_embedder_default_url): 'http://embedder:8000'
+    transformations.hard_cap_ms: '%env(int:default:transformations_default_cap_ms:TRANSFORMATIONS_HARD_CAP_MS)%'
+    env(transformations_default_cap_ms): '8000'
+    transformations.embedder_timeout_resize_ms: '%env(int:default:embedder_default_resize_ms:EMBEDDER_TIMEOUT_RESIZE_MS)%'
+    env(embedder_default_resize_ms): '2000'
+    transformations.embedder_timeout_crop_ms: '%env(int:default:embedder_default_crop_ms:EMBEDDER_TIMEOUT_CROP_MS)%'
+    env(embedder_default_crop_ms): '2000'
+    transformations.embedder_timeout_rotate_ms: '%env(int:default:embedder_default_rotate_ms:EMBEDDER_TIMEOUT_ROTATE_MS)%'
+    env(embedder_default_rotate_ms): '2000'
+    transformations.embedder_timeout_format_convert_ms: '%env(int:default:embedder_default_fc_ms:EMBEDDER_TIMEOUT_FORMAT_CONVERT_MS)%'
+    env(embedder_default_fc_ms): '3000'
+    transformations.embedder_timeout_add_background_ms: '%env(int:default:embedder_default_ab_ms:EMBEDDER_TIMEOUT_ADD_BACKGROUND_MS)%'
+    env(embedder_default_ab_ms): '4000'
+
 services:
     # default configuration for services in *this* file
     _defaults:
@@ -48,6 +64,42 @@ services:
               credentials:
                   key: '%env(default::S3_ACCESS_KEY)%'
                   secret: '%env(default::S3_SECRET_KEY)%'
+
+    # ---- Phase 03 — embedder HTTP client (Plan 03-02, D-06/D-07) ----
+    # Scoped to http://embedder:8000 (SSRF guard T-03-08) + retry on 5xx + transport
+    # exceptions for POST. 4xx are NOT retried (D-07).
+    embedder.scoping:
+        class: Symfony\Component\HttpClient\ScopingHttpClient
+        factory: ['Symfony\Component\HttpClient\ScopingHttpClient', 'forBaseUri']
+        arguments:
+            $client: '@http_client'
+            $baseUri: '%transformations.embedder_base_url%'
+
+    embedder.retry_strategy:
+        class: Symfony\Component\HttpClient\Retry\GenericRetryStrategy
+        arguments:
+            $statusCodes:
+                0: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                423: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                425: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                429: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                500: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                502: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                503: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                504: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                507: ['GET', 'HEAD', 'OPTIONS', 'POST']
+                510: ['GET', 'HEAD', 'OPTIONS', 'POST']
+            $delayMs: 200
+            $multiplier: 2.0
+            $maxDelayMs: 800
+            $jitter: 0.0
+
+    embedder.client:
+        class: Symfony\Component\HttpClient\RetryableHttpClient
+        arguments:
+            $client: '@embedder.scoping'
+            $strategy: '@embedder.retry_strategy'
+            $maxRetries: 3
 
 
 
