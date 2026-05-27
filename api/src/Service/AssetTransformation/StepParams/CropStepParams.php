@@ -62,6 +62,14 @@ final readonly class CropStepParams
                         ->addViolation();
                 }
             }
+            return;
+        }
+
+        // aspect-shape branch: aspectRatio is mandatory (anchor alone is not enough).
+        if ($this->aspectRatio === null) {
+            $ctx->buildViolation('aspect crop requires "aspectRatio".')
+                ->atPath('aspectRatio')
+                ->addViolation();
         }
     }
 }
