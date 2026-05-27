@@ -1,13 +1,69 @@
+from __future__ import annotations
+
 import io
+from pathlib import Path
+
 import pytest
 from PIL import Image
 from fastapi.testclient import TestClient
 from app import app
 
+FIXTURES = Path(__file__).parent / "fixtures"
+
 
 @pytest.fixture
 def client():
     return TestClient(app)
+
+
+def _read_bytes(name: str) -> bytes:
+    return (FIXTURES / name).read_bytes()
+
+
+@pytest.fixture
+def product_2048_png() -> bytes:
+    return _read_bytes("product_2048.png")
+
+
+@pytest.fixture
+def product_3000_jpg() -> bytes:
+    return _read_bytes("product_3000.jpg")
+
+
+@pytest.fixture
+def product_4500_jpg() -> bytes:
+    return _read_bytes("product_4500.jpg")
+
+
+@pytest.fixture
+def product_with_alpha_png() -> bytes:
+    return _read_bytes("product_with_alpha.png")
+
+
+@pytest.fixture
+def mock_birefnet_session(monkeypatch):
+    """Replace run_birefnet with a trivial mask returning uniform 128.
+
+    Used by tests that exercise routing/multipart/headers without loading 1GB
+    of ONNX weights. Skips the test gracefully until Plan 04-02 creates the
+    `core.bgremove_models` module.
+    """
+    def _fake(img: Image.Image) -> Image.Image:
+        return Image.new("L", img.size, color=128)
+
+    try:
+        import core.bgremove_models as m
+        monkeypatch.setattr(m, "run_birefnet", _fake)
+        monkeypatch.setattr(m, "run_isnet", _fake)
+    except ImportError:
+        pytest.skip("core.bgremove_models not yet implemented (Plan 04-02)")
+    return _fake
+
+
+@pytest.fixture
+def mock_isnet_session(mock_birefnet_session):
+    # alias — same fake under the hood
+    return mock_birefnet_session
 
 
 @pytest.fixture
