@@ -33,6 +33,13 @@ log = logging.getLogger("embedder")
 
 app = FastAPI(title="Asset Embedder", version="2.0.0")
 
+# Phase 2 — classical image transformation routers
+from routers import img_resize, img_crop, img_rotate  # noqa: E402
+
+app.include_router(img_resize.router)
+app.include_router(img_crop.router)
+app.include_router(img_rotate.router)
+
 # Loaded on the first request OR at boot via the startup hook below.
 _model: SentenceTransformer | None = None
 
