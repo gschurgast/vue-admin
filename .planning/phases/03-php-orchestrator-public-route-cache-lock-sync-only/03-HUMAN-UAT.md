@@ -17,7 +17,7 @@ expected: HTTP 200 + body binaire WebP + headers Cache-Control: public, max-age=
 
 Steps : démarrer la stack (`docker compose up -d`), uploader un asset (POST /api/assets/upload), créer une AssetTransformation [resize{w:800}, format_convert{webp}], passer Asset.isPublic=true, puis `curl GET /t/{code}/{id}.webp`
 
-result: [pending]
+result: passed (2026-05-27) — `curl -I http://localhost:8080/t/test/2.webp` → HTTP 200, Content-Type: image/webp, Cache-Control: public, max-age=31536000, immutable, ETag: "7-v5677ea2c-2-webp", Cross-Origin-Resource-Policy: cross-origin. Steps en DB : resize{width:100} + format_convert{webp}. Pipeline E2E PHP↔embedder Python exécuté.
 
 ### 2. Cache hit + 304 conditionnel
 expected: 2ème : 200 servie depuis S3/cache (compteur embedder inchangé, latence < 50ms). 3ème : 304 sans body.
@@ -67,9 +67,9 @@ result: [pending]
 ## Summary
 
 total: 8
-passed: 0
+passed: 1
 issues: 0
-pending: 8
+pending: 7
 skipped: 0
 blocked: 0
 
