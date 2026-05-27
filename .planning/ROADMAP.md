@@ -12,9 +12,9 @@ Le milestone v1.0 livre un pipeline de transformations d'images nommées exposé
 
 Decimal phases appear between their surrounding integers in numeric order.
 
-- [ ] **Phase 1: Domain & Versioning Foundation** - Entités AssetTransformation/Step, hash canonical, helper de clé S3, listener de purge
-- [ ] **Phase 2: Python Image Service (classical endpoints)** - Pillow/OpenCV : resize, crop, rotate, format_convert, add_background (color/asset)
-- [ ] **Phase 3: PHP Orchestrator + Public Route + Cache + Lock (sync-only)** - StepHandlerInterface, PipelineRunner, route `/t/*`, cache S3, Redis lock, sync-first 8s sans AI
+- [x] **Phase 1: Domain & Versioning Foundation** - Entités AssetTransformation/Step, hash canonical, helper de clé S3, listener de purge (completed 2026-05-26)
+- [x] **Phase 2: Python Image Service (classical endpoints)** - Pillow/OpenCV : resize, crop, rotate, format_convert, add_background (color/asset) (completed 2026-05-27)
+- [x] **Phase 3: PHP Orchestrator + Public Route + Cache + Lock (sync-only)** - StepHandlerInterface, PipelineRunner, route `/t/*`, cache S3, Redis lock, sync-first 8s sans AI (completed 2026-05-27)
 - [ ] **Phase 4: BiRefNet Endpoint + remove_background — DEPLOY GATE** - `/img/remove-background` (BiRefNet MIT) + step PHP remove_background sync
 - [ ] **Phase 5: Stable Diffusion Endpoint + Async Path** - `/img/generate-background`, transport `transformations_ai`, route 202/Location, polling 503
 - [ ] **Phase 6: add_background type:ai_prompt + UX async** - HANDLERS-06 complet (color/asset/ai_prompt), TRANSFORM-07 flag requires_async
@@ -132,9 +132,9 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5 → 6 → 7
 
 | Phase | Plans Complete | Status | Completed |
 |-------|----------------|--------|-----------|
-| 1. Domain & Versioning Foundation | 0/TBD | Not started | - |
-| 2. Python Image Service (classical endpoints) | 0/TBD | Not started | - |
-| 3. PHP Orchestrator + Public Route + Cache + Lock | 0/TBD | Not started | - |
+| 1. Domain & Versioning Foundation | 5/5 | Complete | 2026-05-26 |
+| 2. Python Image Service (classical endpoints) | 5/5 | Complete | 2026-05-27 |
+| 3. PHP Orchestrator + Public Route + Cache + Lock | 3/3 | Complete | 2026-05-27 |
 | 4. BiRefNet Endpoint + remove_background — DEPLOY GATE | 0/TBD | Not started | - |
 | 5. Stable Diffusion Endpoint + Async Path | 0/TBD | Not started | - |
 | 6. add_background type:ai_prompt + UX async | 0/TBD | Not started | - |
