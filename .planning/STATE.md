@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: executing
-stopped_at: Completed 03-02-PLAN.md
-last_updated: "2026-05-27T12:20:27.886Z"
+status: verifying
+stopped_at: Completed 03-03-PLAN.md
+last_updated: "2026-05-27T12:36:45.760Z"
 last_activity: 2026-05-27
 progress:
   total_phases: 7
-  completed_phases: 2
+  completed_phases: 3
   total_plans: 13
-  completed_plans: 12
-  percent: 92
+  completed_plans: 13
+  percent: 100
 ---
 
 # Project State
@@ -27,7 +27,7 @@ See: .planning/PROJECT.md (updated 2026-05-26)
 
 Phase: 03 (php-orchestrator-public-route-cache-lock-sync-only) — EXECUTING
 Plan: 3 of 3
-Status: Ready to execute
+Status: Phase complete — ready for verification
 Last activity: 2026-05-27
 
 Progress: [░░░░░░░░░░] 0%
@@ -51,6 +51,7 @@ Progress: [░░░░░░░░░░] 0%
 *Updated after each plan completion*
 | Phase 03 P01 | 6m | 3 tasks | 15 files |
 | Phase 03 P02 | 5m | 2 tasks | 14 files |
+| Phase 03-php-orchestrator-public-route-cache-lock-sync-only P03 | 7m | 3 tasks | 14 files |
 
 ## Accumulated Context
 
@@ -75,6 +76,8 @@ Recent decisions (post-pivot 2026-05-26) affecting current work:
 - [Phase 03]: Asset.is_public BOOLEAN default false matérialisé (ROUTE-08 prerequisite for /t/* public route)
 - [Phase 03]: [Phase 03] D-06/D-07/D-08: embedder.client = Scoping(http://embedder:8000) -> RetryableHttpClient (3 retries 200/400/800ms, 5xx+transport only, never 4xx)
 - [Phase 03]: [Phase 03] D-03/D-09: PipelineRunner enforces 8s wall-clock cap step-by-step via min(defaultTimeoutMs, remainingMs); virtual format_convert appended on ext mismatch (NOT persisted, versionHash invariant)
+- [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-01/D-04 Redis lock 'lock:tx:{storageKey}' TTL 10s; waiter loop 5s + 503 Retry-After if cache stays cold
+- [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-10/D-19/D-22 Route /t/* stateless firewall, 404 unifie (jamais 403), ETag deterministe {txId}-v{hash8}-{assetId}-{ext}
 
 ### Pending Todos
 
@@ -89,6 +92,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T12:20:27.884Z
-Stopped at: Completed 03-02-PLAN.md
+Last session: 2026-05-27T12:36:45.758Z
+Stopped at: Completed 03-03-PLAN.md
 Resume file: None

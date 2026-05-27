@@ -40,16 +40,16 @@
 
 ### ROUTE — Route publique et cache
 
-- [ ] **ROUTE-01** : Un consommateur HTTP non authentifié peut requêter `GET /t/{code}/{id}.{ext}` et recevoir une image transformée
-- [ ] **ROUTE-02** : Le format de sortie est déterminé exclusivement par l'extension d'URL (png, jpg, jpeg, webp, avif) ; toute autre extension retourne 404
-- [ ] **ROUTE-03** : Le système sert depuis le cache S3 (préfixe `transformations/{transformationId}-v{hash}/{shard}/{assetId}.{ext}`) si la variante existe, sinon génère puis stocke
-- [ ] **ROUTE-04** : Pour une transformation **sans step AI**, la 1ère requête prend un Redis lock par variante, génère en sync avec cap dur 8 s, puis stream depuis S3
+- [x] **ROUTE-01** : Un consommateur HTTP non authentifié peut requêter `GET /t/{code}/{id}.{ext}` et recevoir une image transformée
+- [x] **ROUTE-02** : Le format de sortie est déterminé exclusivement par l'extension d'URL (png, jpg, jpeg, webp, avif) ; toute autre extension retourne 404
+- [x] **ROUTE-03** : Le système sert depuis le cache S3 (préfixe `transformations/{transformationId}-v{hash}/{shard}/{assetId}.{ext}`) si la variante existe, sinon génère puis stocke
+- [x] **ROUTE-04** : Pour une transformation **sans step AI**, la 1ère requête prend un Redis lock par variante, génère en sync avec cap dur 8 s, puis stream depuis S3
 - [ ] **ROUTE-05** : Pour une transformation **avec step AI** (`requires_async`), la 1ère requête dispatch un `GenerateAITransformationMessage` sur le transport `transformations_ai` et retourne **202 Accepted + Location + Retry-After**
 - [ ] **ROUTE-06** : Les requêtes ultérieures sur un variant AI en cours retournent **503 + Retry-After** tant que non prête, puis **200 + image** dès que disponible
-- [ ] **ROUTE-07** : Les réponses 200 incluent `Cache-Control: public, max-age=31536000, immutable` + `ETag`
+- [x] **ROUTE-07** : Les réponses 200 incluent `Cache-Control: public, max-age=31536000, immutable` + `ETag`
 - [x] **ROUTE-08** : Seuls les assets dont `isPublic=true` (ou flag équivalent) sont accessibles via la route publique ; sinon 404
-- [ ] **ROUTE-09** : La route est désactivable via feature flag `transformations.public_route.enabled`
-- [ ] **ROUTE-10** : Les en-têtes CORS sont configurés pour permettre `<img>` cross-origin sur `/t/*`
+- [x] **ROUTE-09** : La route est désactivable via feature flag `transformations.public_route.enabled`
+- [x] **ROUTE-10** : Les en-têtes CORS sont configurés pour permettre `<img>` cross-origin sur `/t/*`
 
 ### BGREMOVE — Suppression d'arrière-plan (BiRefNet)
 
@@ -147,16 +147,16 @@ Coverage: **62/62 REQ-IDs** mapped to exactly one phase. No orphans.
 | HANDLERS-04 | Phase 5 | Pending |
 | HANDLERS-05 | Phase 3 | Complete |
 | HANDLERS-06 | Phase 6 | Pending |
-| ROUTE-01 | Phase 3 | Pending |
-| ROUTE-02 | Phase 3 | Pending |
-| ROUTE-03 | Phase 3 | Pending |
-| ROUTE-04 | Phase 3 | Pending |
+| ROUTE-01 | Phase 3 | Complete |
+| ROUTE-02 | Phase 3 | Complete |
+| ROUTE-03 | Phase 3 | Complete |
+| ROUTE-04 | Phase 3 | Complete |
 | ROUTE-05 | Phase 5 | Pending |
 | ROUTE-06 | Phase 5 | Pending |
-| ROUTE-07 | Phase 3 | Pending |
+| ROUTE-07 | Phase 3 | Complete |
 | ROUTE-08 | Phase 3 | Complete |
-| ROUTE-09 | Phase 3 | Pending |
-| ROUTE-10 | Phase 3 | Pending |
+| ROUTE-09 | Phase 3 | Complete |
+| ROUTE-10 | Phase 3 | Complete |
 | BGREMOVE-01 | Phase 4 | Pending |
 | BGREMOVE-02 | Phase 4 | Pending |
 | BGREMOVE-03 | Phase 4 | Pending |

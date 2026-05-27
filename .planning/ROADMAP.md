@@ -72,7 +72,7 @@ Plans:
 Plans:
 - [x] 03-01-PLAN.md — DTO StepParams + factory + Doctrine validation listener + migration warnings JSONB + alpha-flatten-on-jpeg derivation
 - [x] 03-02-PLAN.md — StepHandlerInterface + 5 handlers HTTP (embedder.client RetryableHttpClient) + PipelineRunner cap 8s + format_convert implicite
-- [ ] 03-03-PLAN.md — PublicTransformationController + route /t/* + lock Redis + cache S3 + feature flag + CORS + tests concurrence
+- [x] 03-03-PLAN.md — PublicTransformationController + route /t/* + lock Redis + cache S3 + feature flag + CORS + tests concurrence
 
 ### Phase 4: BiRefNet Endpoint + remove_background — DEPLOY GATE
 **Goal**: Ajouter au service `embedder` l'endpoint `POST /img/remove-background` (modèle BiRefNet MIT pré-téléchargé au build, fallback `isnet-general-use`), câbler côté PHP le step `remove_background` sync (cap 8s), et provisionner les ressources prod. **Hard gate : aucun déploiement de Phase 5 avant que cette phase soit live et stable en prod (RAM, latence, /health vérifiés).**
