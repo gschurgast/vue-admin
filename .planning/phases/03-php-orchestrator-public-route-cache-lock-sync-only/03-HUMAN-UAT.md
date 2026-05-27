@@ -57,7 +57,7 @@ expected: 200 + `X-Transformation-Warnings: alpha-flatten-on-jpeg`
 
 Steps : créer une transformation [resize{w:800}, format_convert{format:'jpg'}] sans add_background ; `curl /t/{code}/{id}.jpg`
 
-result: [pending]
+result: passed (2026-05-27) — Création transformation `code=test-jpg` (resize{w:200} + format_convert{jpg}) via PHP CLI ; `TransformationHashListener::computeWarnings` a dérivé `warnings=[{"code":"alpha-flatten-on-jpeg","stepIndex":null}]` au prePersist. `curl -I http://localhost:8080/t/test-jpg/2.jpg` → HTTP 200, Content-Type: image/jpeg, ETag: "8-v765643d8-2-jpg", **X-Transformation-Warnings: alpha-flatten-on-jpeg**. Valide HANDLERS-05 (dérivation warning) + D-18 (persistance JSON) + ROUTE-07 (exposition header).
 
 ### 8. Webfacto gating
 expected: Cadrage besoin, faisabilité, sécurité, priorisation validés par la Webfacto (rotation JWT, dimensionnement S3, CDN, rate-limit, TTL 404)
@@ -67,9 +67,9 @@ result: [pending]
 ## Summary
 
 total: 8
-passed: 5
+passed: 6
 issues: 0
-pending: 3
+pending: 2
 skipped: 0
 blocked: 0
 
