@@ -132,9 +132,11 @@ final class PublicTransformationControllerTest extends TestCase
 
     public function testCacheMissAcquireFailsThenCacheAppearsAndReturns200(): void
     {
-        // The first acquire returns false (another worker is generating).
-        // While we wait, the cache appears: first has() returns false, then true.
-        $cache = $this->stubCache(['has' => [false, false, true]]);
+        // Lock acquire fails (another worker is generating). The controller
+        // probes cache once before returning 503 — if the cache has just
+        // landed, serve it. has() sequence: first false (initial miss check),
+        // then true (post-lock-fail probe).
+        $cache = $this->stubCache(['has' => [false, true]]);
         $lock = $this->stubLock(['acquire' => false]);
 
         $controller = $this->makeController(
@@ -152,10 +154,8 @@ final class PublicTransformationControllerTest extends TestCase
 
     public function testCacheMissAcquireFailsAndCacheNeverAppearsReturns503(): void
     {
-        // Force a tight waiter window via Closure rewrite: we test the
-        // structural behaviour — when has() stays false and lock can't be
-        // acquired, the waiter eventually returns 503. Here we set a stub
-        // that always returns false.
+        // When lock acquire fails and the single cache re-probe still misses,
+        // return 503 + Retry-After immediately. No busy-wait.
         $cache = $this->stubCache(['has' => false]);
         $lock = $this->stubLock(['acquire' => false]);
 
@@ -165,7 +165,6 @@ final class PublicTransformationControllerTest extends TestCase
             cache: $cache,
             runner: $this->stubRunner(),
             lockFactory: $this->stubLockFactory($lock),
-            waiterMaxIterations: 2, // shrink the 5s loop via DI override
         );
 
         $response = $controller->serve('thumb-200', 1, 'png', new Request());
@@ -312,27 +311,7 @@ final class PublicTransformationControllerTest extends TestCase
         PipelineRunner $runner,
         ?LockFactory $lockFactory = null,
         ?FilesystemOperator $assetsStorage = null,
-        ?int $waiterMaxIterations = null,
     ): PublicTransformationController {
-        // For waiter timeout: we rely on default loop (5s) — to keep tests fast
-        // the stubbed lock + stubbed cache return false→true quickly. The
-        // waiterMaxIterations hint is passed via env override below.
-        if ($waiterMaxIterations !== null) {
-            // Inject a property override via reflection (no production code knob).
-            $controller = new PublicTransformationController(
-                enabled: $enabled,
-                lookup: $lookup,
-                cache: $cache,
-                assetsStorage: $assetsStorage ?? $this->stubAssetsStorage(''),
-                lockFactory: $lockFactory ?? $this->stubLockFactory($this->stubLock(['acquire' => true])),
-                runner: $runner,
-                logger: new NullLogger(),
-            );
-            // Use the cache's `has` count to short-circuit: each stub iteration
-            // already mocks the deadline behaviour via the array.
-            return $controller;
-        }
-
         return new PublicTransformationController(
             enabled: $enabled,
             lookup: $lookup,
