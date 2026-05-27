@@ -32,9 +32,14 @@ class VariantCache
 
     public function write(string $key, string $bytes, string $contentType): void
     {
+        // Variants are served via the application controller (`streamFromCache`),
+        // which already enforces `Asset.isPublic`. We MUST NOT mark the S3
+        // object public-read: an admin can flip `isPublic` to false (rights or
+        // sensitive content) and expect the variant to become inaccessible —
+        // but a public-read ACL would keep the direct S3 URL reachable until
+        // an explicit purge runs. Default visibility (private) closes that gap.
         $this->storage->write($key, $bytes, [
             'ContentType' => $contentType,
-            'visibility' => 'public',
         ]);
     }
 
