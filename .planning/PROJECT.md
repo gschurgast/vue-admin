@@ -53,9 +53,10 @@ Permettre aux équipes métier de gérer le catalogue (produits, attributs, asse
 - **Toute la manipulation d'image en Python** dans le service `embedder` (perf supérieure à Imagine PHP) — un endpoint par step type
 - Steps classiques (resize, crop, rotate, format_convert, add_background color/asset) via Pillow / OpenCV
 - Suppression d'arrière-plan via **BiRefNet** (licence MIT, usage commercial OK)
-- Ajout de fond **par IA** via Stable Diffusion (add_background type:ai_prompt) — chemin async obligatoire (CPU 30-120s/image)
 - Éditeur drag-and-drop des steps avec preview live dans la PWA
 - Warmup async (Messenger), commande de GC du cache, métriques
+
+**Reporté hors v1.0 :** Ajout de fond par IA (Stable Diffusion add_background type:ai_prompt) — cadrage Webfacto requis (RAM 4-7 GB, latence CPU 30-180s, transport Messenger dédié `transformations_ai`, possible GPU). Voir Future Requirements dans REQUIREMENTS.md.
 
 ## Context
 
@@ -82,10 +83,10 @@ Permettre aux équipes métier de gérer le catalogue (produits, attributs, asse
 | Steps modifiables + versioning par hash sha1 | UX éditeur sans casser le cache, GC séparé pour les orphelins | — Pending |
 | Toute la manipulation d'image en Python (pas Imagine PHP) | Perf supérieure ; mutualisation du container `embedder` ; accès direct aux modèles ML | — Pending |
 | Un endpoint Python par step type | Modularité, debugging facilité ; le PHP orchestre via HTTP | — Pending |
-| BiRefNet (MIT) pour remove_background | RMBG-1.4/2.0 non-commercial — incompatible avec usage commercial Vente-Unique | — Pending |
-| Stable Diffusion pour add_background type:ai_prompt | Génération IA de fond contextuel | — Pending |
-| Async obligatoire pour les steps AI (SD) | CPU 30-120s/image incompatible avec sync 8s ; 202 + polling pour les variants AI | — Pending |
-| Sync-first 8s pour steps non-AI uniquement | UX `<img src>` directe préservée pour 95 % des cas | — Pending |
+| BiRefNet (MIT) pour remove_background | RMBG-1.4/2.0 non-commercial — incompatible avec usage commercial Vente-Unique | ✓ Phase 4 |
+| Drop Stable Diffusion (add_background ai_prompt) de v1.0 | Cadrage Webfacto requis (RAM 4-7 GB, CPU 30-180s, transport AI dédié) — reporté hors v1.0 | ✓ 2026-05-27 |
+| Sync-only 8s en v1.0 (cap dur) | Tous les step types restants sont sync-compatibles ; pas de chemin async nécessaire | ✓ 2026-05-27 |
+| 3 transports Messenger (au lieu de 4) | Drop de `transformations_ai` : `async` (CLIP) / `transformations` (warmup) / `transformations_backfill` (bulk) | ✓ 2026-05-27 |
 
 ## Evolution
 
@@ -105,4 +106,4 @@ This document evolves at phase transitions and milestone boundaries.
 4. Update Context with current state
 
 ---
-*Last updated: 2026-05-27 — Phase 4 complete (BiRefNet endpoint + remove_background sync + D-13 deploy gate signed)*
+*Last updated: 2026-05-27 — Drop SD/AI hors v1.0, renumérotation Phase 7 → Phase 5 (Editor PWA + Warmup + GC + Observability)*
