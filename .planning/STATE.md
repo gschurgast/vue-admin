@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: verifying
-stopped_at: Phase 04 context gathered
-last_updated: "2026-05-27T13:40:44.655Z"
+status: executing
+stopped_at: Completed 04-01-PLAN.md (Wave 0 test infra)
+last_updated: "2026-05-27T14:24:54.793Z"
 last_activity: 2026-05-27
 progress:
   total_phases: 7
   completed_phases: 3
-  total_plans: 13
-  completed_plans: 13
-  percent: 100
+  total_plans: 18
+  completed_plans: 14
+  percent: 78
 ---
 
 # Project State
@@ -21,13 +21,13 @@ progress:
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Gestion catalogue sans dépendance dev via introspection API
-**Current focus:** Phase 03 — php-orchestrator-public-route-cache-lock-sync-only
+**Current focus:** Phase 04 — birefnet-endpoint-remove-background-deploy-gate
 
 ## Current Position
 
-Phase: 4
-Plan: Not started
-Status: Phase complete — ready for verification
+Phase: 04 (birefnet-endpoint-remove-background-deploy-gate) — EXECUTING
+Plan: 2 of 5
+Status: Ready to execute
 Last activity: 2026-05-27
 
 Progress: [░░░░░░░░░░] 0%
@@ -52,6 +52,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03 P01 | 6m | 3 tasks | 15 files |
 | Phase 03 P02 | 5m | 2 tasks | 14 files |
 | Phase 03-php-orchestrator-public-route-cache-lock-sync-only P03 | 7m | 3 tasks | 14 files |
+| Phase 04 P01 | 15m | 3 tasks | 12 files |
 
 ## Accumulated Context
 
@@ -78,6 +79,7 @@ Recent decisions (post-pivot 2026-05-26) affecting current work:
 - [Phase 03]: [Phase 03] D-03/D-09: PipelineRunner enforces 8s wall-clock cap step-by-step via min(defaultTimeoutMs, remainingMs); virtual format_convert appended on ext mismatch (NOT persisted, versionHash invariant)
 - [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-01/D-04 Redis lock 'lock:tx:{storageKey}' TTL 10s; waiter loop 5s + 503 Retry-After if cache stays cold
 - [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-10/D-19/D-22 Route /t/* stateless firewall, 404 unifie (jamais 403), ETag deterministe {txId}-v{hash8}-{assetId}-{ext}
+- [Phase 04]: [Phase 04] ONNX Runtime pinned to 1.22.0 inline-commented with bug #26261 reference; integration_ml marker registered for real-ONNX heavy tests
 
 ### Pending Todos
 
@@ -92,6 +94,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T13:40:44.649Z
-Stopped at: Phase 04 context gathered
-Resume file: .planning/phases/04-birefnet-endpoint-remove-background-deploy-gate/04-CONTEXT.md
+Last session: 2026-05-27T14:24:54.791Z
+Stopped at: Completed 04-01-PLAN.md (Wave 0 test infra)
+Resume file: None

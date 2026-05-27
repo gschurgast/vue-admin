@@ -86,7 +86,7 @@ Plans:
   5. **Deploy gate** : avant tout deploy de Phase 5, l'image embedder est live en prod, `/health` confirme `birefnet.loaded=true`, le quota RAM est validé (~CLIP + BiRefNet ≈ 2-3 GB), et le step PHP `remove_background` est validé sur 3+ assets réels — checklist signée en console ops
 **Plans:** 5 plans
 Plans:
-- [ ] 04-01-PLAN.md — Wave 0 test infrastructure (pin ORT 1.22.0, integration_ml marker, fixtures, 12 Python stubs xfail + 6 PHP stubs)
+- [x] 04-01-PLAN.md — Wave 0 test infrastructure (pin ORT 1.22.0, integration_ml marker, fixtures, 12 Python stubs xfail + 6 PHP stubs)
 - [ ] 04-02-PLAN.md — Python endpoint POST /img/remove-background (BiRefNet + isnet, asyncio.Lock, downscale, timeout 5s + fallback opt-in)
 - [ ] 04-03-PLAN.md — Dockerfile multi-stage avec model-downloader + /health enrichi (birefnet/isnet/inflight/last_inference_ms) + --workers 1
 - [ ] 04-04-PLAN.md — PHP RemoveBackgroundHandler + DTO + StepParamsFactory routing + TransformationLookup inversion (sync-gate)
