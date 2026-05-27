@@ -26,6 +26,10 @@ parameters:
     transformations.embedder_timeout_format_convert_ms: '%env(int:default:embedder_default_fc_ms:EMBEDDER_TIMEOUT_FORMAT_CONVERT_MS)%'
     embedder_default_ab_ms: '4000'
     transformations.embedder_timeout_add_background_ms: '%env(int:default:embedder_default_ab_ms:EMBEDDER_TIMEOUT_ADD_BACKGROUND_MS)%'
+    # Phase 04 (Plan 04-04, D-18) — BiRefNet sync handler.
+    # 6000ms = 5s Python hard cap (D-05) + 1s network margin.
+    embedder_default_rmbg_ms: '6000'
+    transformations.embedder_timeout_remove_background_ms: '%env(int:default:embedder_default_rmbg_ms:EMBEDDER_TIMEOUT_REMOVE_BACKGROUND_MS)%'
 
     # Phase 03 — Public route feature flag (Plan 03-03, D-12). Default OFF in
     # prod (uses `transformations.public_route.enabled_default`).
