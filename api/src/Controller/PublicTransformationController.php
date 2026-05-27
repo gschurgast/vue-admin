@@ -102,14 +102,11 @@ final class PublicTransformationController
         $lockTtlSeconds = ($this->hardCapMs / 1000.0) + 10.0;
         $lock = $this->lockFactory->createLock('lock:tx:'.$storageKey, ttl: $lockTtlSeconds, autoRelease: true);
         if (!$lock->acquire(false)) {
-            // Another worker is generating. Wait up to 5s, re-check S3.
-            $deadline = microtime(true) + 5.0;
-            while (microtime(true) < $deadline) {
-                usleep(250_000);
-                if ($this->cache->has($storageKey)) {
-                    return $this->streamFromCache($storageKey, $etag, $contentType, $tx);
-                }
-            }
+            // Another worker is already generating this variant. Respond
+            // immediately with 503 + Retry-After rather than busy-waiting:
+            // a per-worker usleep(250ms) loop holds a PHP-FPM slot for up to
+            // 5s and hammers S3 with has() probes, amplifying contention into
+            // a DoS during a cold burst. The CDN / client will retry.
             return new Response('', Response::HTTP_SERVICE_UNAVAILABLE, ['Retry-After' => '2']);
         }
 
