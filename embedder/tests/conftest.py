@@ -13,7 +13,10 @@ FIXTURES = Path(__file__).parent / "fixtures"
 
 @pytest.fixture
 def client():
-    return TestClient(app)
+    # Use as a context manager so FastAPI startup hooks fire (Plan 04-03 warmup
+    # pre-loads BiRefNet/isnet sessions so /health reports `loaded`).
+    with TestClient(app) as c:
+        yield c
 
 
 def _read_bytes(name: str) -> bytes:

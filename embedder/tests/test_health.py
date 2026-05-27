@@ -1,20 +1,29 @@
 import io
+import os
 
+import pytest
 from PIL import Image
+
+
+# In a container/test env, the ONNX models are only present after the Plan 04-03
+# Dockerfile build. When the models are absent, the startup warmup logs a warning
+# and the sessions remain None; /health reports `degraded` + `not_loaded`.
+MODELS_PRESENT = os.path.exists("/app/models/birefnet/onnx/model_fp16.onnx")
 
 
 def test_health_schema(client):
     r = client.get("/health")
     assert r.status_code == 200
     body = r.json()
-    assert body["status"] == "ok"
+    assert body["status"] in {"ok", "degraded"}
     assert "models" in body
     m = body["models"]
-    assert set(m.keys()) >= {"clip", "birefnet", "stable_diffusion"}
+    # birefnet + isnet keys are now part of the enriched payload (Plan 04-03).
+    assert set(m.keys()) >= {"clip", "birefnet", "isnet", "stable_diffusion"}
     assert m["clip"]["status"] in {"loaded", "lazy"}
     assert m["clip"]["dim"] == 512
     assert "name" in m["clip"]
-    assert m["birefnet"]["status"] == "not_loaded"
+    assert m["birefnet"]["status"] in {"loaded", "not_loaded"}
     assert m["stable_diffusion"]["status"] == "not_loaded"
 
 
@@ -35,10 +44,7 @@ def test_avif_codec_registered():
     assert buf.tell() > 0
 
 
-import pytest  # noqa: E402
-
-
-@pytest.mark.xfail(reason="Plan 04-03 will enrich /health with birefnet & isnet status")
+@pytest.mark.skipif(not MODELS_PRESENT, reason="ONNX models not present (Plan 04-03 Dockerfile build required)")
 def test_health_includes_birefnet_status(client):
     r = client.get("/health")
     m = r.json()["models"]
@@ -48,9 +54,13 @@ def test_health_includes_birefnet_status(client):
     assert m["isnet"]["status"] == "loaded"
 
 
-@pytest.mark.xfail(reason="Plan 04-03 will set status=degraded when birefnet not loaded")
 def test_health_degraded_when_birefnet_not_loaded(client, monkeypatch):
     import core.bgremove_models as m
     monkeypatch.setattr(m, "_birefnet_session", None)
     r = client.get("/health")
     assert r.json()["status"] == "degraded"
+
+
+def test_health_inflight_zero_at_idle(client):
+    r = client.get("/health")
+    assert r.json()["models"]["birefnet"]["inflight"] == 0

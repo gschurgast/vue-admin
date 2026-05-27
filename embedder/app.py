@@ -72,22 +72,56 @@ def get_model() -> SentenceTransformer:
 
 @app.on_event("startup")
 def _warmup() -> None:
-    # Pre-load synchronously so the first /embed call is fast.
+    # Pre-load CLIP synchronously so the first /embed call is fast.
     get_model()
+    # Pre-load ONNX sessions so /health reports `loaded` from t0 (D-11 + Pattern 4).
+    # Failure to load is non-fatal: /health will report `degraded` and
+    # POST /img/remove-background will surface a 500 on inference.
+    try:
+        from core.bgremove_models import get_birefnet, get_isnet
+        get_birefnet()
+        get_isnet()
+    except Exception as exc:  # broad: don't kill the container on a missing file in dev
+        log.warning("BiRefNet/isnet preload skipped: %s", exc)
 
 
 @app.get("/health")
 def health() -> dict:
+    # Lazy import to keep startup order safe even if the bgremove
+    # module fails to import (we still want /health to respond).
+    try:
+        from core.bgremove_models import _birefnet_session, _isnet_session
+        from core.bgremove_state import get_inflight, get_last_ms
+        birefnet_loaded = _birefnet_session is not None
+        isnet_loaded = _isnet_session is not None
+        inflight = get_inflight()
+        last_ms = get_last_ms()
+    except ImportError:
+        birefnet_loaded = False
+        isnet_loaded = False
+        inflight = 0
+        last_ms = None
+
     clip_status = ModelStatus.loaded if _model is not None else ModelStatus.lazy
+    status = "ok" if (birefnet_loaded and inflight <= 4) else "degraded"
+
     return {
-        "status": "ok",
+        "status": status,
         "models": {
             "clip": {
                 "status": clip_status.value,
                 "name": MODEL_NAME,
                 "dim": EMBEDDING_DIM,
             },
-            "birefnet": {"status": ModelStatus.not_loaded.value},
+            "birefnet": {
+                "status": ModelStatus.loaded.value if birefnet_loaded else ModelStatus.not_loaded.value,
+                "model": "birefnet-general-fp16",
+                "inflight": inflight,
+                "last_inference_ms": last_ms,
+            },
+            "isnet": {
+                "status": ModelStatus.loaded.value if isnet_loaded else ModelStatus.not_loaded.value,
+            },
             "stable_diffusion": {"status": ModelStatus.not_loaded.value},
         },
     }
