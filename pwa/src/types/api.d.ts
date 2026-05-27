@@ -144,6 +144,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/asset_transformations": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves the collection of AssetTransformation resources.
+         * @description Retrieves the collection of AssetTransformation resources.
+         */
+        get: operations["api_asset_transformations_get_collection"];
+        put?: never;
+        /**
+         * Creates a AssetTransformation resource.
+         * @description Creates a AssetTransformation resource.
+         */
+        post: operations["api_asset_transformations_post"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/asset_transformations/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a AssetTransformation resource.
+         * @description Retrieves a AssetTransformation resource.
+         */
+        get: operations["api_asset_transformations_id_get"];
+        put?: never;
+        post?: never;
+        /**
+         * Removes the AssetTransformation resource.
+         * @description Removes the AssetTransformation resource.
+         */
+        delete: operations["api_asset_transformations_id_delete"];
+        options?: never;
+        head?: never;
+        /**
+         * Updates the AssetTransformation resource.
+         * @description Updates the AssetTransformation resource.
+         */
+        patch: operations["api_asset_transformations_id_patch"];
+        trace?: never;
+    };
     "/api/attribute_definitions": {
         parameters: {
             query?: never;
@@ -1103,6 +1155,7 @@ export interface components {
         "Asset-asset.write.jsonMergePatch": {
             /** @enum {string} */
             type?: "image" | "pdf" | "video" | "doc";
+            filename?: string;
             flags?: string[];
         };
         "Asset.jsonld-asset.read": {
@@ -1180,6 +1233,23 @@ export interface components {
             readonly assetB?: string;
             /** @description Cosine similarity in [0, 1] (vectors are L2-normalised before being stored). */
             score?: number;
+        };
+        "AssetTransformation-asset_transformation.write": {
+            code: string;
+            label: string;
+            steps?: components["schemas"]["TransformationStep-asset_transformation.write"][];
+        };
+        "AssetTransformation-asset_transformation.write.jsonMergePatch": {
+            code?: string;
+            label?: string;
+            steps?: components["schemas"]["TransformationStep-asset_transformation.write"][];
+        };
+        "AssetTransformation.jsonld-asset_transformation.read": components["schemas"]["HydraItemBaseSchema"] & {
+            readonly id?: number;
+            code: string;
+            label: string;
+            versionHash?: string | null;
+            steps?: components["schemas"]["TransformationStep.jsonld-asset_transformation.read"][];
         };
         "AttributeDefinition-attribute_definition.write": {
             code: string;
@@ -1826,6 +1896,25 @@ export interface components {
             locale?: "en_US" | "en_GB" | "fr_FR" | "de_DE" | "es_ES" | "it_IT" | "pt_PT" | "pt_BR" | "da_DK" | "nb_NO" | "sv_SE" | "pl_PL" | "zh_CN" | "zh_TW" | "ja_JP" | "ar_SA" | "he_IL";
             label?: string;
         };
+        "TransformationStep-asset_transformation.write": {
+            /** @enum {string} */
+            type: "resize" | "crop" | "rotate" | "format_convert" | "add_background" | "remove_background";
+            params?: {
+                [key: string]: string | null;
+            };
+            /** @default 0 */
+            position: number;
+        };
+        "TransformationStep.jsonld-asset_transformation.read": components["schemas"]["HydraItemBaseSchema"] & {
+            readonly id?: number;
+            /** @enum {string} */
+            type: "resize" | "crop" | "rotate" | "format_convert" | "add_background" | "remove_background";
+            params?: {
+                [key: string]: string | null;
+            };
+            /** @default 0 */
+            position: number;
+        };
         "TranslatePavRequest-translate_pav.write": {
             /** @description IRI of the source ProductAttributeValue (e.g. "/api/product_attribute_values/42"). */
             sourceAttributeValue?: string | null;
@@ -2354,6 +2443,240 @@ export interface operations {
                     "application/ld+json": components["schemas"]["Error.jsonld"];
                     "application/problem+json": components["schemas"]["Error"];
                     "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_asset_transformations_get_collection: {
+        parameters: {
+            query?: {
+                /** @description The collection page number */
+                page?: number;
+                code?: string;
+                label?: string;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetTransformation collection */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["HydraCollectionBaseSchema"] & {
+                        member: components["schemas"]["AssetTransformation.jsonld-asset_transformation.read"][];
+                    };
+                };
+            };
+        };
+    };
+    api_asset_transformations_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /** @description The new AssetTransformation resource */
+        requestBody: {
+            content: {
+                "application/ld+json": components["schemas"]["AssetTransformation-asset_transformation.write"];
+            };
+        };
+        responses: {
+            /** @description AssetTransformation resource created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetTransformation.jsonld-asset_transformation.read"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_asset_transformations_id_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetTransformation identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetTransformation resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetTransformation.jsonld-asset_transformation.read"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_asset_transformations_id_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetTransformation identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description AssetTransformation resource deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_asset_transformations_id_patch: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description AssetTransformation identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The updated AssetTransformation resource */
+        requestBody: {
+            content: {
+                "application/merge-patch+json": components["schemas"]["AssetTransformation-asset_transformation.write.jsonMergePatch"];
+            };
+        };
+        responses: {
+            /** @description AssetTransformation resource updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["AssetTransformation.jsonld-asset_transformation.read"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Forbidden */
+            403: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
                 };
             };
         };
