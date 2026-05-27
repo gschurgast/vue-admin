@@ -4,6 +4,7 @@ namespace App\EventListener;
 
 use App\Entity\AssetTransformation\AssetTransformation;
 use App\Entity\AssetTransformation\TransformationStep;
+use App\Enum\StepType;
 use App\Message\PurgeTransformationVariantsMessage;
 use App\Service\AssetTransformation\TransformationHasher;
 use Doctrine\Bundle\DoctrineBundle\Attribute\AsDoctrineListener;
@@ -73,17 +74,29 @@ final class TransformationHashListener
             }
         }
 
-        // 3. Recompute hash for each dirty transformation.
+        // 3. Recompute hash + warnings for each dirty transformation.
         foreach ($dirty as $transformation) {
             $oldHash = $transformation->getVersionHash();
             $newHash = $this->hasher->compute($transformation);
-            if ($newHash === $oldHash) {
+            $newWarnings = $this->computeWarnings($transformation);
+            $oldWarnings = $transformation->getWarnings();
+
+            $hashChanged = $newHash !== $oldHash;
+            $warningsChanged = $newWarnings !== $oldWarnings;
+
+            if (!$hashChanged && !$warningsChanged) {
                 continue;
             }
-            $transformation->setVersionHash($newHash);
+
+            if ($hashChanged) {
+                $transformation->setVersionHash($newHash);
+            }
+            if ($warningsChanged) {
+                $transformation->setWarnings($newWarnings);
+            }
             $uow->recomputeSingleEntityChangeSet($meta, $transformation);
 
-            if ($oldHash !== null && $transformation->getId() !== null) {
+            if ($hashChanged && $oldHash !== null && $transformation->getId() !== null) {
                 $this->pendingPurges[] = new PurgeTransformationVariantsMessage(
                     $transformation->getId(),
                     $oldHash,
@@ -111,5 +124,43 @@ final class TransformationHashListener
             $this->bus->dispatch($msg);
         }
         $this->pendingPurges = [];
+    }
+
+    /**
+     * Derive persisted warnings from the step chain (HANDLERS-05).
+     *
+     * Currently a single heuristic: `alpha-flatten-on-jpeg` — fired when the
+     * pipeline ends with a JPEG format_convert but does NOT contain an
+     * add_background step. The Python embedder will flatten on white in that
+     * case (Phase 2 SC #3), losing any transparency.
+     *
+     * @return array<int, array{code: string, stepIndex: int|null}>
+     */
+    private function computeWarnings(AssetTransformation $tx): array
+    {
+        $steps = $tx->getSteps()->toArray();
+        // Defensive sort: collection OrderBy(position ASC) is normally enough,
+        // but a freshly-mutated collection may not yet be ordered.
+        usort($steps, fn (TransformationStep $a, TransformationStep $b) => $a->getPosition() <=> $b->getPosition());
+
+        $hasJpegConvert = false;
+        $hasAddBackground = false;
+        foreach ($steps as $step) {
+            $type = $step->getType();
+            if ($type === StepType::FORMAT_CONVERT) {
+                $fmt = $step->getParams()['format'] ?? null;
+                if (\in_array($fmt, ['jpg', 'jpeg'], true)) {
+                    $hasJpegConvert = true;
+                }
+            } elseif ($type === StepType::ADD_BACKGROUND) {
+                $hasAddBackground = true;
+            }
+        }
+
+        $warnings = [];
+        if ($hasJpegConvert && !$hasAddBackground) {
+            $warnings[] = ['code' => 'alpha-flatten-on-jpeg', 'stepIndex' => null];
+        }
+        return $warnings;
     }
 }

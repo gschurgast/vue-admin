@@ -90,7 +90,7 @@ final class TransformationHashListenerTest extends KernelTestCase
     public function testDeletingTransformationDispatchesPurge(): void
     {
         $t = (new AssetTransformation())->setCode('test-delete')->setLabel('To delete');
-        $t->addStep((new TransformationStep())->setType(StepType::RESIZE)->setParams([])->setPosition(0));
+        $t->addStep((new TransformationStep())->setType(StepType::RESIZE)->setParams(['width' => 800])->setPosition(0));
         $this->em->persist($t);
         $this->em->flush();
         $hashBeforeDelete = $t->getVersionHash();

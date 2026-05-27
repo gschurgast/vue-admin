@@ -14,6 +14,7 @@ use App\Attribute\MenuGroup;
 use App\Validator as AppAssert;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Serializer\Attribute\Groups;
@@ -58,6 +59,18 @@ class AssetTransformation
     #[ORM\Column(length: 40, nullable: true)]
     #[Groups(['asset_transformation:read'])]
     private ?string $versionHash = null;
+
+    /**
+     * Derived warnings recomputed at every flush by TransformationHashListener.
+     * Schema: `[{"code": "alpha-flatten-on-jpeg", "stepIndex": null}, …]`.
+     * Surfaced to the PWA editor (Phase 7) and to the public route as
+     * `X-Transformation-Warnings: code1, code2` (Plan 03 runtime).
+     *
+     * @var array<int, array{code: string, stepIndex: int|null}>
+     */
+    #[ORM\Column(type: Types::JSON, options: ['default' => '[]'])]
+    #[Groups(['asset_transformation:read'])]
+    private array $warnings = [];
 
     /**
      * @var Collection<int, TransformationStep>
@@ -116,6 +129,25 @@ class AssetTransformation
     public function setVersionHash(?string $versionHash): static
     {
         $this->versionHash = $versionHash;
+        return $this;
+    }
+
+    /**
+     * @return array<int, array{code: string, stepIndex: int|null}>
+     */
+    public function getWarnings(): array
+    {
+        return $this->warnings;
+    }
+
+    /**
+     * @internal Set automatically by TransformationHashListener at every flush.
+     *
+     * @param array<int, array{code: string, stepIndex: int|null}> $warnings
+     */
+    public function setWarnings(array $warnings): static
+    {
+        $this->warnings = $warnings;
         return $this;
     }
 
