@@ -1,3 +1,19 @@
+---
+gsd_state_version: 1.0
+milestone: v1.0
+milestone_name: milestone
+status: executing
+stopped_at: Roadmap re-créée et écrite (.planning/ROADMAP.md) après pivot architecture
+last_updated: "2026-05-27T07:23:39.484Z"
+last_activity: 2026-05-27 -- Phase 1 execution started
+progress:
+  total_phases: 7
+  completed_phases: 0
+  total_plans: 5
+  completed_plans: 0
+  percent: 0
+---
+
 # Project State
 
 ## Project Reference
@@ -5,20 +21,21 @@
 See: .planning/PROJECT.md (updated 2026-05-26)
 
 **Core value:** Gestion catalogue sans dépendance dev via introspection API
-**Current focus:** Phase 1 — Domain & Versioning Foundation (v1.0 Asset Transformations, post-pivot)
+**Current focus:** Phase 1 — Domain & Versioning Foundation
 
 ## Current Position
 
-Phase: 1 of 7 (Domain & Versioning Foundation)
-Plan: — (ready to plan)
-Status: Ready to plan
-Last activity: 2026-05-26 — Roadmap re-créée après pivot architecture (Python-first + BiRefNet + Stable Diffusion async)
+Phase: 1 (Domain & Versioning Foundation) — EXECUTING
+Plan: 1 of 5
+Status: Executing Phase 1
+Last activity: 2026-05-27 -- Phase 1 execution started
 
 Progress: [░░░░░░░░░░] 0%
 
 ## Performance Metrics
 
 **Velocity:**
+
 - Total plans completed: 0
 - Average duration: —
 - Total execution time: —
