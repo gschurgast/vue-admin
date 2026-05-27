@@ -23,7 +23,7 @@
 - [ ] **IMGSVC-03** : Le service expose `POST /img/rotate` — JSON `{ angle, background?: color }`
 - [ ] **IMGSVC-04** : Le service expose `POST /img/format-convert` — JSON `{ format: "png|jpg|jpeg|webp|avif", quality?: 1-100 }`. AVIF via `pillow-avif-plugin`.
 - [ ] **IMGSVC-05** : Le service expose `POST /img/add-background` — JSON `{ type: "color", color: "#RRGGBB" }` ou `{ type: "asset", assetId: int }` (jamais d'URL ; SSRF-safe)
-- [ ] **IMGSVC-06** : Le service expose `POST /img/remove-background` — JSON `{ model?: "birefnet|isnet-general-use", fallbackOnTimeout?: bool }` (défaut `birefnet`)
+- [x] **IMGSVC-06** : Le service expose `POST /img/remove-background` — JSON `{ model?: "birefnet|isnet-general-use", fallbackOnTimeout?: bool }` (défaut `birefnet`)
 - [ ] **IMGSVC-07** : Le service expose `POST /img/generate-background` — JSON `{ prompt: str, negativePrompt?: str, strength?: float, seed?: int }` ; utilise Stable Diffusion (inpainting) sur la zone détectée transparente
 - [ ] **IMGSVC-08** : Chaque endpoint applique EXIF auto-orient en pré-traitement et rejette les images > 50 mégapixels
 - [ ] **IMGSVC-09** : Les endpoints retournent l'image traitée en binaire (Content-Type approprié) + headers de timing
@@ -53,12 +53,12 @@
 
 ### BGREMOVE — Suppression d'arrière-plan (BiRefNet)
 
-- [ ] **BGREMOVE-01** : Le service utilise **BiRefNet** (licence MIT) comme modèle par défaut de remove_background — usage commercial autorisé
-- [ ] **BGREMOVE-02** : L'enum supporté est `birefnet` (défaut) et `isnet-general-use` (fallback léger MIT)
-- [ ] **BGREMOVE-03** : Les modèles BiRefNet sont pré-téléchargés à la construction de l'image Docker `embedder` (~1 GB ; pas de download au runtime)
-- [ ] **BGREMOVE-04** : Le service utilise un `asyncio.Lock` mono-process pour sérialiser les inférences (modèle non thread-safe)
-- [ ] **BGREMOVE-05** : La latence cible est < 3 s sur photo produit 2048×2048 en CPU ; au-delà, fallback (si activé) sur `isnet-general-use` plus rapide
-- [ ] **BGREMOVE-06** : `RemoveBackgroundHandler` côté PHP appelle `POST /img/remove-background` via `RetryableHttpClient`
+- [x] **BGREMOVE-01** : Le service utilise **BiRefNet** (licence MIT) comme modèle par défaut de remove_background — usage commercial autorisé
+- [x] **BGREMOVE-02** : L'enum supporté est `birefnet` (défaut) et `isnet-general-use` (fallback léger MIT)
+- [x] **BGREMOVE-03** : Les modèles BiRefNet sont pré-téléchargés à la construction de l'image Docker `embedder` (~1 GB ; pas de download au runtime)
+- [x] **BGREMOVE-04** : Le service utilise un `asyncio.Lock` mono-process pour sérialiser les inférences (modèle non thread-safe)
+- [x] **BGREMOVE-05** : La latence cible est < 3 s sur photo produit 2048×2048 en CPU ; au-delà, fallback (si activé) sur `isnet-general-use` plus rapide
+- [x] **BGREMOVE-06** : `RemoveBackgroundHandler` côté PHP appelle `POST /img/remove-background` via `RetryableHttpClient`
 
 ### BGGEN — Génération d'arrière-plan par IA (Stable Diffusion)
 
@@ -136,7 +136,7 @@ Coverage: **62/62 REQ-IDs** mapped to exactly one phase. No orphans.
 | IMGSVC-03 | Phase 2 | Pending |
 | IMGSVC-04 | Phase 2 | Pending |
 | IMGSVC-05 | Phase 2 | Pending |
-| IMGSVC-06 | Phase 4 | Pending |
+| IMGSVC-06 | Phase 4 | Complete |
 | IMGSVC-07 | Phase 5 | Pending |
 | IMGSVC-08 | Phase 2 | Pending |
 | IMGSVC-09 | Phase 2 | Pending |
@@ -157,12 +157,12 @@ Coverage: **62/62 REQ-IDs** mapped to exactly one phase. No orphans.
 | ROUTE-08 | Phase 3 | Complete |
 | ROUTE-09 | Phase 3 | Complete |
 | ROUTE-10 | Phase 3 | Complete |
-| BGREMOVE-01 | Phase 4 | Pending |
-| BGREMOVE-02 | Phase 4 | Pending |
-| BGREMOVE-03 | Phase 4 | Pending |
-| BGREMOVE-04 | Phase 4 | Pending |
-| BGREMOVE-05 | Phase 4 | Pending |
-| BGREMOVE-06 | Phase 4 | Pending |
+| BGREMOVE-01 | Phase 4 | Complete |
+| BGREMOVE-02 | Phase 4 | Complete |
+| BGREMOVE-03 | Phase 4 | Complete |
+| BGREMOVE-04 | Phase 4 | Complete |
+| BGREMOVE-05 | Phase 4 | Complete |
+| BGREMOVE-06 | Phase 4 | Complete |
 | BGGEN-01 | Phase 5 | Pending |
 | BGGEN-02 | Phase 5 | Pending |
 | BGGEN-03 | Phase 5 | Pending |

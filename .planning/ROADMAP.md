@@ -87,7 +87,7 @@ Plans:
 **Plans:** 5 plans
 Plans:
 - [x] 04-01-PLAN.md — Wave 0 test infrastructure (pin ORT 1.22.0, integration_ml marker, fixtures, 12 Python stubs xfail + 6 PHP stubs)
-- [ ] 04-02-PLAN.md — Python endpoint POST /img/remove-background (BiRefNet + isnet, asyncio.Lock, downscale, timeout 5s + fallback opt-in)
+- [x] 04-02-PLAN.md — Python endpoint POST /img/remove-background (BiRefNet + isnet, asyncio.Lock, downscale, timeout 5s + fallback opt-in)
 - [ ] 04-03-PLAN.md — Dockerfile multi-stage avec model-downloader + /health enrichi (birefnet/isnet/inflight/last_inference_ms) + --workers 1
 - [ ] 04-04-PLAN.md — PHP RemoveBackgroundHandler + DTO + StepParamsFactory routing + TransformationLookup inversion (sync-gate)
 - [ ] 04-05-PLAN.md — 04-DEPLOY-CHECKLIST.md (Webfacto signoff D-13) + bench_bgremove.sh + warning remove-background-requires-png

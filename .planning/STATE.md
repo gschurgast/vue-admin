@@ -3,15 +3,15 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: executing
-stopped_at: Completed 04-01-PLAN.md (Wave 0 test infra)
-last_updated: "2026-05-27T14:24:54.793Z"
+stopped_at: Completed 04-02-PLAN.md (BiRefNet endpoint live, 12/12 tests green)
+last_updated: "2026-05-27T14:31:23.159Z"
 last_activity: 2026-05-27
 progress:
   total_phases: 7
   completed_phases: 3
   total_plans: 18
-  completed_plans: 14
-  percent: 78
+  completed_plans: 15
+  percent: 83
 ---
 
 # Project State
@@ -26,7 +26,7 @@ See: .planning/PROJECT.md (updated 2026-05-26)
 ## Current Position
 
 Phase: 04 (birefnet-endpoint-remove-background-deploy-gate) — EXECUTING
-Plan: 2 of 5
+Plan: 3 of 5
 Status: Ready to execute
 Last activity: 2026-05-27
 
@@ -53,6 +53,7 @@ Progress: [░░░░░░░░░░] 0%
 | Phase 03 P02 | 5m | 2 tasks | 14 files |
 | Phase 03-php-orchestrator-public-route-cache-lock-sync-only P03 | 7m | 3 tasks | 14 files |
 | Phase 04 P01 | 15m | 3 tasks | 12 files |
+| Phase 04 P02 | 25m | 2 tasks | 8 files |
 
 ## Accumulated Context
 
@@ -80,6 +81,7 @@ Recent decisions (post-pivot 2026-05-26) affecting current work:
 - [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-01/D-04 Redis lock 'lock:tx:{storageKey}' TTL 10s; waiter loop 5s + 503 Retry-After if cache stays cold
 - [Phase 03-php-orchestrator-public-route-cache-lock-sync-only]: [Phase 03] D-10/D-19/D-22 Route /t/* stateless firewall, 404 unifie (jamais 403), ETag deterministe {txId}-v{hash8}-{assetId}-{ext}
 - [Phase 04]: [Phase 04] ONNX Runtime pinned to 1.22.0 inline-commented with bug #26261 reference; integration_ml marker registered for real-ONNX heavy tests
+- [Phase 04]: Plan 04-02: mock_birefnet_session must patch BOTH core.bgremove_models AND routers.img_remove_background (router uses 'from … import …' so name binding is fixed at import time)
 
 ### Pending Todos
 
@@ -94,6 +96,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T14:24:54.791Z
-Stopped at: Completed 04-01-PLAN.md (Wave 0 test infra)
+Last session: 2026-05-27T14:31:21.111Z
+Stopped at: Completed 04-02-PLAN.md (BiRefNet endpoint live, 12/12 tests green)
 Resume file: None
