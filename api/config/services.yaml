@@ -8,30 +8,34 @@ parameters:
     app.embedder_url_default: 'http://embedder:8000'
 
     # Phase 03 — Asset Transformations orchestrator (Plan 03-02)
+    # NOTE: the env(default:<param>:VAR) processor resolves the FALLBACK
+    # from a parameter (not from another env). Each default below must be a
+    # plain parameter — `env(name): value` declares an env-var default, NOT a
+    # parameter, and would crash with "parameter not found" at runtime.
+    transformations_embedder_default_url: 'http://embedder:8000'
     transformations.embedder_base_url: '%env(default:transformations_embedder_default_url:EMBEDDER_BASE_URL)%'
-    env(transformations_embedder_default_url): 'http://embedder:8000'
+    transformations_default_cap_ms: '8000'
     transformations.hard_cap_ms: '%env(int:default:transformations_default_cap_ms:TRANSFORMATIONS_HARD_CAP_MS)%'
-    env(transformations_default_cap_ms): '8000'
+    embedder_default_resize_ms: '2000'
     transformations.embedder_timeout_resize_ms: '%env(int:default:embedder_default_resize_ms:EMBEDDER_TIMEOUT_RESIZE_MS)%'
-    env(embedder_default_resize_ms): '2000'
+    embedder_default_crop_ms: '2000'
     transformations.embedder_timeout_crop_ms: '%env(int:default:embedder_default_crop_ms:EMBEDDER_TIMEOUT_CROP_MS)%'
-    env(embedder_default_crop_ms): '2000'
+    embedder_default_rotate_ms: '2000'
     transformations.embedder_timeout_rotate_ms: '%env(int:default:embedder_default_rotate_ms:EMBEDDER_TIMEOUT_ROTATE_MS)%'
-    env(embedder_default_rotate_ms): '2000'
+    embedder_default_fc_ms: '3000'
     transformations.embedder_timeout_format_convert_ms: '%env(int:default:embedder_default_fc_ms:EMBEDDER_TIMEOUT_FORMAT_CONVERT_MS)%'
-    env(embedder_default_fc_ms): '3000'
+    embedder_default_ab_ms: '4000'
     transformations.embedder_timeout_add_background_ms: '%env(int:default:embedder_default_ab_ms:EMBEDDER_TIMEOUT_ADD_BACKGROUND_MS)%'
-    env(embedder_default_ab_ms): '4000'
 
     # Phase 03 — Public route feature flag (Plan 03-03, D-12). Default OFF in
-    # prod (`env(trf_route_default): '0'`). dev/test override via .env*.
-    transformations.public_route.enabled: '%env(bool:default:trf_route_default:TRANSFORMATIONS_PUBLIC_ROUTE_ENABLED)%'
-    env(trf_route_default): '0'
+    # prod (uses `transformations.public_route.enabled_default`).
+    # dev/test override via .env*.
+    transformations.public_route.enabled_default: '0'
+    transformations.public_route.enabled: '%env(bool:default:transformations.public_route.enabled_default:TRANSFORMATIONS_PUBLIC_ROUTE_ENABLED)%'
 
-    # Redis DSN for the symfony/lock RedisStore (Plan 03-03, D-01). Reuses the
-    # `redis` service from docker-compose (same instance as Messenger).
-    transformations.redis_dsn: '%env(default:transformations_redis_default:REDIS_URL)%'
-    env(transformations_redis_default): 'redis://redis:6379'
+    # Redis host/port defaults for symfony/lock RedisStore (Plan 03-03, D-01).
+    transformations.redis_host_default: 'redis'
+    transformations.redis_port_default: '6379'
 
 services:
     # default configuration for services in *this* file
@@ -119,7 +123,7 @@ services:
     lock.transformations.redis:
         class: Redis
         calls:
-            - connect: ['%env(string:default:transformations_redis_host:REDIS_HOST)%', '%env(int:default:transformations_redis_port:REDIS_PORT)%']
+            - connect: ['%env(string:default:transformations.redis_host_default:REDIS_HOST)%', '%env(int:default:transformations.redis_port_default:REDIS_PORT)%']
 
     lock.transformations.store:
         class: Symfony\Component\Lock\Store\RedisStore
@@ -141,10 +145,6 @@ services:
     App\Service\AssetTransformation\TransformationLookup: ~
 
 when@test:
-    parameters:
-        env(transformations_redis_host): 'redis'
-        env(transformations_redis_port): '6379'
-
     services:
         # W2 (GATING) — keep a REAL RedisStore in test so inter-process
         # contention is genuinely simulable. The `redis` docker-compose
@@ -152,7 +152,7 @@ when@test:
         lock.transformations.redis:
             class: Redis
             calls:
-                - connect: ['%env(string:default:transformations_redis_host:REDIS_HOST)%', '%env(int:default:transformations_redis_port:REDIS_PORT)%']
+                - connect: ['%env(string:default:transformations.redis_host_default:REDIS_HOST)%', '%env(int:default:transformations.redis_port_default:REDIS_PORT)%']
 
         lock.transformations.store:
             class: Symfony\Component\Lock\Store\RedisStore
@@ -163,15 +163,6 @@ when@test:
             arguments: ['@lock.transformations.store']
             public: true
 
-when@dev:
-    parameters:
-        env(transformations_redis_host): 'redis'
-        env(transformations_redis_port): '6379'
-
-when@prod:
-    parameters:
-        env(transformations_redis_host): 'redis'
-        env(transformations_redis_port): '6379'
 
 
 
