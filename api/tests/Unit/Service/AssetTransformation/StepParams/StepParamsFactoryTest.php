@@ -10,10 +10,10 @@ use App\Enum\StepType;
 use App\Service\AssetTransformation\StepParams\AddBackgroundStepParams;
 use App\Service\AssetTransformation\StepParams\CropStepParams;
 use App\Service\AssetTransformation\StepParams\FormatConvertStepParams;
+use App\Service\AssetTransformation\StepParams\RemoveBackgroundStepParams;
 use App\Service\AssetTransformation\StepParams\ResizeStepParams;
 use App\Service\AssetTransformation\StepParams\RotateStepParams;
 use App\Service\AssetTransformation\StepParams\StepParamsFactory;
-use App\Service\AssetTransformation\StepParams\UnsupportedStepTypeException;
 use Symfony\Bundle\FrameworkBundle\Test\KernelTestCase;
 use Symfony\Component\Serializer\Exception\ExtraAttributesException;
 use Symfony\Component\Serializer\SerializerInterface;
@@ -159,15 +159,52 @@ final class StepParamsFactoryTest extends KernelTestCase
         $this->factory->fromStep($step);
     }
 
-    /** Test 7 — REMOVE_BACKGROUND not yet supported in Phase 3. */
-    public function testRemoveBackgroundThrowsUnsupportedInPhase3(): void
+    /** Test 7a — Plan 04-04: REMOVE_BACKGROUND routes to RemoveBackgroundStepParams. */
+    public function testRemoveBackgroundRouting(): void
+    {
+        $step = (new TransformationStep())
+            ->setType(StepType::REMOVE_BACKGROUND)
+            ->setParams(['model' => 'birefnet', 'fallbackOnTimeout' => true]);
+
+        $dto = $this->factory->fromStep($step);
+        self::assertInstanceOf(RemoveBackgroundStepParams::class, $dto);
+        self::assertSame('birefnet', $dto->model);
+        self::assertTrue($dto->fallbackOnTimeout);
+    }
+
+    /** Test 7b — REMOVE_BACKGROUND rejects invalid model. */
+    public function testRemoveBackgroundRejectsInvalidModel(): void
+    {
+        $step = (new TransformationStep())
+            ->setType(StepType::REMOVE_BACKGROUND)
+            ->setParams(['model' => 'rmbg-1.4']);
+
+        $this->expectException(ValidationFailedException::class);
+        $this->factory->fromStep($step);
+    }
+
+    /** Test 7c — REMOVE_BACKGROUND rejects unknown key (SSRF guard via strict-fields). */
+    public function testRemoveBackgroundRejectsUnknownKey(): void
+    {
+        $step = (new TransformationStep())
+            ->setType(StepType::REMOVE_BACKGROUND)
+            ->setParams(['model' => 'birefnet', 'url' => 'http://evil.local']);
+
+        $this->expectException(ExtraAttributesException::class);
+        $this->factory->fromStep($step);
+    }
+
+    /** Test 7d — REMOVE_BACKGROUND defaults (empty params). */
+    public function testRemoveBackgroundDefaults(): void
     {
         $step = (new TransformationStep())
             ->setType(StepType::REMOVE_BACKGROUND)
             ->setParams([]);
 
-        $this->expectException(UnsupportedStepTypeException::class);
-        $this->factory->fromStep($step);
+        $dto = $this->factory->fromStep($step);
+        self::assertInstanceOf(RemoveBackgroundStepParams::class, $dto);
+        self::assertSame('birefnet', $dto->model);
+        self::assertFalse($dto->fallbackOnTimeout);
     }
 
     /** Bonus — FORMAT_CONVERT happy path covers Choice + quality. */

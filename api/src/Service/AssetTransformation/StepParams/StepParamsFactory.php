@@ -28,7 +28,7 @@ final class StepParamsFactory
 
     /**
      * @throws ValidationFailedException   On any Assert violation (422 surface).
-     * @throws UnsupportedStepTypeException On a StepType not yet wired (e.g. REMOVE_BACKGROUND in Phase 3).
+     * @throws UnsupportedStepTypeException On a StepType not yet wired.
      */
     public function fromStep(TransformationStep $step): object
     {
@@ -38,13 +38,13 @@ final class StepParamsFactory
         }
 
         $class = match ($type) {
-            StepType::RESIZE         => ResizeStepParams::class,
-            StepType::CROP           => CropStepParams::class,
-            StepType::ROTATE         => RotateStepParams::class,
-            StepType::FORMAT_CONVERT => FormatConvertStepParams::class,
-            StepType::ADD_BACKGROUND => AddBackgroundStepParams::class,
-            // REMOVE_BACKGROUND wired in Phase 4 (BiRefNet).
-            default                  => throw new UnsupportedStepTypeException($type),
+            StepType::RESIZE            => ResizeStepParams::class,
+            StepType::CROP              => CropStepParams::class,
+            StepType::ROTATE            => RotateStepParams::class,
+            StepType::FORMAT_CONVERT    => FormatConvertStepParams::class,
+            StepType::ADD_BACKGROUND    => AddBackgroundStepParams::class,
+            StepType::REMOVE_BACKGROUND => RemoveBackgroundStepParams::class, // Phase 4 (BiRefNet, BGREMOVE-06).
+            default                     => throw new UnsupportedStepTypeException($type),
         };
 
         /** @var DenormalizerInterface $denormalizer */
