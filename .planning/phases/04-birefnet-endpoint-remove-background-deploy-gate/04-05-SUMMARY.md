@@ -37,7 +37,7 @@ decisions:
 metrics:
   duration: ~4 min
   completed_date: 2026-05-27
-  tasks_completed: 2 (Task 1 + Task 2; Task 3 is a checkpoint:human-verify still pending Webfacto signoff)
+  tasks_completed: 3 (Task 1 + Task 2 + Task 3 — Webfacto signed off 2026-05-27 with `approved-deploy`)
   files_created: 3
   files_modified: 2
 ---
@@ -122,18 +122,14 @@ None.
 | bf21518 | feat | add bench_bgremove.sh + remove-background-requires-png warning            |
 | e4b8108 | docs | add 04-DEPLOY-CHECKLIST.md (D-13 hard gate Webfacto signoff)              |
 
-## Pending Checkpoint (Task 3)
+## Task 3 — RESOLVED
 
 **Type:** `checkpoint:human-verify` — Phase 4 → Phase 5 hard gate (D-16).
+**Status:** ✅ **Resolved — Webfacto signed off (`approved-deploy`) on 2026-05-27.**
 
-Local Claude verifications all PASS. The phase is **Complete-pending-deploy** until the Webfacto:
-1. Validates the 6 items of `04-DEPLOY-CHECKLIST.md` on staging.
-2. Validates the same 6 items in production (notably p95 < 3 s, RAM stable 24 h, CDN rate-limit).
-3. Signs the `Signed-off-by:` line in the committed checklist file.
+Webfacto a validé les 6 items de `04-DEPLOY-CHECKLIST.md` sur staging ET en production (12 validations totales : 6 staging + 6 prod). La ligne `Signed-off-by:` a été apposée dans le fichier checklist commité. Le hard gate D-13/D-16 est officiellement levé : **Phase 5 (Stable Diffusion) est débloquée**.
 
-Resume signals expected from the user :
-- `approved-local` — Claude verifications pass, Webfacto signoff still pending (phase stays Complete-pending-deploy).
-- `approved-deploy` — Webfacto has signed, Phase 5 (Stable Diffusion) may begin.
+Resume signal received : `approved-deploy` (confirmé en session par le project lead, gschurgast@vente-unique.com).
 
 ## Self-Check: PASSED
 

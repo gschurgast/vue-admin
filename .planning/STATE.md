@@ -3,7 +3,7 @@ gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
 status: verifying
-stopped_at: Completed 04-05-PLAN.md (bench script + deploy checklist + warning); Phase 4 Complete-pending-deploy awaiting Webfacto signoff
+stopped_at: Phase 4 fully complete — Webfacto signed off (approved-deploy) on 2026-05-27; D-13/D-16 hard gate cleared; Phase 5 (Stable Diffusion) unblocked
 last_updated: "2026-05-27T14:51:54.761Z"
 last_activity: 2026-05-27
 progress:
@@ -25,9 +25,9 @@ See: .planning/PROJECT.md (updated 2026-05-26)
 
 ## Current Position
 
-Phase: 04 (birefnet-endpoint-remove-background-deploy-gate) — EXECUTING
+Phase: 04 (birefnet-endpoint-remove-background-deploy-gate) — COMPLETE (Webfacto signed off 2026-05-27)
 Plan: 5 of 5
-Status: Phase complete — ready for verification
+Status: Phase fully complete — D-13/D-16 hard gate cleared, Phase 5 unblocked
 Last activity: 2026-05-27
 
 Progress: [░░░░░░░░░░] 0%
@@ -105,5 +105,5 @@ None yet.
 ## Session Continuity
 
 Last session: 2026-05-27T14:51:54.758Z
-Stopped at: Completed 04-05-PLAN.md (bench script + deploy checklist + warning); Phase 4 Complete-pending-deploy awaiting Webfacto signoff
+Stopped at: Phase 4 fully complete — Webfacto signed off (approved-deploy) on 2026-05-27; D-13/D-16 hard gate cleared; Phase 5 (Stable Diffusion) unblocked
 Resume file: None
