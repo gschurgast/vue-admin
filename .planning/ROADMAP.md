@@ -50,7 +50,13 @@ Plans:
   3. `format_convert` produit du PNG, JPEG, WebP et AVIF (via `pillow-avif-plugin`) avec un paramètre `quality` honoré
   4. `add_background type:asset` accepte uniquement un `assetId` numérique (jamais d'URL) ; le service récupère l'asset par son chemin S3 interne — SSRF-safe par construction
   5. `GET /health` reporte l'état de chargement des modèles (`clip`, `birefnet`, `stable_diffusion` — `loaded|lazy|failed`) et le service tourne dans son container Docker sans changement de signature de l'endpoint CLIP `/embed` existant
-**Plans**: TBD
+**Plans:** 5 plans
+Plans:
+- [ ] 02-01-PLAN.md — Wave 0: dev deps (pytest+httpx) + pillow-avif-plugin + decode_image() helper + /health refacto
+- [ ] 02-02-PLAN.md — TDD endpoints /img/resize + /img/crop + /img/rotate (Pillow primitives)
+- [ ] 02-03-PLAN.md — TDD endpoint /img/format-convert (PNG/JPEG/WebP/AVIF + alpha-flatten)
+- [ ] 02-04-PLAN.md — TDD endpoint /img/add-background (type:color + type:asset multipart double-champ)
+- [ ] 02-05-PLAN.md — Rebuild + smoke E2E curl + embedder/README.md + checkpoint humain
 
 ### Phase 3: PHP Orchestrator + Public Route + Cache + Lock (sync-only)
 **Goal**: Câbler le PHP comme orchestrateur thin des endpoints Python (handlers + DTOs validators), exposer la route publique `/t/{code}/{id}.{ext}` derrière feature flag, avec cache S3 versionné, lock anti-thundering-herd et headers immutables — uniquement pour des transformations **sans step AI**.
