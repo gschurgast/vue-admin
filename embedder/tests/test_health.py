@@ -33,3 +33,24 @@ def test_avif_codec_registered():
     buf = io.BytesIO()
     img.save(buf, "AVIF")
     assert buf.tell() > 0
+
+
+import pytest  # noqa: E402
+
+
+@pytest.mark.xfail(reason="Plan 04-03 will enrich /health with birefnet & isnet status")
+def test_health_includes_birefnet_status(client):
+    r = client.get("/health")
+    m = r.json()["models"]
+    assert m["birefnet"]["status"] == "loaded"
+    assert "inflight" in m["birefnet"]
+    assert "last_inference_ms" in m["birefnet"]
+    assert m["isnet"]["status"] == "loaded"
+
+
+@pytest.mark.xfail(reason="Plan 04-03 will set status=degraded when birefnet not loaded")
+def test_health_degraded_when_birefnet_not_loaded(client, monkeypatch):
+    import core.bgremove_models as m
+    monkeypatch.setattr(m, "_birefnet_session", None)
+    r = client.get("/health")
+    assert r.json()["status"] == "degraded"
