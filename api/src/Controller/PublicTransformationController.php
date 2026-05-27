@@ -53,6 +53,8 @@ final class PublicTransformationController
         #[Autowire(service: 'lock.transformations.factory')]
         private readonly LockFactory $lockFactory,
         private readonly PipelineRunner $runner,
+        #[Autowire(param: 'transformations.hard_cap_ms')]
+        private readonly int $hardCapMs = 8000,
         private readonly LoggerInterface $logger = new NullLogger(),
     ) {
     }
@@ -94,7 +96,11 @@ final class PublicTransformationController
         }
 
         // (5) Cache miss → lock.
-        $lock = $this->lockFactory->createLock('lock:tx:'.$storageKey, ttl: 10.0, autoRelease: true);
+        // TTL must exceed the worst-case wall clock: hard cap + S3 write margin.
+        // Otherwise Redis expires the key mid-generation and a second worker
+        // launches a concurrent pipeline (double embedder call + S3 overwrite).
+        $lockTtlSeconds = ($this->hardCapMs / 1000.0) + 10.0;
+        $lock = $this->lockFactory->createLock('lock:tx:'.$storageKey, ttl: $lockTtlSeconds, autoRelease: true);
         if (!$lock->acquire(false)) {
             // Another worker is generating. Wait up to 5s, re-check S3.
             $deadline = microtime(true) + 5.0;
