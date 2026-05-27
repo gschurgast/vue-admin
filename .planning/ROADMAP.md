@@ -32,7 +32,13 @@ Decimal phases appear between their surrounding integers in numeric order.
   3. Les codes réservés (`api`, `admin`, `t`, `_`, `assets`, mono-caractères) sont rejetés à la création avec une erreur explicite 422
   4. La suppression d'une transformation déclenche un job async de purge des variants S3 (le row part immédiatement, le storage est nettoyé en arrière-plan)
   5. Le hash canonical produit la même valeur pour deux ensembles de steps équivalents (clés triées, defaults droppés) — vérifié par golden-file tests
-**Plans**: TBD
+**Plans:** 5 plans
+Plans:
+- [ ] 01-01-PLAN.md — Entités AssetTransformation + TransformationStep + enum StepType + migration + API Platform CRUD
+- [ ] 01-02-PLAN.md — Install PHPUnit (Wave 0) + TransformationHasher service (sha1 canonical) + golden-file tests
+- [ ] 01-03-PLAN.md — Constraint AppAssert\TransformationCode (kebab-case + blocklist) + validator + 422 wiring
+- [ ] 01-04-PLAN.md — TransformationHashListener (onFlush + postFlush) + PurgeTransformationVariantsMessage + Messenger transport transformations_backfill
+- [ ] 01-05-PLAN.md — TransformationStorageKey helper + PWA config AssetTransformation.json + types TS regen
 
 ### Phase 2: Python Image Service (classical endpoints)
 **Goal**: Étendre le service `embedder` avec les endpoints d'image classiques (Pillow/OpenCV) — un endpoint par step type non-AI — testables en isolation via curl/httpie, sans dépendance Symfony.
