@@ -68,7 +68,11 @@ Plans:
   3. Sous charge concurrente (N requêtes simultanées sur une variante froide), une seule génération s'exécute (Redis lock par variante), avec un cap dur à 8s ; les autres attendent puis lisent depuis S3
   4. Chaque type de step a son DTO Validator dédié côté PHP qui rejette à la persistance les paramètres invalides ; un format JPEG sans `add_background` aval déclenche un alpha-flatten implicite sur blanc + warning visible
   5. Désactiver le feature flag `transformations.public_route.enabled` fait passer la route à 404 immédiatement ; les en-têtes CORS autorisent `<img>` cross-origin ; un asset non public ou un code inconnu retourne 404 (jamais 403)
-**Plans**: TBD
+**Plans:** 3 plans
+Plans:
+- [ ] 03-01-PLAN.md — DTO StepParams + factory + Doctrine validation listener + migration warnings JSONB + alpha-flatten-on-jpeg derivation
+- [ ] 03-02-PLAN.md — StepHandlerInterface + 5 handlers HTTP (embedder.client RetryableHttpClient) + PipelineRunner cap 8s + format_convert implicite
+- [ ] 03-03-PLAN.md — PublicTransformationController + route /t/* + lock Redis + cache S3 + feature flag + CORS + tests concurrence
 
 ### Phase 4: BiRefNet Endpoint + remove_background — DEPLOY GATE
 **Goal**: Ajouter au service `embedder` l'endpoint `POST /img/remove-background` (modèle BiRefNet MIT pré-téléchargé au build, fallback `isnet-general-use`), câbler côté PHP le step `remove_background` sync (cap 8s), et provisionner les ressources prod. **Hard gate : aucun déploiement de Phase 5 avant que cette phase soit live et stable en prod (RAM, latence, /health vérifiés).**
