@@ -1,0 +1,30 @@
+{
+  "filters": {
+    "fields": [
+      { "code": "" },
+      { "label": "" }
+    ]
+  },
+  "list": {
+    "fields": [
+      { "code": "" },
+      { "label": "" },
+      { "versionHash": "" }
+    ]
+  },
+  "edit": {
+    "fields": [
+      { "code": "" },
+      { "label": "" },
+      { "steps": "" }
+    ]
+  },
+  "show": {
+    "fields": [
+      { "code": "" },
+      { "label": "" },
+      { "versionHash": "" },
+      { "steps": "" }
+    ]
+  }
+}
