@@ -1,3 +1,4 @@
+
 # Phase 04: BiRefNet Endpoint + remove_background — DEPLOY GATE — Research
 
 **Researched:** 2026-05-27

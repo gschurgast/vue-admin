@@ -56,9 +56,9 @@ The `integration_ml` pytest marker is added in Wave 0 and gated to OFF by defaul
 | 04-XX-07 | 02 | 1 | (preprocessing D-07) | — | Downscale auto 2048-4096 | unit | `pytest embedder/tests/test_remove_background.py::test_image_3000px_downscaled_then_upscaled` | ❌ W0 | ⬜ pending |
 | 04-XX-08 | 02 | 1 | (D-10) | — | Output toujours PNG RGBA | unit | `pytest embedder/tests/test_remove_background.py::test_output_is_png_rgba` | ❌ W0 | ⬜ pending |
 | 04-XX-09 | 02 | 1 | (D-09) | — | Alpha pré-existant remplacé | unit | `pytest embedder/tests/test_remove_background.py::test_rgba_input_alpha_replaced` | ❌ W0 | ⬜ pending |
-| 04-XX-10 | 03 | 1 | (D-11) | — | /health expose birefnet.loaded + inflight + last_inference_ms | unit | `pytest embedder/tests/test_health.py::test_health_includes_birefnet_status` | ❌ W0 | ⬜ pending |
-| 04-XX-11 | 03 | 1 | (D-11) | — | /health passe en `degraded` si birefnet.loaded=false | unit | `pytest embedder/tests/test_health.py::test_health_degraded_when_birefnet_not_loaded` | ❌ W0 | ⬜ pending |
-| 04-XX-12 | 03 | 1 | (D-12) | — | Logs JSON structurés par requête | unit | `pytest embedder/tests/test_remove_background.py::test_structured_log_emitted` | ❌ W0 | ⬜ pending |
+| 04-XX-10 | 03 | 2 | (D-11) | — | /health expose birefnet.loaded + inflight + last_inference_ms | unit | `pytest embedder/tests/test_health.py::test_health_includes_birefnet_status` | ❌ W0 | ⬜ pending |
+| 04-XX-11 | 03 | 2 | (D-11) | — | /health passe en `degraded` si birefnet.loaded=false | unit | `pytest embedder/tests/test_health.py::test_health_degraded_when_birefnet_not_loaded` | ❌ W0 | ⬜ pending |
+| 04-XX-12 | 03 | 2 | (D-12) | — | Logs JSON structurés par requête | unit | `pytest embedder/tests/test_remove_background.py::test_structured_log_emitted` | ❌ W0 | ⬜ pending |
 | 04-XX-13 | 04 | 2 | BGREMOVE-06 | — | RemoveBackgroundHandler appelle /img/remove-background | unit | `phpunit --filter RemoveBackgroundHandlerTest` | ❌ W0 | ⬜ pending |
 | 04-XX-14 | 04 | 2 | BGREMOVE-06 | T-04-04 (SSRF via params) | DTO `RemoveBackgroundStepParams` valide model + fallbackOnTimeout | unit | `phpunit --filter RemoveBackgroundStepParamsTest` | ❌ W0 | ⬜ pending |
 | 04-XX-15 | 04 | 2 | BGREMOVE-06 | — | StepParamsFactory route REMOVE_BACKGROUND → DTO | unit | `phpunit --filter StepParamsFactoryTest::testRemoveBackgroundRouting` | ⬜ existing | ⬜ pending |
