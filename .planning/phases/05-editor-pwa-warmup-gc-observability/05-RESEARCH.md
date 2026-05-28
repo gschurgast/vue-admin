@@ -3,6 +3,7 @@
 **Researched:** 2026-05-28
 **Domain:** PWA (Vue 3 / Vuetify 4) + Symfony 8.0 (API Platform 4, Messenger Redis Streams, RateLimiter, Monolog) + Observabilité via Datadog Logs
 **Confidence:** HIGH (stack vérifié dans le repo + CONTEXT.md verrouille les décisions clés)
+**Revised:** 2026-05-28 — D-15 citation alignée sur `--keep=2` (supersedes initial N=1) pour cohérence ROADMAP + plan-checker BLOCKER #1.
 
 ## Summary
 
@@ -40,7 +41,7 @@ Les décisions sont **largement verrouillées** par `05-CONTEXT.md` (D-01 → D-
 
 **Commandes ops (OPS-01/02/06)**
 - **D-14 :** `transformations:warm {code} --asset-id=N` **requiert `--asset-id`** (pas de bulk v1.0). Dispatch `WarmupTransformationVariantMessage` sur transport `transformations`. Validation : code existe, asset existe et `isPublic=true`.
-- **D-15 :** `transformations:gc --keep=N` = garder N derniers `versionHash` (N=1 par défaut). Scan S3 sous `transformations/{transformationId}-v{hash}/` pour énumérer les hashes existants, comparer à `versionHash` actif.
+- **D-15 :** `transformations:gc --keep=N` = garder N derniers `versionHash`. **Défaut `--keep=2`** (rationale : rollback-friendly, garde version active + précédente). Supersedes la rédaction initiale D-15 qui mentionnait N=1 ; arbitré 2026-05-28 en faveur de l'alignement ROADMAP Phase 5 success criteria #4. Scan S3 sous `transformations/{transformationId}-v{hash}/` pour énumérer les hashes existants, comparer à `versionHash` actif.
 - **D-16 :** `gc --dry-run` : sortie liste complète + résumé par transformation (count variants + MB + total).
 - **D-17 :** Aucun scheduling automatique en v1.0. Documentation dans `docs/transformations-ops.md`.
 
@@ -390,7 +391,8 @@ final class TransformationMetrics
         ]);
     }
     // recordCacheMiss, recordRenderDuration($stepType, $ms), recordLockContention,
-    // recordEmbedderTimeout($stepType), recordMessageHandled($transport, $outcome)
+    // recordEmbedderTimeout($stepType), recordMessageHandled($transport, $outcome),
+    // recordEmbedderHealth($inflight, $lastInferenceMs)
 }
 ```
 
@@ -459,7 +461,7 @@ final class TransformationMetrics
 ### Pitfall 6 : GC énumère uniquement le hash actif (perd les variants à supprimer)
 **What goes wrong :** `gc` lit `transformation.versionHash` (= hash courant) et conclut « rien à supprimer ». Or les variants à supprimer sont précisément les hashes *non-courants*.
 **Why :** Symfony ne tient pas d'historique des hashes — la source de vérité des hashes « ayant existé » est S3 lui-même.
-**How to avoid :** Le GC énumère via `Flysystem::listContents("transformations/{txId}-v", deep: false)` pour découvrir tous les `*-v{hash}/` existants, puis compare au `versionHash` actif et garde les N derniers selon `mtime` (D-15).
+**How to avoid :** Le GC énumère via `Flysystem::listContents("transformations/{txId}-v", deep: false)` pour découvrir tous les `*-v{hash}/` existants, puis compare au `versionHash` actif et garde les N derniers selon `mtime` (D-15 ; défaut `--keep=2`).
 **Warning signs :** `gc --dry-run` retourne « 0 hash to delete » alors que la transformation a été modifiée plusieurs fois → le listing S3 n'est pas exhaustif.
 
 ### Pitfall 7 : Workers Docker non scalés correctement
@@ -542,7 +544,7 @@ foreach ($this->fs->listContents($prefix, deep: true) as $item) {
     $hashes[$hash]['mtime'] = max($hashes[$hash]['mtime'], $item->lastModified());
 }
 
-// Garder N derniers (le actif + N-1 plus récents)
+// Garder N derniers (le actif + N-1 plus récents ; defaut N=2 per D-15 révisé)
 uasort($hashes, fn($a, $b) => $b['mtime'] <=> $a['mtime']);
 $keep = array_slice([$activeHash => $hashes[$activeHash] ?? null] + $hashes, 0, $keepN, preserve_keys: true);
 $toDelete = array_diff_key($hashes, $keep);
@@ -632,9 +634,7 @@ const local = computed({
    - Recommandation : Listener inline post-call dans chaque step handler HTTP — pas de cron, données plus fraîches, instrumentation co-localisée avec le code qui appelle l'embedder. Commande dédiée si on veut un endpoint santé synthétique.
 
 3. **(Q3) `--keep` par défaut : 1 ou 2 ?**
-   - What we know : ROADMAP dit `--keep=2`, CONTEXT D-15 dit « N=1 par défaut ». **Divergence.**
-   - What's unclear : Veut-on conserver le hash actif uniquement (1) ou conserver aussi le précédent (2) pour rollback rapide ?
-   - Recommandation : `--keep=2` par défaut (rollback friendly, aligné ROADMAP). Documenter dans `transformations-ops.md`.
+   - **RÉSOLU 2026-05-28** : `--keep=2` (alignement ROADMAP, rationale rollback-friendly). Supersedes la rédaction initiale D-15 (N=1). Cf. CONTEXT.md révisé + plan-checker BLOCKER #1.
 
 4. **(Q4) Le picker d'asset : modal full-screen vs side-panel ?**
    - What we know : D-07 dit « picker explicite (modal search/paginate `/api/assets`) ».
@@ -694,6 +694,8 @@ const local = computed({
 | OPS-03 | 3 transports registered + routing | smoke | `phpunit tests/Smoke/MessengerTransportsTest.php` | ❌ Wave 0 |
 | OPS-04 | Per-transport failed queues | smoke | `phpunit tests/Smoke/MessengerFailedQueuesTest.php` (assert config) | ❌ Wave 0 |
 | OPS-05 | `TransformationMetrics::recordX()` emits JSON log on dedicated channel | unit | `phpunit tests/Unit/Service/TransformationMetricsTest.php` | ❌ Wave 0 |
+| OPS-05 | `recordEmbedderTimeout` câblé dans handlers HTTP embedder (WARNING #1) | unit | `phpunit tests/Unit/MessageHandler/RemoveBackgroundHandlerTest.php` (timeout sim → metric appelée) | ❌ Wave 0 |
+| OPS-05 | `recordEmbedderHealth` (inflight, lastInferenceMs) émise post-call (WARNING #2) | unit | `phpunit tests/Unit/Service/TransformationMetricsTest.php::testRecordEmbedderHealth` | ❌ Wave 0 |
 | OPS-06 | No deploy hook triggers backfill | doc check | grep `transformations:warm` in deploy scripts → empty | manual-only |
 
 ### Sampling Rate
@@ -711,7 +713,8 @@ const local = computed({
 - [ ] `tests/Unit/Command/TransformationsGcCommandTest.php` — couvre OPS-02 (avec FlysystemMock)
 - [ ] `tests/Smoke/MessengerTransportsTest.php` — assert config `framework.messenger.transports.transformations` existe (OPS-03)
 - [ ] `tests/Smoke/MessengerFailedQueuesTest.php` — assert chaque transport a un `failure_transport` distinct (OPS-04)
-- [ ] `tests/Unit/Service/TransformationMetricsTest.php` — couvre OPS-05 (mock LoggerInterface, vérifie payload JSON)
+- [ ] `tests/Unit/Service/TransformationMetricsTest.php` — couvre OPS-05 (7 méthodes incluant recordEmbedderTimeout + recordEmbedderHealth)
+- [ ] `tests/Unit/MessageHandler/RemoveBackgroundHandlerTest.php` — assert `recordEmbedderTimeout` appelée dans catch ConnectException/TransportException (WARNING #1)
 - [ ] `tests/Integration/TransformationWarningsTest.php` — étendre test Phase 3 avec cas `remove_background + jpeg + no add_background` (EDITOR-08)
 - [ ] PWA test runner : **pas dans le scope Wave 0 Phase 5** (manuel-only — décision implicite, aucun runner installé en Phase 1-4). Recommandation : noter en Open Question Q6 pour cadrage post-v1.0 (vitest + @vue/test-utils).
 
@@ -723,7 +726,7 @@ const local = computed({
 |---------------|---------|-----------------|
 | V2 Authentication | yes | JWT via `lexik/jwt-authentication-bundle` (existant). Preview endpoint = `is_granted('ROLE_USER')` (D-11). |
 | V3 Session Management | yes | JWT stateless ; rate limiter keyed par user identifier. |
-| V4 Access Control | yes | `security:` sur `PreviewRequest` Post operation. Asset target preview = check `isPublic` OU appartenance user (à confirmer — D-11 mentionne JWT user, pas la propriété d'asset). |
+| V4 Access Control | yes | `security:` sur `PreviewRequest` Post operation. Asset target preview = check STRICT `isPublic` (aligné route publique `/t/*` Phase 3) ; pas d'ownership check pour cette phase (out-of-scope, tracked STATE). |
 | V5 Input Validation | yes | DTO validators existants Phase 3 (`ResizeStepParams`, etc.) appliqués via `StepParamsFactory` sur les steps inline. `ext` validé contre allowlist `[png, jpg, jpeg, webp, avif]`. |
 | V6 Cryptography | no | Aucun nouveau besoin (JWT signature déjà gérée). |
 | V11 Business Logic | yes | RateLimiter 10/min/user prévient DoS sur BiRefNet (~3s CPU/inférence). |
@@ -736,7 +739,7 @@ const local = computed({
 |---------|--------|---------------------|
 | DoS via preview spam (chaque preview = inférence BiRefNet potentielle ~3s CPU) | Denial of Service | RateLimiter token bucket 10/min/user (D-10). |
 | SSRF via `add_background type:asset` preview avec assetId arbitraire | Tampering | Déjà mitigé Phase 2 plan 02-04 : assetId numérique uniquement, lookup S3 interne, jamais d'URL externe. |
-| Preview retourne un asset privé non-autorisé | Information Disclosure | Vérifier `Asset::isPublic` OU appartenance avant render. **À spécifier dans le plan preview** (D-11 ne le précise pas). |
+| Preview retourne un asset privé non-autorisé | Information Disclosure | Check STRICT `Asset::isPublic` ; sinon 404 (uniforme avec route publique /t/* Phase 3). Pas d'ownership check ce phase (out-of-scope ; follow-up potentiel tracké STATE). |
 | Cache empoisonnement via preview | Tampering | D-08/D-09 : preview NE touche PAS le cache S3 (bypass). |
 | Replay JWT volé sur preview | Spoofing | RateLimiter par user limite l'impact, JWT TTL standard (déjà géré). |
 | `transformations:gc` supprime variants encore servis | Tampering (data loss) | `--dry-run` par défaut + `--keep=2` (rollback rapide) + log JSON de chaque DELETE (audit Datadog). |
@@ -748,7 +751,7 @@ const local = computed({
 ### Primary (HIGH confidence)
 - Code repo : `api/config/packages/messenger.yaml`, `api/composer.json`, `pwa/package.json`, `pwa/src/composables/useAssetUrl.ts`, `pwa/src/config/AssetTransformation.json`, `docker-compose.yml`, `api/src/ApiResource/ChatRequest.php`, `api/src/State/ChatRequestProcessor.php` — patterns existants vérifiés à la lecture.
 - npm registry : `vuedraggable@4.1.0`, `sortablejs@1.15.7` (commande `npm view ... version`, 2026-05-28).
-- `.planning/phases/05-editor-pwa-warmup-gc-observability/05-CONTEXT.md` — décisions verrouillées D-01 à D-24.
+- `.planning/phases/05-editor-pwa-warmup-gc-observability/05-CONTEXT.md` — décisions verrouillées D-01 à D-24 (D-15 révisé `--keep=2`).
 - `.planning/REQUIREMENTS.md` — IDs EDITOR-* et OPS-* avec definitions of done.
 - `.planning/ROADMAP.md` § Phase 5 — success criteria.
 
@@ -771,7 +774,7 @@ const local = computed({
 - Standard stack : **HIGH** — versions vérifiées (npm registry, composer.json read).
 - Architecture : **HIGH** — patterns 1:1 avec code existant (ChatRequest, useAssetUrl, AssetTransformation.json).
 - Pitfalls : **HIGH** — issus de la lecture du code (messenger.yaml a effectivement un seul `failed`, pas de `rate_limiter.yaml`, `worker` Docker mount partagé).
-- Open questions : **MEDIUM** — Q1 (Datadog Webfacto) et Q3 (--keep default divergence) requièrent input externe.
+- Open questions : **MEDIUM** — Q1 (Datadog Webfacto) reste à confirmer. Q3 résolu 2026-05-28 (`--keep=2`).
 
 **Research date :** 2026-05-28
 **Valid until :** 2026-06-27 (30 jours — stack stable).

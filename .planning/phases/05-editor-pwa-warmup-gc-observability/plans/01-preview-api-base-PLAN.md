@@ -20,6 +20,7 @@ must_haves:
     - "L'endpoint est rate-limité 10 req/min/user (token bucket). 11e requête retourne 429 + Retry-After"
     - "La preview NE touche PAS le cache S3 (aucun fichier créé sous transformations/) et NE prend PAS de lock Redis"
     - "Steps inline sont validés via DTO validators Phase 3 (StepParamsFactory)"
+    - "Asset target !isPublic → 404 STRICT (uniforme avec route publique /t/* Phase 3 ; pas d'ownership check ce phase, out-of-scope)"
   artifacts:
     - path: "api/src/ApiResource/PreviewRequest.php"
       provides: "DTO POST /api/asset_transformations/preview (hidden menu)"
@@ -119,7 +120,7 @@ public function run(array $steps, Asset $asset, string $ext, bool $bypassCache =
 |-----------|----------|-----------|-------------|-----------------|
 | T-05-01 | DoS | PreviewRequestProcessor | mitigate | RateLimiter token_bucket 10/min/user, retour 429 + Retry-After (per D-10) |
 | T-05-02 | Tampering (SSRF) | step add_background type:asset inline | mitigate | StepParamsFactory (Phase 3) accepte uniquement assetId numérique, jamais d'URL |
-| T-05-03 | Information Disclosure | Preview d'asset privé | mitigate | Vérifier $asset->isPublic OR asset owner check avant render (asset privé → 403/404) |
+| T-05-03 | Information Disclosure | Preview d'asset privé | mitigate | Check STRICT `$asset->isPublic()` AVANT render — si `false` → 404 (aligné route publique /t/* Phase 3). PAS d'ownership check ce phase (out-of-scope ; follow-up potentiel tracké STATE.md). |
 | T-05-04 | Tampering (cache poisoning) | Pipeline bypass | mitigate | bypassCache=true : aucune écriture S3, lock Redis non pris (testé via PreviewBypassCacheTest) |
 | T-05-05 | Spoofing | JWT replay | accept | JWT TTL standard + rate-limit par user identifier limite l'impact |
 | T-05-06 | Information Disclosure | Preview persistée dans CDN/proxy | mitigate | Cache-Control: no-store + X-Robots-Tag: noindex (per D-09) |
@@ -134,6 +135,7 @@ public function run(array $steps, Asset $asset, string $ext, bool $bypassCache =
   <behavior>
     - PreviewEndpointTest::testPostReturns200WithBinaryAndNoStore() — POST avec JWT valide + steps valides → 200, Content-Type image/png, Cache-Control: no-store, X-Robots-Tag: noindex
     - PreviewEndpointTest::testPostUnauthenticatedReturns401() — sans JWT → 401
+    - PreviewEndpointTest::testNonPublicAssetReturns404() — asset.isPublic=false → 404 STRICT (T-05-03 ; pas 403 pour rester uniforme avec /t/*)
     - PreviewRateLimitTest::testEleventhRequestReturns429() — 11 requêtes en 60s → la 11e renvoie 429 + Retry-After
     - PreviewBypassCacheTest::testNoS3WriteUnderTransformationsPrefix() — après POST preview, `Flysystem::listContents('transformations/', deep:true)` n'augmente pas
     - PipelineRunner::run() avec `bypassCache:true` n'appelle PAS `lockFactory->createLock()` ni `storage->write()` (assert via mock)
@@ -163,25 +165,27 @@ public function run(array $steps, Asset $asset, string $ext, bool $bypassCache =
 </task>
 
 <task type="auto" tdd="true">
-  <name>Task 2: PreviewRequest DTO + PreviewRequestProcessor (rate-limit + stream binaire)</name>
+  <name>Task 2: PreviewRequest DTO + PreviewRequestProcessor (rate-limit + stream binaire + isPublic STRICT)</name>
   <files>api/src/ApiResource/PreviewRequest.php, api/src/State/PreviewRequestProcessor.php, api/tests/Integration/PreviewEndpointTest.php, api/tests/Integration/PreviewRateLimitTest.php</files>
   <behavior>
     - PreviewEndpointTest passe au vert (200 + binaire + no-store + noindex)
     - PreviewRateLimitTest passe au vert (429 + Retry-After après 10 hits/min)
     - DTO validators : assetId int>0, ext in allowlist `[png,jpg,jpeg,webp,avif]`, steps array non vide, chaque step validé via StepParamsFactory
-    - Asset privé → 404 (uniforme avec route publique Phase 3)
+    - Asset !isPublic → 404 STRICT (uniforme avec route publique /t/* Phase 3 ; pas d'ownership check)
   </behavior>
   <action>
     1. Créer `PreviewRequest` (per D-08) avec `#[ApiResource]` + `#[MenuGroup('hidden')]` + `#[Post(security: "is_granted('ROLE_USER')", processor: PreviewRequestProcessor::class)]`. Propriétés publiques `int $assetId`, `string $ext`, `array $steps` avec `#[Groups(['preview:write'])]` + Assert\NotBlank + Assert\Choice ext.
     2. Créer `PreviewRequestProcessor implements ProcessorInterface` injectant : `PipelineRunner`, `AssetRepository`, `LimiterFactory $previewLimiter` (autowire par nom, per D-10), `Security`, `StepParamsFactory`. Logique :
        - `$user = $security->getUser()` → identifier
        - `$limit = $previewLimiter->create($user->getUserIdentifier())->consume(1)` ; si `!isAccepted()` → return new Response('', 429, ['Retry-After' => (string) max(1, $limit->getRetryAfter()->getTimestamp() - time())])
-       - $asset = $assets->find($data->assetId) ; si null OU `!isPublic` (T-05-03) → 404
+       - `$asset = $assets->find($data->assetId)` ; si null → 404
+       - **WARNING #3 plan-checker : check STRICT `isPublic`** — si `!$asset->isPublic()` → 404 (T-05-03). Aligné avec la route publique `/t/*` de Phase 3 : un asset non public ne peut être prévisualisé via `/api/asset_transformations/preview`. **PAS de check ownership** ce phase ; out-of-scope ; tracker en STATE.md comme follow-up potentiel (« autoriser preview d'assets non publics pour leur owner »).
        - foreach $data->steps : `$stepParamsFactory->build($step['type'], $step['params'])` → propage 422 si invalide
        - `$binary = $runner->run($validatedSteps, $asset, $data->ext, bypassCache: true)`
        - return new Response($binary, 200, ['Content-Type' => "image/{$data->ext}", 'Cache-Control' => 'no-store', 'X-Robots-Tag' => 'noindex'])
-    3. Implémenter les tests d'intégration restants (PreviewEndpointTest + PreviewRateLimitTest) en utilisant `ApiTestCase` Symfony + JWT fixture (cf. Phase 3 test pattern).
+    3. Implémenter les tests d'intégration restants (PreviewEndpointTest + PreviewRateLimitTest) en utilisant `ApiTestCase` Symfony + JWT fixture (cf. Phase 3 test pattern). Ajouter `testNonPublicAssetReturns404` (T-05-03) avec fixture asset isPublic=false.
     4. Lancer `make generate-types` pour exposer `PreviewRequest` dans `pwa/src/types/api.d.ts` (consommé Plan 05).
+    5. **Suivi follow-up** : créer une entrée dans `.planning/STATE.md` (section follow-ups) « Phase 5 — out-of-scope : preview d'asset non public par son owner (ownership check). Aligné actuellement sur route /t/* (404 strict). À revoir si demande métier explicite. »
   </action>
   <verify>
     <automated>docker compose exec api ./vendor/bin/phpunit --filter="PreviewEndpointTest|PreviewRateLimitTest|PreviewBypassCacheTest"</automated>
@@ -189,8 +193,10 @@ public function run(array $steps, Asset $asset, string $ext, bool $bypassCache =
   <done>
     - POST /api/asset_transformations/preview opérationnel via curl avec JWT (200 + binary)
     - 11e requête en 60s → 429 + Retry-After
+    - Asset !isPublic → 404 strict (test green)
     - Aucune écriture sous `transformations/` durant les tests
     - `pwa/src/types/api.d.ts` régénéré contient le schéma `PreviewRequest`
+    - STATE.md follow-up ownership tracké
   </done>
 </task>
 
@@ -203,7 +209,7 @@ public function run(array $steps, Asset $asset, string $ext, bool $bypassCache =
 </verification>
 
 <success_criteria>
-EDITOR-04 et EDITOR-05 livrés au niveau API. PipelineRunner.bypassCache prêt pour consommation Plan 05 PWA. Aucune régression sur la route publique `/t/*` (Phase 3).
+EDITOR-04 et EDITOR-05 livrés au niveau API. PipelineRunner.bypassCache prêt pour consommation Plan 05 PWA. Aucune régression sur la route publique `/t/*` (Phase 3). Politique isPublic strict alignée avec /t/* ; ownership check tracké comme follow-up STATE.
 </success_criteria>
 
 <output>

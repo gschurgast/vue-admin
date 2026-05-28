@@ -20,6 +20,7 @@ must_haves:
     - "`--keep=N` (défaut N=2) garde les N derniers hashes par mtime décroissant (hash actif inclus de force)"
     - "Sans --dry-run et sans --force en TTY interactif : demande confirmation avant DELETE"
     - "Aucun hook de déploiement n'invoque ces commandes (OPS-06 : backfill manuel uniquement)"
+    - "docs/transformations-ops.md documente le défaut `--keep=2` avec rationale rollback-friendly et mention supersedes D-15 (N=1 initial) arbitré 2026-05-28"
   artifacts:
     - path: "api/src/Command/TransformationsWarmCommand.php"
       provides: "Commande Symfony Console transformations:warm"
@@ -177,22 +178,26 @@ TransformationStorageKey::buildPrefix(int $txId, string $hash): string;
   <files>docs/transformations-ops.md</files>
   <action>
     Créer `docs/transformations-ops.md` avec sections :
-    1. **Commandes ops** : usage de `transformations:warm` (avec note `--asset-id` requis, bulk reporté) et `transformations:gc` (avec note `--keep=2` par défaut = hash actif + 1 précédent pour rollback rapide ; superseded D-15 init N=1).
+    1. **Commandes ops** : usage de `transformations:warm` (avec note `--asset-id` requis, bulk reporté) et `transformations:gc`. Pour `--keep`, le doc DOIT contenir verbatim la phrase suivante (BLOCKER #1 plan-checker) :
+
+       > Défaut `--keep=2` (rationale : rollback-friendly, garde version active + précédente). Supersedes la rédaction initiale D-15 (N=1) ; arbitré 2026-05-28 en faveur de l'alignement ROADMAP.
+
     2. **Transports Messenger** : tableau des 3 transports (async/transformations/transformations_backfill) avec DSN, retry policy, message types routés. Lien vers `messenger.yaml`.
     3. **Failed queues** : commandes `messenger:failed:show --transport=X` et `messenger:failed:retry --transport=X` pour chaque transport. Note inspection Redis Streams.
-    4. **Métriques (facets Datadog attendus)** : liste des `metric` names émis par `TransformationMetrics` (cf. Plan 05) + structure JSON commune `{metric, value, unit, transformation_id, step_type, transport, ...}`.
-    5. **Embedder /health** : note sur D-23, scrape périodique recommandé (commande TBD ou listener inline).
+    4. **Métriques (facets Datadog attendus)** : liste des `metric` names émis par `TransformationMetrics` (cf. Plan 05) + structure JSON commune `{metric, value, unit, transformation_id, step_type, transport, ...}`. Inclure `transformations.embedder.timeout` et `transformations.embedder.inflight` + `transformations.embedder.last_inference_ms` (cf. Plan 05 Task 1 révisé).
+    5. **Embedder /health** : note sur D-23, scrape périodique recommandé. Documenter explicitement la solution retenue (listener inline post-call OU header `X-BiRefNet-Inflight` exposé par le service Python OU commande cron `transformations:health-collect`) selon ce qui est livré par Plan 05.
     6. **Scheduling prod (à valider Webfacto)** : section OPS-06 explicite « aucun hook de déploiement n'invoque ces commandes » + recommandations cron (ex: `transformations:gc --force` weekly). Préfixer la section par `> ⚠ Validation Webfacto requise avant industrialisation`.
     7. **Workers Docker** : map service docker-compose → transport + commande `messenger:consume`.
     Format Markdown structuré (h2/h3), commandes en blocs ` ```bash `. Pas de placeholder TBD non motivé.
   </action>
   <verify>
-    <automated>test -f docs/transformations-ops.md && grep -E "^## " docs/transformations-ops.md | wc -l | awk '$1>=6'</automated>
+    <automated>test -f docs/transformations-ops.md && grep -E "^## " docs/transformations-ops.md | wc -l | awk '$1>=6' && grep -q "Supersedes la rédaction initiale D-15" docs/transformations-ops.md && grep -q "rollback-friendly" docs/transformations-ops.md && grep -q "arbitré 2026-05-28" docs/transformations-ops.md</automated>
   </verify>
   <done>
     - Fichier présent avec au moins 6 sections H2
     - Mention explicite OPS-06 (no auto backfill) + rappel Webfacto
-    - Section facets Datadog référence le format JSON commun de TransformationMetrics
+    - Section facets Datadog référence le format JSON commun de TransformationMetrics (inclut metrics embedder timeout + inflight)
+    - **BLOCKER #1 résolu** : la doc contient verbatim « défaut `--keep=2` (rationale : rollback-friendly, garde version active + précédente). Supersedes la rédaction initiale D-15 (N=1) ; arbitré 2026-05-28 en faveur de l'alignement ROADMAP. »
   </done>
 </task>
 
