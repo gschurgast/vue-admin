@@ -37,6 +37,7 @@ class PipelineRunner
         #[AutowireIterator('app.step_handler')] iterable $handlers,
         #[Autowire(param: 'transformations.hard_cap_ms')] private readonly int $hardCapMs,
         private readonly LoggerInterface $logger = new NullLogger(),
+        private readonly ?\App\Service\TransformationMetrics $metrics = null,
     ) {
         foreach ($handlers as $h) {
             // Resolve type via the static contract; test stubs may also expose
@@ -139,15 +140,18 @@ class PipelineRunner
             }
             $timeoutMs = min($handler->defaultTimeoutMs(), $remaining);
 
+            $stepT0 = hrtime(true);
             try {
                 $res = $handler->run($bytes, $step->getParams() ?? [], $timeoutMs);
             } catch (TransportExceptionInterface $e) {
+                $this->metrics?->recordEmbedderTimeout($type->value);
                 throw new TransformationPipelineException(
                     sprintf('Embedder transport error on %s: %s', $type->value, $e->getMessage()),
                     TransformationPipelineException::CODE_EMBEDDER_ERROR,
                     $e,
                 );
             }
+            $this->metrics?->recordRenderDuration((int) ($tx->getId() ?? 0), $type->value, (int) ((hrtime(true) - $stepT0) / 1_000_000));
             $bytes = $res->bytes;
             $contentType = $res->contentType;
             $applied[] = $type->value;

@@ -45,10 +45,22 @@ final class WarmupTransformationVariantHandler
         #[Autowire(service: 'assets.storage')]
         private readonly FilesystemOperator $assetsStorage,
         private readonly LoggerInterface $logger = new NullLogger(),
+        private readonly ?\App\Service\TransformationMetrics $metrics = null,
     ) {
     }
 
     public function __invoke(WarmupTransformationVariantMessage $message): void
+    {
+        try {
+            $this->process($message);
+            $this->metrics?->recordMessageHandled('transformations', 'success');
+        } catch (\Throwable $e) {
+            $this->metrics?->recordMessageHandled('transformations', 'failure');
+            throw $e;
+        }
+    }
+
+    private function process(WarmupTransformationVariantMessage $message): void
     {
         $tx = $this->em->getRepository(AssetTransformation::class)->find($message->transformationId);
         if (!$tx instanceof AssetTransformation) {

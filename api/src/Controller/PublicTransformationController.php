@@ -56,6 +56,7 @@ final class PublicTransformationController
         #[Autowire(param: 'transformations.hard_cap_ms')]
         private readonly int $hardCapMs = 8000,
         private readonly LoggerInterface $logger = new NullLogger(),
+        private readonly ?\App\Service\TransformationMetrics $metrics = null,
     ) {
     }
 
@@ -92,8 +93,10 @@ final class PublicTransformationController
 
         // (4) Cache hit.
         if ($this->cache->has($storageKey)) {
+            $this->metrics?->recordCacheHit((int) $tx->getId(), $versionHash);
             return $this->streamFromCache($storageKey, $etag, $contentType, $tx);
         }
+        $this->metrics?->recordCacheMiss((int) $tx->getId(), $versionHash);
 
         // (5) Cache miss → lock.
         // TTL must exceed the worst-case wall clock: hard cap + S3 write margin.
