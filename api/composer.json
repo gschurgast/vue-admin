@@ -36,6 +36,7 @@
         "symfony/mcp-bundle": "^0.9",
         "symfony/messenger": "8.0.*",
         "symfony/mime": "8.0.*",
+        "symfony/monolog-bundle": "^4.0",
         "symfony/object-mapper": "8.0.*",
         "symfony/rate-limiter": "8.0.*",
         "symfony/redis-messenger": "8.0.*",
