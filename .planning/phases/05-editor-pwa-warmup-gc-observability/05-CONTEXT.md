@@ -2,6 +2,7 @@
 
 **Gathered:** 2026-05-28
 **Status:** Ready for planning
+**Revised:** 2026-05-28 — D-15 défaut révisé à `--keep=2` (alignement ROADMAP)
 
 <domain>
 ## Phase Boundary
@@ -27,7 +28,7 @@ Livraison de :
 
 ### Éditeur PWA (EDITOR-01/02/03)
 
-- **D-01 :** Drag-and-drop via **`vuedraggable@next`** (wrapper officiel SortableJS pour Vue 3). API déclarative `<draggable v-model>`, gère touch events, ~10kB. Lib à installer (`npm install vuedraggable@next`).
+- **D-01 :** Drag-and-drop via **`vuedraggable@next`** (wrapper officiel SortableJS pour Vue 3). API déclarative `<draggable v-model>`, gère touch events, ~10kB. Lib à installer (`npm install vuedraggable@next`). **Note implémentation (research) :** cible canonique sur npm = `vuedraggable@4` (le tag `@next` historique a été dépublié). Installer `vuedraggable@4`.
 - **D-02 :** Sous-formulaire par step type via **composants Vue dédiés** (un composant par `StepType` : `ResizeStepFields.vue`, `CropStepFields.vue`, `RotateStepFields.vue`, `FormatConvertStepFields.vue`, `AddBackgroundStepFields.vue`, `RemoveBackgroundStepFields.vue`). Réutilise les `pwa/src/components/fields/*` existants (NumberField, EnumField, RelationField pour `assetId`).
 - **D-03 :** Composants éditeur dans `pwa/src/components/asset_transformation/edit/` (suit le pattern existant `components/asset/`, `components/taxonomy/`). Le champ `steps` dans `AssetTransformation.json` pointe vers un composant custom `StepsField.vue` qui orchestre drag-and-drop + composants par type.
 
@@ -57,7 +58,7 @@ Livraison de :
 ### Commandes ops (OPS-01/02/06)
 
 - **D-14 :** `transformations:warm {code} --asset-id=N` **requiert `--asset-id`** (pas de mode bulk en v1.0). Dispatch d'un `WarmupTransformationVariantMessage` sur le transport `transformations`. Validation : `code` existe, asset existe et `isPublic=true`.
-- **D-15 :** `transformations:gc` : sémantique **`--keep=N` = garder les N derniers `versionHash`** d'une transformation (N=1 par défaut = uniquement le hash actif). Source de vérité : l'historique des hashes (table `asset_transformation` actuelle ne garde QUE le hash courant → besoin de scanner S3 sous `transformations/{transformationId}-v{hash}/...` pour énumérer les hashes existants, comparer à `versionHash` actif).
+- **D-15 :** `transformations:gc` : sémantique **`--keep=N` = garder les N derniers `versionHash`** d'une transformation. **Défaut révisé 2026-05-28 : `--keep=2`** (alignement ROADMAP Phase 5 success criteria #4 ; supersedes la rédaction initiale qui disait N=1). Rationale : conserver le hash actif + le précédent pour permettre un rollback rapide. Source de vérité : l'historique des hashes (table `asset_transformation` actuelle ne garde QUE le hash courant → besoin de scanner S3 sous `transformations/{transformationId}-v{hash}/...` pour énumérer les hashes existants, comparer à `versionHash` actif).
 - **D-16 :** `gc --dry-run` : sortie **liste complète + résumé par transformation** :
   ```
   Transformation: product-thumb (id=12, active=a3f7...)
@@ -81,7 +82,7 @@ Livraison de :
 
 ### Observabilité (OPS-05)
 
-- **D-21 :** Backend = **logs JSON structurés via Monolog** (formatter `JsonFormatter`, channel dédié `transformations_metrics`). Datadog Logs ingest et dérive les métriques côté plateforme (les facets / measure facets sont configurables sans redéploiement applicatif). Pas d'agent DogStatsD à ajouter.
+- **D-21 :** Backend = **logs JSON structurés via Monolog** (formatter `JsonFormatter`, channel dédié `transformations_metrics`). Datadog Logs ingest et dérive les métriques côté plateforme (les facets / measure facets sont configurables sans redéploiement applicatif). Pas d'agent DogStatsD à ajouter. **Note ops :** le shipper Webfacto branchera le pipeline Datadog plus tard ; pas de `dd-trace-php` dans cette phase.
 - **D-22 :** Service PHP **`TransformationMetrics`** (à créer dans `src/Service/`) injecté dans les points clés :
   - `PublicTransformationController` → `recordCacheHit($transformationId, $hash)` / `recordCacheMiss(...)`.
   - `PipelineRunner` → `recordRenderDuration($transformationId, $stepType, $durationMs)` / `recordLockContention(...)`.
@@ -226,3 +227,4 @@ Aucun todo remonté par le matching automatique pour Phase 5.
 
 *Phase: 05-editor-pwa-warmup-gc-observability*
 *Context gathered: 2026-05-28*
+*Revised: 2026-05-28 — D-15 default `--keep=2` (was N=1) for ROADMAP alignment*
