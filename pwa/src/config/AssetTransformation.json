@@ -8,23 +8,21 @@
   "list": {
     "fields": [
       { "code": "" },
-      { "label": "" },
-      { "versionHash": "" }
+      { "label": "" }
     ]
   },
   "edit": {
     "fields": [
       { "code": "" },
       { "label": "" },
-      { "steps": "" }
+      { "steps": "StepsField" }
     ]
   },
   "show": {
     "fields": [
       { "code": "" },
       { "label": "" },
-      { "versionHash": "" },
-      { "steps": "" }
+      { "steps": "StepsField" }
     ]
   }
 }

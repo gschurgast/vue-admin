@@ -100,8 +100,14 @@ const fieldComponents = import.meta.glob('../../../components/fields/*.vue')
 const configFiles = import.meta.glob('../../../config/*.json')
 const resourceViewComponents = import.meta.glob('../../../components/*/*/**.vue')
 
+// Additional custom field components defined under per-resource folders
+// (e.g. asset_transformation/edit/StepsField.vue) — exposed under the
+// `fields/` namespace so resource JSON configs can reference them by name.
+const extraFieldComponents = import.meta.glob('../../../components/asset_transformation/edit/*.vue')
+
 const componentModules: Record<string, () => Promise<any>> = {
-  ...Object.fromEntries(Object.entries(fieldComponents).map(([k, v]) => [`fields/${k.split('/').pop()?.replace('.vue', '')}`, v]))
+  ...Object.fromEntries(Object.entries(fieldComponents).map(([k, v]) => [`fields/${k.split('/').pop()?.replace('.vue', '')}`, v])),
+  ...Object.fromEntries(Object.entries(extraFieldComponents).map(([k, v]) => [`fields/${k.split('/').pop()?.replace('.vue', '')}`, v]))
 }
 
 const {
