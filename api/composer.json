@@ -37,6 +37,7 @@
         "symfony/messenger": "8.0.*",
         "symfony/mime": "8.0.*",
         "symfony/object-mapper": "8.0.*",
+        "symfony/rate-limiter": "8.0.*",
         "symfony/redis-messenger": "8.0.*",
         "symfony/runtime": "8.0.*",
         "symfony/security-bundle": "8.0.*",

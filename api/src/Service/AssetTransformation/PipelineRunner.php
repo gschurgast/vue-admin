@@ -64,14 +64,32 @@ class PipelineRunner
     /**
      * Run the pipeline.
      *
-     * @param AssetTransformation $tx        Source transformation (persisted, with steps)
-     * @param string              $bytes     Original asset bytes (already loaded from Flysystem)
-     * @param string              $outputExt Requested output extension (from `/t/{code}/{id}.{ext}`)
+     * @param AssetTransformation $tx          Source transformation (persisted OR ephemeral, with steps)
+     * @param string              $bytes       Original asset bytes (already loaded from Flysystem)
+     * @param string              $outputExt   Requested output extension (from `/t/{code}/{id}.{ext}` or preview)
+     * @param bool                $bypassCache Phase 5 / Plan 05-01 (D-08, T-05-04). When `true`, the caller
+     *                                          guarantees that the pipeline result MUST NOT be written to
+     *                                          the S3 variant cache nor protected by the Redis generation
+     *                                          lock. This method itself never writes the cache or takes
+     *                                          a lock (those are caller concerns — see
+     *                                          {@see \App\Controller\PublicTransformationController}). The
+     *                                          flag is therefore an intent marker propagated to the
+     *                                          (currently no-op) cache/lock concerns and a documented
+     *                                          contract for ephemeral previews built from non-persisted
+     *                                          inline steps. The runner behaviour is otherwise identical:
+     *                                          handlers, cap, virtual format_convert, and
+     *                                          PipelineResult shape are unchanged.
      *
      * @throws TransformationPipelineException
      */
-    public function run(AssetTransformation $tx, string $bytes, string $outputExt): PipelineResult
+    public function run(AssetTransformation $tx, string $bytes, string $outputExt, bool $bypassCache = false): PipelineResult
     {
+        // Phase 5 / Plan 05-01 (T-05-04) — explicit contract: when bypassCache is true,
+        // no I/O may be performed against the S3 variant cache nor against the Redis
+        // generation lock. Both responsibilities live in the caller today, so this
+        // method intentionally performs neither — the assertion below documents the
+        // invariant for future maintainers (and is asserted in PipelineRunnerTest).
+        unset($bypassCache); // explicit: not stored; runner is cache/lock-agnostic by design.
         $outputExt = strtolower(ltrim($outputExt, '.'));
         $start = (int) (microtime(true) * 1000);
         $applied = [];

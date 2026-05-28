@@ -1,0 +1,18 @@
+# Phase 5 / Plan 05-01 — D-10
+#
+# Token-bucket rate limiter pour l'endpoint POST /api/asset_transformations/preview.
+# Clé d'agrégation : identifiant utilisateur JWT (Security::getUser()->getUserIdentifier()).
+#
+# - 10 requêtes / minute / user (refill amount = 10, interval = 1 minute).
+# - Au-delà : Limit::isAccepted() === false → le PreviewRequestProcessor renvoie
+#   HTTP 429 + en-tête Retry-After (T-05-01).
+#
+# Le param-name binding Symfony auto-wire la factory sous le nom
+#   LimiterFactory $previewLimiter
+# (camelCase du nom du limiter `preview_endpoint`).
+framework:
+    rate_limiter:
+        preview_endpoint:
+            policy: 'token_bucket'
+            limit: 10
+            rate: { interval: '1 minute', amount: 10 }
