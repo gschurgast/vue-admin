@@ -11,6 +11,7 @@
           :resource-name="'Asset'"
           :title="''"
           @view="onSelect"
+          @edit="onSelect"
         />
       </v-card-text>
     </v-card>
