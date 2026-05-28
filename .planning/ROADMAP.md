@@ -100,7 +100,13 @@ Plans:
   3. Un composable `useTransformedUrl(code, assetId, ext)` retourne une string `/t/...` directement consommable par `<img :src>`, sans logique d'attente côté client (les transformations sont toutes sync ; le cap 8s côté serveur garantit la réponse)
   4. Un ops peut lancer `php bin/console transformations:warm {code} [--asset-id=...]` qui dispatch des `WarmupTransformationVariantMessage` sur le transport `transformations` et `php bin/console transformations:gc [--dry-run] [--keep=2]` qui supprime les variants S3 dont le `versionHash` n'est plus actif ; aucun backfill automatique au déploiement
   5. Les métriques exposées et consommables (Datadog ou équivalent) incluent : cache hit/miss, render duration par endpoint Python, embedder timeout count, lock contention, `birefnet_inflight`, messages handled par transport ; chaque transport (`async`, `transformations`, `transformations_backfill`) dispose de sa propre `failed` queue inspectable
-**Plans**: TBD
+**Plans**: 5 plans
+Plans:
+- [ ] 01-preview-api-base — Preview endpoint + rate_limiter + PipelineRunner bypassCache
+- [ ] 02-messenger-transports-warmup — 3 transports + 3 failed queues + WarmupTransformationVariantMessage/Handler + workers Docker
+- [ ] 03-ops-commands-docs — `transformations:warm` + `transformations:gc --keep=2 [--dry-run]` + docs ops
+- [ ] 04-pwa-editor-steps — StepsField (vuedraggable@4) + 6 StepFields + WarningBanner + useTransformedUrl
+- [ ] 05-pwa-preview-metrics — PreviewPanel + AssetPickerDialog + usePreviewUrl + i18n 14 locales + TransformationMetrics
 **UI hint**: yes
 
 ## Progress
@@ -116,4 +122,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Python Image Service (classical endpoints) | 5/5 | Complete | 2026-05-27 |
 | 3. PHP Orchestrator + Public Route + Cache + Lock | 3/3 | Complete | 2026-05-27 |
 | 4. BiRefNet Endpoint + remove_background — DEPLOY GATE | 5/5 | Complete | 2026-05-27 |
-| 5. Editor PWA, Warmup, GC, Observability | 0/TBD | Not started | - |
+| 5. Editor PWA, Warmup, GC, Observability | 0/5 | Not started | - |
