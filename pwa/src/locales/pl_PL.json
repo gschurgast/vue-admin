@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "Strona główna",
-        "resources": "Zasoby",
-        "search": "Szukaj",
-        "clear": "Wyczyść",
-        "apply": "Zastosuj",
-        "cancel": "Anuluj",
-        "save": "Zapisz",
-        "delete": "Usuń",
-        "edit": "Edytuj",
-        "create": "Utwórz",
-        "close": "Zamknij",
-        "confirm": "Potwierdź",
-        "actions": "Akcje",
-        "loading": "Ładowanie...",
-        "refresh": "Odśwież",
-        "showFilters": "Pokaż filtry",
-        "hideFilters": "Ukryj filtry",
-        "createNew": "Utwórz nowe",
-        "language": "Język",
-        "add": "Dodaj",
-        "readonly": "Tylko do odczytu",
-        "showFull": "Pokaż wszystko",
-        "showLess": "Pokaż mniej"
+  "common": {
+    "home": "Strona główna",
+    "resources": "Zasoby",
+    "search": "Szukaj",
+    "clear": "Wyczyść",
+    "apply": "Zastosuj",
+    "cancel": "Anuluj",
+    "save": "Zapisz",
+    "delete": "Usuń",
+    "edit": "Edytuj",
+    "create": "Utwórz",
+    "close": "Zamknij",
+    "confirm": "Potwierdź",
+    "actions": "Akcje",
+    "loading": "Ładowanie...",
+    "refresh": "Odśwież",
+    "showFilters": "Pokaż filtry",
+    "hideFilters": "Ukryj filtry",
+    "createNew": "Utwórz nowe",
+    "language": "Język",
+    "add": "Dodaj",
+    "readonly": "Tylko do odczytu",
+    "showFull": "Pokaż wszystko",
+    "showLess": "Pokaż mniej"
+  },
+  "app": {
+    "title": "Panel administracyjny API Platform",
+    "manageResources": "Zarządzaj zasobami"
+  },
+  "navigation": {
+    "home": "Strona główna",
+    "resources": "Zasoby"
+  },
+  "resource": {
+    "list": "Lista",
+    "create": "Utwórz {resource}",
+    "edit": "Edytuj {resource}",
+    "delete": "Usuń {resource}",
+    "confirmDelete": "Czy na pewno chcesz usunąć {resource}?",
+    "itemsPerPage": "Elementów na stronę",
+    "pageText": "{start}-{end} z {total}",
+    "pageOf": "z",
+    "noData": "Brak danych",
+    "searchFilters": "Filtry wyszukiwania",
+    "advancedSearch": "Wyszukiwanie zaawansowane",
+    "notFound": {
+      "title": "Zasób nie znaleziony",
+      "message": "Zasób \"{resource}\" nie istnieje."
     },
-    "app": {
-        "title": "Panel administracyjny API Platform",
-        "manageResources": "Zarządzaj zasobami"
-    },
-    "navigation": {
-        "home": "Strona główna",
-        "resources": "Zasoby"
-    },
-    "resource": {
-        "list": "Lista",
-        "create": "Utwórz {resource}",
-        "edit": "Edytuj {resource}",
-        "delete": "Usuń {resource}",
-        "confirmDelete": "Czy na pewno chcesz usunąć {resource}?",
-        "itemsPerPage": "Elementów na stronę",
-        "pageText": "{start}-{end} z {total}",
-        "pageOf": "z",
-        "noData": "Brak danych",
-        "searchFilters": "Filtry wyszukiwania",
-        "advancedSearch": "Wyszukiwanie zaawansowane",
-        "notFound": {
-            "title": "Zasób nie znaleziony",
-            "message": "Zasób \"{resource}\" nie istnieje."
-        },
-        "forbidden": {
-            "title": "Brak dostępu",
-            "message": "Nie masz uprawnień do dostępu do \"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "Szukaj {field}",
-        "date": "Filtruj {field}",
-        "dateRange": "Zakres dat",
-        "from": "Od",
-        "to": "Do"
-    },
-    "field": {
-        "required": "To pole jest wymagane",
-        "select": "Wybierz {field}",
-        "enterText": "Wpisz {field}",
-        "selectDate": "Wybierz datę"
-    },
-    "messages": {
-        "createSuccess": "Pomyślnie utworzono {resource}",
-        "updateSuccess": "Pomyślnie zaktualizowano {resource}",
-        "deleteSuccess": "Pomyślnie usunięto {resource}",
-        "error": "Wystąpił błąd",
-        "loadingError": "Błąd ładowania danych"
-    },
-    "boolean": {
-        "true": "Tak",
-        "false": "Nie"
-    },
-    "ai": {
-        "title": "Asystent AI",
-        "newConversation": "Nowa rozmowa",
-        "copy": "Kopiuj",
-        "thinking": "Myślę...",
-        "placeholder": "Zapytaj mnie o cokolwiek...",
-        "error": "Przepraszam, wystąpił błąd. Spróbuj ponownie.",
-        "sendHint": "Shift+Enter aby wysłać",
-        "recording": "Słucham...",
-        "startRecording": "Rozpocznij dyktowanie",
-        "stopRecording": "Zatrzymaj dyktowanie",
-        "speechNotSupported": "Rozpoznawanie mowy nie jest obsługiwane przez tę przeglądarkę"
-    },
-    "help": {
-        "noResourceDoc": "Brak specyficznej dokumentacji dla {resource}. Wyświetlanie pomocy ogólnej."
-    },
-    "auth": {
-        "login": "Zaloguj się",
-        "logout": "Wyloguj się",
-        "email": "Email",
-        "password": "Hasło",
-        "signIn": "Zaloguj",
-        "invalidEmail": "Nieprawidłowy adres email",
-        "invalidCredentials": "Nieprawidłowe dane logowania"
-    },
-    "account": {
-        "title": "Moje Konto",
-        "firstName": "Imię",
-        "lastName": "Nazwisko",
-        "email": "Email",
-        "changePicture": "Zmień zdjęcie",
-        "saveSuccess": "Profil zaktualizowany",
-        "fileTooLarge": "Plik zbyt duży. Maksymalny rozmiar: 5 MB",
-        "changePassword": "Zmień hasło",
-        "newPassword": "Nowe hasło",
-        "confirmPassword": "Potwierdź hasło",
-        "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków",
-        "passwordMismatch": "Hasła nie są zgodne"
-    },
-    "attributes": {
-        "productTitle": "Atrybuty produktu",
-        "variantTitle": "Atrybuty wariantu",
-        "scopeProduct": "Produkt",
-        "scopeVariant": "Wariant",
-        "subtitleProductShared": "Współdzielone między wszystkimi wariantami tego produktu",
-        "subtitleProductInherited": "Dziedziczone z produktu nadrzędnego (tylko do odczytu tutaj)",
-        "subtitleVariant": "Specyficzne dla tego wariantu",
-        "editOnProduct": "Edytuj w produkcie",
-        "emptyProduct": "Brak atrybutów produktu",
-        "emptySharedOnVariant": "Brak współdzielonych atrybutów na produkcie nadrzędnym",
-        "emptyVariant": "Brak atrybutów specyficznych dla tego wariantu",
-        "selectProductFirst": "Najpierw wybierz produkt, aby zobaczyć jego atrybuty",
-        "saveVariantFirst": "Najpierw zapisz wariant, aby dodać atrybuty",
-        "addProductAttribute": "Dodaj atrybut produktu",
-        "addVariantAttribute": "Dodaj atrybut wariantu",
-        "attributeLabel": "Atrybut"
-    },
-    "variantList": {
-        "title": "Warianty produktu",
-        "subtitle": "Kliknij, aby przełączyć się na inny wariant",
-        "default": "Domyślny"
-    },
-    "validation": {
-        "required": "Wymagane",
-        "minLength": "Min. długość {limit}",
-        "maxLength": "Maks. długość {limit}",
-        "invalidFormat": "Nieprawidłowy format",
-        "min": "Min. {limit}",
-        "max": "Maks. {limit}"
+    "forbidden": {
+      "title": "Brak dostępu",
+      "message": "Nie masz uprawnień do dostępu do \"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "Szukaj {field}",
+    "date": "Filtruj {field}",
+    "dateRange": "Zakres dat",
+    "from": "Od",
+    "to": "Do"
+  },
+  "field": {
+    "required": "To pole jest wymagane",
+    "select": "Wybierz {field}",
+    "enterText": "Wpisz {field}",
+    "selectDate": "Wybierz datę"
+  },
+  "messages": {
+    "createSuccess": "Pomyślnie utworzono {resource}",
+    "updateSuccess": "Pomyślnie zaktualizowano {resource}",
+    "deleteSuccess": "Pomyślnie usunięto {resource}",
+    "error": "Wystąpił błąd",
+    "loadingError": "Błąd ładowania danych"
+  },
+  "boolean": {
+    "true": "Tak",
+    "false": "Nie"
+  },
+  "ai": {
+    "title": "Asystent AI",
+    "newConversation": "Nowa rozmowa",
+    "copy": "Kopiuj",
+    "thinking": "Myślę...",
+    "placeholder": "Zapytaj mnie o cokolwiek...",
+    "error": "Przepraszam, wystąpił błąd. Spróbuj ponownie.",
+    "sendHint": "Shift+Enter aby wysłać",
+    "recording": "Słucham...",
+    "startRecording": "Rozpocznij dyktowanie",
+    "stopRecording": "Zatrzymaj dyktowanie",
+    "speechNotSupported": "Rozpoznawanie mowy nie jest obsługiwane przez tę przeglądarkę"
+  },
+  "help": {
+    "noResourceDoc": "Brak specyficznej dokumentacji dla {resource}. Wyświetlanie pomocy ogólnej."
+  },
+  "auth": {
+    "login": "Zaloguj się",
+    "logout": "Wyloguj się",
+    "email": "Email",
+    "password": "Hasło",
+    "signIn": "Zaloguj",
+    "invalidEmail": "Nieprawidłowy adres email",
+    "invalidCredentials": "Nieprawidłowe dane logowania"
+  },
+  "account": {
+    "title": "Moje Konto",
+    "firstName": "Imię",
+    "lastName": "Nazwisko",
+    "email": "Email",
+    "changePicture": "Zmień zdjęcie",
+    "saveSuccess": "Profil zaktualizowany",
+    "fileTooLarge": "Plik zbyt duży. Maksymalny rozmiar: 5 MB",
+    "changePassword": "Zmień hasło",
+    "newPassword": "Nowe hasło",
+    "confirmPassword": "Potwierdź hasło",
+    "passwordMinLength": "Hasło musi mieć co najmniej 6 znaków",
+    "passwordMismatch": "Hasła nie są zgodne"
+  },
+  "attributes": {
+    "productTitle": "Atrybuty produktu",
+    "variantTitle": "Atrybuty wariantu",
+    "scopeProduct": "Produkt",
+    "scopeVariant": "Wariant",
+    "subtitleProductShared": "Współdzielone między wszystkimi wariantami tego produktu",
+    "subtitleProductInherited": "Dziedziczone z produktu nadrzędnego (tylko do odczytu tutaj)",
+    "subtitleVariant": "Specyficzne dla tego wariantu",
+    "editOnProduct": "Edytuj w produkcie",
+    "emptyProduct": "Brak atrybutów produktu",
+    "emptySharedOnVariant": "Brak współdzielonych atrybutów na produkcie nadrzędnym",
+    "emptyVariant": "Brak atrybutów specyficznych dla tego wariantu",
+    "selectProductFirst": "Najpierw wybierz produkt, aby zobaczyć jego atrybuty",
+    "saveVariantFirst": "Najpierw zapisz wariant, aby dodać atrybuty",
+    "addProductAttribute": "Dodaj atrybut produktu",
+    "addVariantAttribute": "Dodaj atrybut wariantu",
+    "attributeLabel": "Atrybut"
+  },
+  "variantList": {
+    "title": "Warianty produktu",
+    "subtitle": "Kliknij, aby przełączyć się na inny wariant",
+    "default": "Domyślny"
+  },
+  "validation": {
+    "required": "Wymagane",
+    "minLength": "Min. długość {limit}",
+    "maxLength": "Maks. długość {limit}",
+    "invalidFormat": "Nieprawidłowy format",
+    "min": "Min. {limit}",
+    "max": "Maks. {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

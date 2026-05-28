@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "الرئيسية",
-        "resources": "الموارد",
-        "search": "بحث",
-        "clear": "مسح",
-        "apply": "تطبيق",
-        "cancel": "إلغاء",
-        "save": "حفظ",
-        "delete": "حذف",
-        "edit": "تعديل",
-        "create": "إنشاء",
-        "close": "إغلاق",
-        "confirm": "تأكيد",
-        "actions": "إجراءات",
-        "loading": "جاري التحميل...",
-        "refresh": "تحديث",
-        "showFilters": "إظهار المرشحات",
-        "hideFilters": "إخفاء المرشحات",
-        "createNew": "إنشاء جديد",
-        "language": "اللغة",
-        "add": "إضافة",
-        "readonly": "للقراءة فقط",
-        "showFull": "عرض الكل",
-        "showLess": "عرض أقل"
+  "common": {
+    "home": "الرئيسية",
+    "resources": "الموارد",
+    "search": "بحث",
+    "clear": "مسح",
+    "apply": "تطبيق",
+    "cancel": "إلغاء",
+    "save": "حفظ",
+    "delete": "حذف",
+    "edit": "تعديل",
+    "create": "إنشاء",
+    "close": "إغلاق",
+    "confirm": "تأكيد",
+    "actions": "إجراءات",
+    "loading": "جاري التحميل...",
+    "refresh": "تحديث",
+    "showFilters": "إظهار المرشحات",
+    "hideFilters": "إخفاء المرشحات",
+    "createNew": "إنشاء جديد",
+    "language": "اللغة",
+    "add": "إضافة",
+    "readonly": "للقراءة فقط",
+    "showFull": "عرض الكل",
+    "showLess": "عرض أقل"
+  },
+  "app": {
+    "title": "إدارة منصة API",
+    "manageResources": "إدارة مواردك"
+  },
+  "navigation": {
+    "home": "الرئيسية",
+    "resources": "الموارد"
+  },
+  "resource": {
+    "list": "قائمة",
+    "create": "إنشاء {resource}",
+    "edit": "تعديل {resource}",
+    "delete": "حذف {resource}",
+    "confirmDelete": "هل أنت متأكد من حذف هذا {resource}؟",
+    "itemsPerPage": "عناصر لكل صفحة",
+    "pageText": "{start}-{end} من {total}",
+    "pageOf": "من",
+    "noData": "لا توجد بيانات متاحة",
+    "searchFilters": "مرشحات البحث",
+    "advancedSearch": "بحث متقدم",
+    "notFound": {
+      "title": "المورد غير موجود",
+      "message": "المورد \"{resource}\" غير موجود."
     },
-    "app": {
-        "title": "إدارة منصة API",
-        "manageResources": "إدارة مواردك"
-    },
-    "navigation": {
-        "home": "الرئيسية",
-        "resources": "الموارد"
-    },
-    "resource": {
-        "list": "قائمة",
-        "create": "إنشاء {resource}",
-        "edit": "تعديل {resource}",
-        "delete": "حذف {resource}",
-        "confirmDelete": "هل أنت متأكد من حذف هذا {resource}؟",
-        "itemsPerPage": "عناصر لكل صفحة",
-        "pageText": "{start}-{end} من {total}",
-        "pageOf": "من",
-        "noData": "لا توجد بيانات متاحة",
-        "searchFilters": "مرشحات البحث",
-        "advancedSearch": "بحث متقدم",
-        "notFound": {
-            "title": "المورد غير موجود",
-            "message": "المورد \"{resource}\" غير موجود."
-        },
-        "forbidden": {
-            "title": "تم رفض الوصول",
-            "message": "ليس لديك إذن للوصول إلى \"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "بحث {field}",
-        "date": "تصفية {field}",
-        "dateRange": "نطاق التاريخ",
-        "from": "من",
-        "to": "إلى"
-    },
-    "field": {
-        "required": "هذا الحقل مطلوب",
-        "select": "اختر {field}",
-        "enterText": "أدخل {field}",
-        "selectDate": "اختر التاريخ"
-    },
-    "messages": {
-        "createSuccess": "تم إنشاء {resource} بنجاح",
-        "updateSuccess": "تم تحديث {resource} بنجاح",
-        "deleteSuccess": "تم حذف {resource} بنجاح",
-        "error": "حدث خطأ",
-        "loadingError": "خطأ في تحميل البيانات"
-    },
-    "boolean": {
-        "true": "نعم",
-        "false": "لا"
-    },
-    "ai": {
-        "title": "مساعد الذكاء الاصطناعي",
-        "newConversation": "محادثة جديدة",
-        "copy": "نسخ",
-        "thinking": "يفكر...",
-        "placeholder": "اسألني أي شيء...",
-        "error": "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.",
-        "sendHint": "Shift+Enter للإرسال",
-        "recording": "جاري الاستماع...",
-        "startRecording": "بدء الإملاء",
-        "stopRecording": "إيقاف الإملاء",
-        "speechNotSupported": "التعرف على الكلام غير مدعوم في هذا المتصفح"
-    },
-    "help": {
-        "noResourceDoc": "لا يوجد توثيق خاص لـ {resource}. عرض المساعدة العامة."
-    },
-    "auth": {
-        "login": "تسجيل الدخول",
-        "logout": "تسجيل الخروج",
-        "email": "البريد الإلكتروني",
-        "password": "كلمة المرور",
-        "signIn": "دخول",
-        "invalidEmail": "عنوان بريد إلكتروني غير صالح",
-        "invalidCredentials": "بيانات اعتماد غير صالحة"
-    },
-    "account": {
-        "title": "حسابي",
-        "firstName": "الاسم الأول",
-        "lastName": "اسم العائلة",
-        "email": "البريد الإلكتروني",
-        "changePicture": "تغيير الصورة",
-        "saveSuccess": "تم تحديث الملف الشخصي",
-        "fileTooLarge": "الملف كبير جداً. الحد الأقصى: 5 ميجابايت",
-        "changePassword": "تغيير كلمة المرور",
-        "newPassword": "كلمة المرور الجديدة",
-        "confirmPassword": "تأكيد كلمة المرور",
-        "passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
-        "passwordMismatch": "كلمات المرور غير متطابقة"
-    },
-    "attributes": {
-        "productTitle": "سمات المنتج",
-        "variantTitle": "سمات النسخة",
-        "scopeProduct": "المنتج",
-        "scopeVariant": "النسخة",
-        "subtitleProductShared": "مشتركة بين جميع نسخ هذا المنتج",
-        "subtitleProductInherited": "موروثة من المنتج الأصلي (للقراءة فقط هنا)",
-        "subtitleVariant": "خاصة بهذه النسخة فقط",
-        "editOnProduct": "تعديل في المنتج",
-        "emptyProduct": "لا توجد سمات للمنتج",
-        "emptySharedOnVariant": "لا توجد سمات مشتركة على المنتج الأصلي",
-        "emptyVariant": "لا توجد سمات خاصة بهذه النسخة بعد",
-        "selectProductFirst": "اختر منتجًا أولاً لعرض سماته",
-        "saveVariantFirst": "احفظ النسخة أولاً لإضافة السمات",
-        "addProductAttribute": "إضافة سمة منتج",
-        "addVariantAttribute": "إضافة سمة نسخة",
-        "attributeLabel": "سمة"
-    },
-    "variantList": {
-        "title": "نسخ المنتج",
-        "subtitle": "انقر للانتقال إلى نسخة أخرى",
-        "default": "افتراضي"
-    },
-    "validation": {
-        "required": "حقل مطلوب",
-        "minLength": "الحد الأدنى للطول {limit}",
-        "maxLength": "الحد الأقصى للطول {limit}",
-        "invalidFormat": "تنسيق غير صالح",
-        "min": "الحد الأدنى {limit}",
-        "max": "الحد الأقصى {limit}"
+    "forbidden": {
+      "title": "تم رفض الوصول",
+      "message": "ليس لديك إذن للوصول إلى \"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "بحث {field}",
+    "date": "تصفية {field}",
+    "dateRange": "نطاق التاريخ",
+    "from": "من",
+    "to": "إلى"
+  },
+  "field": {
+    "required": "هذا الحقل مطلوب",
+    "select": "اختر {field}",
+    "enterText": "أدخل {field}",
+    "selectDate": "اختر التاريخ"
+  },
+  "messages": {
+    "createSuccess": "تم إنشاء {resource} بنجاح",
+    "updateSuccess": "تم تحديث {resource} بنجاح",
+    "deleteSuccess": "تم حذف {resource} بنجاح",
+    "error": "حدث خطأ",
+    "loadingError": "خطأ في تحميل البيانات"
+  },
+  "boolean": {
+    "true": "نعم",
+    "false": "لا"
+  },
+  "ai": {
+    "title": "مساعد الذكاء الاصطناعي",
+    "newConversation": "محادثة جديدة",
+    "copy": "نسخ",
+    "thinking": "يفكر...",
+    "placeholder": "اسألني أي شيء...",
+    "error": "عذراً، حدث خطأ. يرجى المحاولة مرة أخرى.",
+    "sendHint": "Shift+Enter للإرسال",
+    "recording": "جاري الاستماع...",
+    "startRecording": "بدء الإملاء",
+    "stopRecording": "إيقاف الإملاء",
+    "speechNotSupported": "التعرف على الكلام غير مدعوم في هذا المتصفح"
+  },
+  "help": {
+    "noResourceDoc": "لا يوجد توثيق خاص لـ {resource}. عرض المساعدة العامة."
+  },
+  "auth": {
+    "login": "تسجيل الدخول",
+    "logout": "تسجيل الخروج",
+    "email": "البريد الإلكتروني",
+    "password": "كلمة المرور",
+    "signIn": "دخول",
+    "invalidEmail": "عنوان بريد إلكتروني غير صالح",
+    "invalidCredentials": "بيانات اعتماد غير صالحة"
+  },
+  "account": {
+    "title": "حسابي",
+    "firstName": "الاسم الأول",
+    "lastName": "اسم العائلة",
+    "email": "البريد الإلكتروني",
+    "changePicture": "تغيير الصورة",
+    "saveSuccess": "تم تحديث الملف الشخصي",
+    "fileTooLarge": "الملف كبير جداً. الحد الأقصى: 5 ميجابايت",
+    "changePassword": "تغيير كلمة المرور",
+    "newPassword": "كلمة المرور الجديدة",
+    "confirmPassword": "تأكيد كلمة المرور",
+    "passwordMinLength": "يجب أن تكون كلمة المرور 6 أحرف على الأقل",
+    "passwordMismatch": "كلمات المرور غير متطابقة"
+  },
+  "attributes": {
+    "productTitle": "سمات المنتج",
+    "variantTitle": "سمات النسخة",
+    "scopeProduct": "المنتج",
+    "scopeVariant": "النسخة",
+    "subtitleProductShared": "مشتركة بين جميع نسخ هذا المنتج",
+    "subtitleProductInherited": "موروثة من المنتج الأصلي (للقراءة فقط هنا)",
+    "subtitleVariant": "خاصة بهذه النسخة فقط",
+    "editOnProduct": "تعديل في المنتج",
+    "emptyProduct": "لا توجد سمات للمنتج",
+    "emptySharedOnVariant": "لا توجد سمات مشتركة على المنتج الأصلي",
+    "emptyVariant": "لا توجد سمات خاصة بهذه النسخة بعد",
+    "selectProductFirst": "اختر منتجًا أولاً لعرض سماته",
+    "saveVariantFirst": "احفظ النسخة أولاً لإضافة السمات",
+    "addProductAttribute": "إضافة سمة منتج",
+    "addVariantAttribute": "إضافة سمة نسخة",
+    "attributeLabel": "سمة"
+  },
+  "variantList": {
+    "title": "نسخ المنتج",
+    "subtitle": "انقر للانتقال إلى نسخة أخرى",
+    "default": "افتراضي"
+  },
+  "validation": {
+    "required": "حقل مطلوب",
+    "minLength": "الحد الأدنى للطول {limit}",
+    "maxLength": "الحد الأقصى للطول {limit}",
+    "invalidFormat": "تنسيق غير صالح",
+    "min": "الحد الأدنى {limit}",
+    "max": "الحد الأقصى {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

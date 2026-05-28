@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "Home",
-        "resources": "Risorse",
-        "search": "Cerca",
-        "clear": "Cancella",
-        "apply": "Applica",
-        "cancel": "Annulla",
-        "save": "Salva",
-        "delete": "Elimina",
-        "edit": "Modifica",
-        "create": "Crea",
-        "close": "Chiudi",
-        "confirm": "Conferma",
-        "actions": "Azioni",
-        "loading": "Caricamento...",
-        "refresh": "Aggiorna",
-        "showFilters": "Mostra filtri",
-        "hideFilters": "Nascondi filtri",
-        "createNew": "Crea nuovo",
-        "language": "Lingua",
-        "add": "Aggiungi",
-        "readonly": "Sola lettura",
-        "showFull": "Mostra tutto",
-        "showLess": "Mostra meno"
+  "common": {
+    "home": "Home",
+    "resources": "Risorse",
+    "search": "Cerca",
+    "clear": "Cancella",
+    "apply": "Applica",
+    "cancel": "Annulla",
+    "save": "Salva",
+    "delete": "Elimina",
+    "edit": "Modifica",
+    "create": "Crea",
+    "close": "Chiudi",
+    "confirm": "Conferma",
+    "actions": "Azioni",
+    "loading": "Caricamento...",
+    "refresh": "Aggiorna",
+    "showFilters": "Mostra filtri",
+    "hideFilters": "Nascondi filtri",
+    "createNew": "Crea nuovo",
+    "language": "Lingua",
+    "add": "Aggiungi",
+    "readonly": "Sola lettura",
+    "showFull": "Mostra tutto",
+    "showLess": "Mostra meno"
+  },
+  "app": {
+    "title": "Admin API Platform",
+    "manageResources": "Gestisci le tue risorse"
+  },
+  "navigation": {
+    "home": "Home",
+    "resources": "Risorse"
+  },
+  "resource": {
+    "list": "Lista",
+    "create": "Crea {resource}",
+    "edit": "Modifica {resource}",
+    "delete": "Elimina {resource}",
+    "confirmDelete": "Sei sicuro di voler eliminare questo {resource}?",
+    "itemsPerPage": "Elementi per pagina",
+    "pageText": "{start}-{end} di {total}",
+    "pageOf": "di",
+    "noData": "Nessun dato disponibile",
+    "searchFilters": "Filtri di ricerca",
+    "advancedSearch": "Ricerca avanzata",
+    "notFound": {
+      "title": "Risorsa non trovata",
+      "message": "La risorsa \"{resource}\" non esiste."
     },
-    "app": {
-        "title": "Admin API Platform",
-        "manageResources": "Gestisci le tue risorse"
-    },
-    "navigation": {
-        "home": "Home",
-        "resources": "Risorse"
-    },
-    "resource": {
-        "list": "Lista",
-        "create": "Crea {resource}",
-        "edit": "Modifica {resource}",
-        "delete": "Elimina {resource}",
-        "confirmDelete": "Sei sicuro di voler eliminare questo {resource}?",
-        "itemsPerPage": "Elementi per pagina",
-        "pageText": "{start}-{end} di {total}",
-        "pageOf": "di",
-        "noData": "Nessun dato disponibile",
-        "searchFilters": "Filtri di ricerca",
-        "advancedSearch": "Ricerca avanzata",
-        "notFound": {
-            "title": "Risorsa non trovata",
-            "message": "La risorsa \"{resource}\" non esiste."
-        },
-        "forbidden": {
-            "title": "Accesso negato",
-            "message": "Non hai il permesso di accedere a \"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "Cerca {field}",
-        "date": "Filtra {field}",
-        "dateRange": "Intervallo di date",
-        "from": "Da",
-        "to": "A"
-    },
-    "field": {
-        "required": "Questo campo è obbligatorio",
-        "select": "Seleziona {field}",
-        "enterText": "Inserisci {field}",
-        "selectDate": "Seleziona data"
-    },
-    "messages": {
-        "createSuccess": "{resource} creato con successo",
-        "updateSuccess": "{resource} aggiornato con successo",
-        "deleteSuccess": "{resource} eliminato con successo",
-        "error": "Si è verificato un errore",
-        "loadingError": "Errore durante il caricamento dei dati"
-    },
-    "boolean": {
-        "true": "Sì",
-        "false": "No"
-    },
-    "ai": {
-        "title": "Assistente IA",
-        "newConversation": "Nuova conversazione",
-        "copy": "Copia",
-        "thinking": "Pensando...",
-        "placeholder": "Chiedimi tutto...",
-        "error": "Spiacente, si è verificato un errore. Riprova per favore.",
-        "sendHint": "Shift+Invio per inviare",
-        "recording": "In ascolto...",
-        "startRecording": "Avvia dettatura",
-        "stopRecording": "Ferma dettatura",
-        "speechNotSupported": "Riconoscimento vocale non supportato da questo browser"
-    },
-    "help": {
-        "noResourceDoc": "Nessuna documentazione specifica disponibile per {resource}. Visualizzazione della guida generale."
-    },
-    "auth": {
-        "login": "Accesso",
-        "logout": "Esci",
-        "email": "Email",
-        "password": "Password",
-        "signIn": "Accedi",
-        "invalidEmail": "Indirizzo email non valido",
-        "invalidCredentials": "Credenziali non valide"
-    },
-    "account": {
-        "title": "Il Mio Account",
-        "firstName": "Nome",
-        "lastName": "Cognome",
-        "email": "Email",
-        "changePicture": "Cambia foto",
-        "saveSuccess": "Profilo aggiornato con successo",
-        "fileTooLarge": "File troppo grande. Dimensione massima: 5 MB",
-        "changePassword": "Cambia password",
-        "newPassword": "Nuova password",
-        "confirmPassword": "Conferma password",
-        "passwordMinLength": "La password deve contenere almeno 6 caratteri",
-        "passwordMismatch": "Le password non corrispondono"
-    },
-    "attributes": {
-        "productTitle": "Attributi del prodotto",
-        "variantTitle": "Attributi della variante",
-        "scopeProduct": "Prodotto",
-        "scopeVariant": "Variante",
-        "subtitleProductShared": "Condivisi tra tutte le varianti di questo prodotto",
-        "subtitleProductInherited": "Ereditati dal prodotto principale (sola lettura qui)",
-        "subtitleVariant": "Specifici di questa variante",
-        "editOnProduct": "Modifica sul prodotto",
-        "emptyProduct": "Nessun attributo prodotto",
-        "emptySharedOnVariant": "Nessun attributo condiviso sul prodotto principale",
-        "emptyVariant": "Nessun attributo specifico della variante",
-        "selectProductFirst": "Seleziona prima un prodotto per vedere i suoi attributi",
-        "saveVariantFirst": "Salva prima la variante per aggiungere attributi",
-        "addProductAttribute": "Aggiungi attributo prodotto",
-        "addVariantAttribute": "Aggiungi attributo variante",
-        "attributeLabel": "Attributo"
-    },
-    "variantList": {
-        "title": "Varianti del prodotto",
-        "subtitle": "Clicca per passare a un'altra variante",
-        "default": "Predefinita"
-    },
-    "validation": {
-        "required": "Obbligatorio",
-        "minLength": "Lunghezza min {limit}",
-        "maxLength": "Lunghezza max {limit}",
-        "invalidFormat": "Formato non valido",
-        "min": "Min {limit}",
-        "max": "Max {limit}"
+    "forbidden": {
+      "title": "Accesso negato",
+      "message": "Non hai il permesso di accedere a \"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "Cerca {field}",
+    "date": "Filtra {field}",
+    "dateRange": "Intervallo di date",
+    "from": "Da",
+    "to": "A"
+  },
+  "field": {
+    "required": "Questo campo è obbligatorio",
+    "select": "Seleziona {field}",
+    "enterText": "Inserisci {field}",
+    "selectDate": "Seleziona data"
+  },
+  "messages": {
+    "createSuccess": "{resource} creato con successo",
+    "updateSuccess": "{resource} aggiornato con successo",
+    "deleteSuccess": "{resource} eliminato con successo",
+    "error": "Si è verificato un errore",
+    "loadingError": "Errore durante il caricamento dei dati"
+  },
+  "boolean": {
+    "true": "Sì",
+    "false": "No"
+  },
+  "ai": {
+    "title": "Assistente IA",
+    "newConversation": "Nuova conversazione",
+    "copy": "Copia",
+    "thinking": "Pensando...",
+    "placeholder": "Chiedimi tutto...",
+    "error": "Spiacente, si è verificato un errore. Riprova per favore.",
+    "sendHint": "Shift+Invio per inviare",
+    "recording": "In ascolto...",
+    "startRecording": "Avvia dettatura",
+    "stopRecording": "Ferma dettatura",
+    "speechNotSupported": "Riconoscimento vocale non supportato da questo browser"
+  },
+  "help": {
+    "noResourceDoc": "Nessuna documentazione specifica disponibile per {resource}. Visualizzazione della guida generale."
+  },
+  "auth": {
+    "login": "Accesso",
+    "logout": "Esci",
+    "email": "Email",
+    "password": "Password",
+    "signIn": "Accedi",
+    "invalidEmail": "Indirizzo email non valido",
+    "invalidCredentials": "Credenziali non valide"
+  },
+  "account": {
+    "title": "Il Mio Account",
+    "firstName": "Nome",
+    "lastName": "Cognome",
+    "email": "Email",
+    "changePicture": "Cambia foto",
+    "saveSuccess": "Profilo aggiornato con successo",
+    "fileTooLarge": "File troppo grande. Dimensione massima: 5 MB",
+    "changePassword": "Cambia password",
+    "newPassword": "Nuova password",
+    "confirmPassword": "Conferma password",
+    "passwordMinLength": "La password deve contenere almeno 6 caratteri",
+    "passwordMismatch": "Le password non corrispondono"
+  },
+  "attributes": {
+    "productTitle": "Attributi del prodotto",
+    "variantTitle": "Attributi della variante",
+    "scopeProduct": "Prodotto",
+    "scopeVariant": "Variante",
+    "subtitleProductShared": "Condivisi tra tutte le varianti di questo prodotto",
+    "subtitleProductInherited": "Ereditati dal prodotto principale (sola lettura qui)",
+    "subtitleVariant": "Specifici di questa variante",
+    "editOnProduct": "Modifica sul prodotto",
+    "emptyProduct": "Nessun attributo prodotto",
+    "emptySharedOnVariant": "Nessun attributo condiviso sul prodotto principale",
+    "emptyVariant": "Nessun attributo specifico della variante",
+    "selectProductFirst": "Seleziona prima un prodotto per vedere i suoi attributi",
+    "saveVariantFirst": "Salva prima la variante per aggiungere attributi",
+    "addProductAttribute": "Aggiungi attributo prodotto",
+    "addVariantAttribute": "Aggiungi attributo variante",
+    "attributeLabel": "Attributo"
+  },
+  "variantList": {
+    "title": "Varianti del prodotto",
+    "subtitle": "Clicca per passare a un'altra variante",
+    "default": "Predefinita"
+  },
+  "validation": {
+    "required": "Obbligatorio",
+    "minLength": "Lunghezza min {limit}",
+    "maxLength": "Lunghezza max {limit}",
+    "invalidFormat": "Formato non valido",
+    "min": "Min {limit}",
+    "max": "Max {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

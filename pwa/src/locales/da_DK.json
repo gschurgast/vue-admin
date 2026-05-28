@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "Hjem",
-        "resources": "Ressourcer",
-        "search": "Søg",
-        "clear": "Ryd",
-        "apply": "Anvend",
-        "cancel": "Annuller",
-        "save": "Gem",
-        "delete": "Slet",
-        "edit": "Rediger",
-        "create": "Opret",
-        "close": "Luk",
-        "confirm": "Bekræft",
-        "actions": "Handlinger",
-        "loading": "Indlæser...",
-        "refresh": "Opdater",
-        "showFilters": "Vis filtre",
-        "hideFilters": "Skjul filtre",
-        "createNew": "Opret ny",
-        "language": "Sprog",
-        "add": "Tilføj",
-        "readonly": "Skrivebeskyttet",
-        "showFull": "Vis alt",
-        "showLess": "Vis mindre"
+  "common": {
+    "home": "Hjem",
+    "resources": "Ressourcer",
+    "search": "Søg",
+    "clear": "Ryd",
+    "apply": "Anvend",
+    "cancel": "Annuller",
+    "save": "Gem",
+    "delete": "Slet",
+    "edit": "Rediger",
+    "create": "Opret",
+    "close": "Luk",
+    "confirm": "Bekræft",
+    "actions": "Handlinger",
+    "loading": "Indlæser...",
+    "refresh": "Opdater",
+    "showFilters": "Vis filtre",
+    "hideFilters": "Skjul filtre",
+    "createNew": "Opret ny",
+    "language": "Sprog",
+    "add": "Tilføj",
+    "readonly": "Skrivebeskyttet",
+    "showFull": "Vis alt",
+    "showLess": "Vis mindre"
+  },
+  "app": {
+    "title": "API Platform Admin",
+    "manageResources": "Administrer dine ressourcer"
+  },
+  "navigation": {
+    "home": "Hjem",
+    "resources": "Ressourcer"
+  },
+  "resource": {
+    "list": "Liste",
+    "create": "Opret {resource}",
+    "edit": "Rediger {resource}",
+    "delete": "Slet {resource}",
+    "confirmDelete": "Er du sikker på, at du vil slette denne {resource}?",
+    "itemsPerPage": "Elementer pr. side",
+    "pageText": "{start}-{end} af {total}",
+    "pageOf": "af",
+    "noData": "Ingen data tilgængelig",
+    "searchFilters": "Søgefiltre",
+    "advancedSearch": "Avanceret søgning",
+    "notFound": {
+      "title": "Ressource ikke fundet",
+      "message": "Ressourcen \"{resource}\" findes ikke."
     },
-    "app": {
-        "title": "API Platform Admin",
-        "manageResources": "Administrer dine ressourcer"
-    },
-    "navigation": {
-        "home": "Hjem",
-        "resources": "Ressourcer"
-    },
-    "resource": {
-        "list": "Liste",
-        "create": "Opret {resource}",
-        "edit": "Rediger {resource}",
-        "delete": "Slet {resource}",
-        "confirmDelete": "Er du sikker på, at du vil slette denne {resource}?",
-        "itemsPerPage": "Elementer pr. side",
-        "pageText": "{start}-{end} af {total}",
-        "pageOf": "af",
-        "noData": "Ingen data tilgængelig",
-        "searchFilters": "Søgefiltre",
-        "advancedSearch": "Avanceret søgning",
-        "notFound": {
-            "title": "Ressource ikke fundet",
-            "message": "Ressourcen \"{resource}\" findes ikke."
-        },
-        "forbidden": {
-            "title": "Adgang nægtet",
-            "message": "Du har ikke tilladelse til at få adgang til \"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "Søg {field}",
-        "date": "Filtrer {field}",
-        "dateRange": "Datointerval",
-        "from": "Fra",
-        "to": "Til"
-    },
-    "field": {
-        "required": "Dette felt er påkrævet",
-        "select": "Vælg {field}",
-        "enterText": "Indtast {field}",
-        "selectDate": "Vælg dato"
-    },
-    "messages": {
-        "createSuccess": "{resource} oprettet",
-        "updateSuccess": "{resource} opdateret",
-        "deleteSuccess": "{resource} slettet",
-        "error": "Der opstod en fejl",
-        "loadingError": "Fejl ved indlæsning af data"
-    },
-    "boolean": {
-        "true": "Ja",
-        "false": "Nej"
-    },
-    "ai": {
-        "title": "AI Assistent",
-        "newConversation": "Ny samtale",
-        "copy": "Kopier",
-        "thinking": "Tænker...",
-        "placeholder": "Spørg mig om alt...",
-        "error": "Beklager, der opstod en fejl. Prøv igen.",
-        "sendHint": "Shift+Enter for at sende",
-        "recording": "Lytter...",
-        "startRecording": "Start diktering",
-        "stopRecording": "Stop diktering",
-        "speechNotSupported": "Talegenkendelse understøttes ikke af denne browser"
-    },
-    "help": {
-        "noResourceDoc": "Ingen specifik dokumentation tilgængelig for {resource}. Viser generel hjælp."
-    },
-    "auth": {
-        "login": "Log ind",
-        "logout": "Log ud",
-        "email": "Email",
-        "password": "Adgangskode",
-        "signIn": "Log ind",
-        "invalidEmail": "Ugyldig emailadresse",
-        "invalidCredentials": "Ugyldige loginoplysninger"
-    },
-    "account": {
-        "title": "Min Konto",
-        "firstName": "Fornavn",
-        "lastName": "Efternavn",
-        "email": "Email",
-        "changePicture": "Skift billede",
-        "saveSuccess": "Profil opdateret",
-        "fileTooLarge": "Filen er for stor. Maksimal størrelse: 5 MB",
-        "changePassword": "Skift adgangskode",
-        "newPassword": "Ny adgangskode",
-        "confirmPassword": "Bekræft adgangskode",
-        "passwordMinLength": "Adgangskoden skal være mindst 6 tegn",
-        "passwordMismatch": "Adgangskoderne matcher ikke"
-    },
-    "attributes": {
-        "productTitle": "Produktattributter",
-        "variantTitle": "Variantattributter",
-        "scopeProduct": "Produkt",
-        "scopeVariant": "Variant",
-        "subtitleProductShared": "Delt mellem alle varianter af dette produkt",
-        "subtitleProductInherited": "Arvet fra det overordnede produkt (skrivebeskyttet her)",
-        "subtitleVariant": "Specifikt for denne variant",
-        "editOnProduct": "Rediger på produktet",
-        "emptyProduct": "Ingen produktattributter",
-        "emptySharedOnVariant": "Ingen delte attributter på det overordnede produkt",
-        "emptyVariant": "Ingen variantspecifikke attributter endnu",
-        "selectProductFirst": "Vælg et produkt først for at se dets attributter",
-        "saveVariantFirst": "Gem varianten først for at tilføje attributter",
-        "addProductAttribute": "Tilføj produktattribut",
-        "addVariantAttribute": "Tilføj variantattribut",
-        "attributeLabel": "Attribut"
-    },
-    "variantList": {
-        "title": "Produktvarianter",
-        "subtitle": "Klik for at skifte til en anden variant",
-        "default": "Standard"
-    },
-    "validation": {
-        "required": "Påkrævet",
-        "minLength": "Min. længde {limit}",
-        "maxLength": "Maks. længde {limit}",
-        "invalidFormat": "Ugyldigt format",
-        "min": "Min. {limit}",
-        "max": "Maks. {limit}"
+    "forbidden": {
+      "title": "Adgang nægtet",
+      "message": "Du har ikke tilladelse til at få adgang til \"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "Søg {field}",
+    "date": "Filtrer {field}",
+    "dateRange": "Datointerval",
+    "from": "Fra",
+    "to": "Til"
+  },
+  "field": {
+    "required": "Dette felt er påkrævet",
+    "select": "Vælg {field}",
+    "enterText": "Indtast {field}",
+    "selectDate": "Vælg dato"
+  },
+  "messages": {
+    "createSuccess": "{resource} oprettet",
+    "updateSuccess": "{resource} opdateret",
+    "deleteSuccess": "{resource} slettet",
+    "error": "Der opstod en fejl",
+    "loadingError": "Fejl ved indlæsning af data"
+  },
+  "boolean": {
+    "true": "Ja",
+    "false": "Nej"
+  },
+  "ai": {
+    "title": "AI Assistent",
+    "newConversation": "Ny samtale",
+    "copy": "Kopier",
+    "thinking": "Tænker...",
+    "placeholder": "Spørg mig om alt...",
+    "error": "Beklager, der opstod en fejl. Prøv igen.",
+    "sendHint": "Shift+Enter for at sende",
+    "recording": "Lytter...",
+    "startRecording": "Start diktering",
+    "stopRecording": "Stop diktering",
+    "speechNotSupported": "Talegenkendelse understøttes ikke af denne browser"
+  },
+  "help": {
+    "noResourceDoc": "Ingen specifik dokumentation tilgængelig for {resource}. Viser generel hjælp."
+  },
+  "auth": {
+    "login": "Log ind",
+    "logout": "Log ud",
+    "email": "Email",
+    "password": "Adgangskode",
+    "signIn": "Log ind",
+    "invalidEmail": "Ugyldig emailadresse",
+    "invalidCredentials": "Ugyldige loginoplysninger"
+  },
+  "account": {
+    "title": "Min Konto",
+    "firstName": "Fornavn",
+    "lastName": "Efternavn",
+    "email": "Email",
+    "changePicture": "Skift billede",
+    "saveSuccess": "Profil opdateret",
+    "fileTooLarge": "Filen er for stor. Maksimal størrelse: 5 MB",
+    "changePassword": "Skift adgangskode",
+    "newPassword": "Ny adgangskode",
+    "confirmPassword": "Bekræft adgangskode",
+    "passwordMinLength": "Adgangskoden skal være mindst 6 tegn",
+    "passwordMismatch": "Adgangskoderne matcher ikke"
+  },
+  "attributes": {
+    "productTitle": "Produktattributter",
+    "variantTitle": "Variantattributter",
+    "scopeProduct": "Produkt",
+    "scopeVariant": "Variant",
+    "subtitleProductShared": "Delt mellem alle varianter af dette produkt",
+    "subtitleProductInherited": "Arvet fra det overordnede produkt (skrivebeskyttet her)",
+    "subtitleVariant": "Specifikt for denne variant",
+    "editOnProduct": "Rediger på produktet",
+    "emptyProduct": "Ingen produktattributter",
+    "emptySharedOnVariant": "Ingen delte attributter på det overordnede produkt",
+    "emptyVariant": "Ingen variantspecifikke attributter endnu",
+    "selectProductFirst": "Vælg et produkt først for at se dets attributter",
+    "saveVariantFirst": "Gem varianten først for at tilføje attributter",
+    "addProductAttribute": "Tilføj produktattribut",
+    "addVariantAttribute": "Tilføj variantattribut",
+    "attributeLabel": "Attribut"
+  },
+  "variantList": {
+    "title": "Produktvarianter",
+    "subtitle": "Klik for at skifte til en anden variant",
+    "default": "Standard"
+  },
+  "validation": {
+    "required": "Påkrævet",
+    "minLength": "Min. længde {limit}",
+    "maxLength": "Maks. længde {limit}",
+    "invalidFormat": "Ugyldigt format",
+    "min": "Min. {limit}",
+    "max": "Maks. {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

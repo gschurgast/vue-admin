@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "ホーム",
-        "resources": "リソース",
-        "search": "検索",
-        "clear": "クリア",
-        "apply": "適用",
-        "cancel": "キャンセル",
-        "save": "保存",
-        "delete": "削除",
-        "edit": "編集",
-        "create": "作成",
-        "close": "閉じる",
-        "confirm": "確認",
-        "actions": "操作",
-        "loading": "読み込み中...",
-        "refresh": "更新",
-        "showFilters": "フィルターを表示",
-        "hideFilters": "フィルターを隠す",
-        "createNew": "新規作成",
-        "language": "言語",
-        "add": "追加",
-        "readonly": "読み取り専用",
-        "showFull": "すべて表示",
-        "showLess": "折りたたむ"
+  "common": {
+    "home": "ホーム",
+    "resources": "リソース",
+    "search": "検索",
+    "clear": "クリア",
+    "apply": "適用",
+    "cancel": "キャンセル",
+    "save": "保存",
+    "delete": "削除",
+    "edit": "編集",
+    "create": "作成",
+    "close": "閉じる",
+    "confirm": "確認",
+    "actions": "操作",
+    "loading": "読み込み中...",
+    "refresh": "更新",
+    "showFilters": "フィルターを表示",
+    "hideFilters": "フィルターを隠す",
+    "createNew": "新規作成",
+    "language": "言語",
+    "add": "追加",
+    "readonly": "読み取り専用",
+    "showFull": "すべて表示",
+    "showLess": "折りたたむ"
+  },
+  "app": {
+    "title": "API Platform 管理",
+    "manageResources": "リソース管理"
+  },
+  "navigation": {
+    "home": "ホーム",
+    "resources": "リソース"
+  },
+  "resource": {
+    "list": "一覧",
+    "create": "{resource}を作成",
+    "edit": "{resource}を編集",
+    "delete": "{resource}を削除",
+    "confirmDelete": "この{resource}を削除してもよろしいですか？",
+    "itemsPerPage": "ページあたりの件数",
+    "pageText": "{total}件中 {start}-{end}",
+    "pageOf": "/",
+    "noData": "データがありません",
+    "searchFilters": "検索フィルター",
+    "advancedSearch": "詳細検索",
+    "notFound": {
+      "title": "リソースが見つかりません",
+      "message": "リソース「{resource}」は存在しません。"
     },
-    "app": {
-        "title": "API Platform 管理",
-        "manageResources": "リソース管理"
-    },
-    "navigation": {
-        "home": "ホーム",
-        "resources": "リソース"
-    },
-    "resource": {
-        "list": "一覧",
-        "create": "{resource}を作成",
-        "edit": "{resource}を編集",
-        "delete": "{resource}を削除",
-        "confirmDelete": "この{resource}を削除してもよろしいですか？",
-        "itemsPerPage": "ページあたりの件数",
-        "pageText": "{total}件中 {start}-{end}",
-        "pageOf": "/",
-        "noData": "データがありません",
-        "searchFilters": "検索フィルター",
-        "advancedSearch": "詳細検索",
-        "notFound": {
-            "title": "リソースが見つかりません",
-            "message": "リソース「{resource}」は存在しません。"
-        },
-        "forbidden": {
-            "title": "アクセスが拒否されました",
-            "message": "「{resource}」にアクセスする権限がありません。"
-        }
-    },
-    "filter": {
-        "text": "{field}を検索",
-        "date": "{field}でフィルタ",
-        "dateRange": "日付範囲",
-        "from": "開始",
-        "to": "終了"
-    },
-    "field": {
-        "required": "このフィールドは必須です",
-        "select": "{field}を選択",
-        "enterText": "{field}を入力",
-        "selectDate": "日付を選択"
-    },
-    "messages": {
-        "createSuccess": "{resource}を作成しました",
-        "updateSuccess": "{resource}を更新しました",
-        "deleteSuccess": "{resource}を削除しました",
-        "error": "エラーが発生しました",
-        "loadingError": "データの読み込み中にエラーが発生しました"
-    },
-    "boolean": {
-        "true": "はい",
-        "false": "いいえ"
-    },
-    "ai": {
-        "title": "AIアシスタント",
-        "newConversation": "新しい会話",
-        "copy": "コピー",
-        "thinking": "考え中...",
-        "placeholder": "何でも聞いてください...",
-        "error": "申し訳ありませんが、エラーが発生しました。もう一度お試しください。",
-        "sendHint": "Shift+Enterで送信",
-        "recording": "聞いています...",
-        "startRecording": "音声入力を開始",
-        "stopRecording": "音声入力を停止",
-        "speechNotSupported": "このブラウザは音声認識に対応していません"
-    },
-    "help": {
-        "noResourceDoc": "{resource}の専用ドキュメントはありません。一般ヘルプを表示しています。"
-    },
-    "auth": {
-        "login": "ログイン",
-        "logout": "ログアウト",
-        "email": "メールアドレス",
-        "password": "パスワード",
-        "signIn": "サインイン",
-        "invalidEmail": "無効なメールアドレス",
-        "invalidCredentials": "無効な認証情報"
-    },
-    "account": {
-        "title": "マイアカウント",
-        "firstName": "名",
-        "lastName": "姓",
-        "email": "メールアドレス",
-        "changePicture": "写真を変更",
-        "saveSuccess": "プロフィールを更新しました",
-        "fileTooLarge": "ファイルが大きすぎます。最大サイズ：5 MB",
-        "changePassword": "パスワードを変更",
-        "newPassword": "新しいパスワード",
-        "confirmPassword": "パスワードを確認",
-        "passwordMinLength": "パスワードは6文字以上必要です",
-        "passwordMismatch": "パスワードが一致しません"
-    },
-    "attributes": {
-        "productTitle": "商品の属性",
-        "variantTitle": "バリアントの属性",
-        "scopeProduct": "商品",
-        "scopeVariant": "バリアント",
-        "subtitleProductShared": "この商品のすべてのバリアントで共有",
-        "subtitleProductInherited": "親商品から継承（ここでは読み取り専用）",
-        "subtitleVariant": "このバリアント固有",
-        "editOnProduct": "商品で編集",
-        "emptyProduct": "商品属性なし",
-        "emptySharedOnVariant": "親商品に共有属性はありません",
-        "emptyVariant": "このバリアント固有の属性はまだありません",
-        "selectProductFirst": "属性を表示するには、まず商品を選択してください",
-        "saveVariantFirst": "属性を追加するには、まずバリアントを保存してください",
-        "addProductAttribute": "商品属性を追加",
-        "addVariantAttribute": "バリアント属性を追加",
-        "attributeLabel": "属性"
-    },
-    "variantList": {
-        "title": "商品のバリアント",
-        "subtitle": "クリックして別のバリアントに切り替え",
-        "default": "デフォルト"
-    },
-    "validation": {
-        "required": "必須",
-        "minLength": "最小長 {limit}",
-        "maxLength": "最大長 {limit}",
-        "invalidFormat": "無効な形式",
-        "min": "最小 {limit}",
-        "max": "最大 {limit}"
+    "forbidden": {
+      "title": "アクセスが拒否されました",
+      "message": "「{resource}」にアクセスする権限がありません。"
     }
+  },
+  "filter": {
+    "text": "{field}を検索",
+    "date": "{field}でフィルタ",
+    "dateRange": "日付範囲",
+    "from": "開始",
+    "to": "終了"
+  },
+  "field": {
+    "required": "このフィールドは必須です",
+    "select": "{field}を選択",
+    "enterText": "{field}を入力",
+    "selectDate": "日付を選択"
+  },
+  "messages": {
+    "createSuccess": "{resource}を作成しました",
+    "updateSuccess": "{resource}を更新しました",
+    "deleteSuccess": "{resource}を削除しました",
+    "error": "エラーが発生しました",
+    "loadingError": "データの読み込み中にエラーが発生しました"
+  },
+  "boolean": {
+    "true": "はい",
+    "false": "いいえ"
+  },
+  "ai": {
+    "title": "AIアシスタント",
+    "newConversation": "新しい会話",
+    "copy": "コピー",
+    "thinking": "考え中...",
+    "placeholder": "何でも聞いてください...",
+    "error": "申し訳ありませんが、エラーが発生しました。もう一度お試しください。",
+    "sendHint": "Shift+Enterで送信",
+    "recording": "聞いています...",
+    "startRecording": "音声入力を開始",
+    "stopRecording": "音声入力を停止",
+    "speechNotSupported": "このブラウザは音声認識に対応していません"
+  },
+  "help": {
+    "noResourceDoc": "{resource}の専用ドキュメントはありません。一般ヘルプを表示しています。"
+  },
+  "auth": {
+    "login": "ログイン",
+    "logout": "ログアウト",
+    "email": "メールアドレス",
+    "password": "パスワード",
+    "signIn": "サインイン",
+    "invalidEmail": "無効なメールアドレス",
+    "invalidCredentials": "無効な認証情報"
+  },
+  "account": {
+    "title": "マイアカウント",
+    "firstName": "名",
+    "lastName": "姓",
+    "email": "メールアドレス",
+    "changePicture": "写真を変更",
+    "saveSuccess": "プロフィールを更新しました",
+    "fileTooLarge": "ファイルが大きすぎます。最大サイズ：5 MB",
+    "changePassword": "パスワードを変更",
+    "newPassword": "新しいパスワード",
+    "confirmPassword": "パスワードを確認",
+    "passwordMinLength": "パスワードは6文字以上必要です",
+    "passwordMismatch": "パスワードが一致しません"
+  },
+  "attributes": {
+    "productTitle": "商品の属性",
+    "variantTitle": "バリアントの属性",
+    "scopeProduct": "商品",
+    "scopeVariant": "バリアント",
+    "subtitleProductShared": "この商品のすべてのバリアントで共有",
+    "subtitleProductInherited": "親商品から継承（ここでは読み取り専用）",
+    "subtitleVariant": "このバリアント固有",
+    "editOnProduct": "商品で編集",
+    "emptyProduct": "商品属性なし",
+    "emptySharedOnVariant": "親商品に共有属性はありません",
+    "emptyVariant": "このバリアント固有の属性はまだありません",
+    "selectProductFirst": "属性を表示するには、まず商品を選択してください",
+    "saveVariantFirst": "属性を追加するには、まずバリアントを保存してください",
+    "addProductAttribute": "商品属性を追加",
+    "addVariantAttribute": "バリアント属性を追加",
+    "attributeLabel": "属性"
+  },
+  "variantList": {
+    "title": "商品のバリアント",
+    "subtitle": "クリックして別のバリアントに切り替え",
+    "default": "デフォルト"
+  },
+  "validation": {
+    "required": "必須",
+    "minLength": "最小長 {limit}",
+    "maxLength": "最大長 {limit}",
+    "invalidFormat": "無効な形式",
+    "min": "最小 {limit}",
+    "max": "最大 {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

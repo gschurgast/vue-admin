@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "Startseite",
-        "resources": "Ressourcen",
-        "search": "Suchen",
-        "clear": "Löschen",
-        "apply": "Anwenden",
-        "cancel": "Abbrechen",
-        "save": "Speichern",
-        "delete": "Löschen",
-        "edit": "Bearbeiten",
-        "create": "Erstellen",
-        "close": "Schließen",
-        "confirm": "Bestätigen",
-        "actions": "Aktionen",
-        "loading": "Laden...",
-        "refresh": "Aktualisieren",
-        "showFilters": "Filter anzeigen",
-        "hideFilters": "Filter ausblenden",
-        "createNew": "Neu erstellen",
-        "language": "Sprache",
-        "add": "Hinzufügen",
-        "readonly": "Schreibgeschützt",
-        "showFull": "Alles anzeigen",
-        "showLess": "Weniger anzeigen"
+  "common": {
+    "home": "Startseite",
+    "resources": "Ressourcen",
+    "search": "Suchen",
+    "clear": "Löschen",
+    "apply": "Anwenden",
+    "cancel": "Abbrechen",
+    "save": "Speichern",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "create": "Erstellen",
+    "close": "Schließen",
+    "confirm": "Bestätigen",
+    "actions": "Aktionen",
+    "loading": "Laden...",
+    "refresh": "Aktualisieren",
+    "showFilters": "Filter anzeigen",
+    "hideFilters": "Filter ausblenden",
+    "createNew": "Neu erstellen",
+    "language": "Sprache",
+    "add": "Hinzufügen",
+    "readonly": "Schreibgeschützt",
+    "showFull": "Alles anzeigen",
+    "showLess": "Weniger anzeigen"
+  },
+  "app": {
+    "title": "API Platform Admin",
+    "manageResources": "Verwalten Sie Ihre Ressourcen"
+  },
+  "navigation": {
+    "home": "Startseite",
+    "resources": "Ressourcen"
+  },
+  "resource": {
+    "list": "Liste",
+    "create": "{resource} erstellen",
+    "edit": "{resource} bearbeiten",
+    "delete": "{resource} löschen",
+    "confirmDelete": "Sind Sie sicher, dass Sie diese {resource} löschen möchten?",
+    "itemsPerPage": "Einträge pro Seite",
+    "pageText": "{start}-{end} von {total}",
+    "pageOf": "von",
+    "noData": "Keine Daten verfügbar",
+    "searchFilters": "Suchfilter",
+    "advancedSearch": "Erweiterte Suche",
+    "notFound": {
+      "title": "Ressource nicht gefunden",
+      "message": "Die Ressource \"{resource}\" existiert nicht."
     },
-    "app": {
-        "title": "API Platform Admin",
-        "manageResources": "Verwalten Sie Ihre Ressourcen"
-    },
-    "navigation": {
-        "home": "Startseite",
-        "resources": "Ressourcen"
-    },
-    "resource": {
-        "list": "Liste",
-        "create": "{resource} erstellen",
-        "edit": "{resource} bearbeiten",
-        "delete": "{resource} löschen",
-        "confirmDelete": "Sind Sie sicher, dass Sie diese {resource} löschen möchten?",
-        "itemsPerPage": "Einträge pro Seite",
-        "pageText": "{start}-{end} von {total}",
-        "pageOf": "von",
-        "noData": "Keine Daten verfügbar",
-        "searchFilters": "Suchfilter",
-        "advancedSearch": "Erweiterte Suche",
-        "notFound": {
-            "title": "Ressource nicht gefunden",
-            "message": "Die Ressource \"{resource}\" existiert nicht."
-        },
-        "forbidden": {
-            "title": "Zugriff verweigert",
-            "message": "Sie haben keine Berechtigung, auf \"{resource}\" zuzugreifen."
-        }
-    },
-    "filter": {
-        "text": "{field} suchen",
-        "date": "{field} filtern",
-        "dateRange": "Datumsbereich",
-        "from": "Von",
-        "to": "Bis"
-    },
-    "field": {
-        "required": "Dieses Feld ist erforderlich",
-        "select": "{field} auswählen",
-        "enterText": "{field} eingeben",
-        "selectDate": "Datum auswählen"
-    },
-    "messages": {
-        "createSuccess": "{resource} erfolgreich erstellt",
-        "updateSuccess": "{resource} erfolgreich aktualisiert",
-        "deleteSuccess": "{resource} erfolgreich gelöscht",
-        "error": "Ein Fehler ist aufgetreten",
-        "loadingError": "Fehler beim Laden der Daten"
-    },
-    "boolean": {
-        "true": "Ja",
-        "false": "Nein"
-    },
-    "ai": {
-        "title": "KI-Assistent",
-        "newConversation": "Neue Konversation",
-        "copy": "Kopieren",
-        "thinking": "Denkt nach...",
-        "placeholder": "Frag mich alles...",
-        "error": "Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-        "sendHint": "Shift+Enter zum Senden",
-        "recording": "Hört zu...",
-        "startRecording": "Spracheingabe starten",
-        "stopRecording": "Spracheingabe stoppen",
-        "speechNotSupported": "Spracherkennung wird von diesem Browser nicht unterstützt"
-    },
-    "help": {
-        "noResourceDoc": "Keine spezifische Dokumentation für {resource} verfügbar. Allgemeine Hilfe wird angezeigt."
-    },
-    "auth": {
-        "login": "Anmelden",
-        "logout": "Abmelden",
-        "email": "E-Mail",
-        "password": "Passwort",
-        "signIn": "Einloggen",
-        "invalidEmail": "Ungültige E-Mail-Adresse",
-        "invalidCredentials": "Ungültige Anmeldedaten"
-    },
-    "account": {
-        "title": "Mein Konto",
-        "firstName": "Vorname",
-        "lastName": "Nachname",
-        "email": "E-Mail",
-        "changePicture": "Bild ändern",
-        "saveSuccess": "Profil erfolgreich aktualisiert",
-        "fileTooLarge": "Datei zu groß. Maximale Größe: 5 MB",
-        "changePassword": "Passwort ändern",
-        "newPassword": "Neues Passwort",
-        "confirmPassword": "Passwort bestätigen",
-        "passwordMinLength": "Passwort muss mindestens 6 Zeichen lang sein",
-        "passwordMismatch": "Passwörter stimmen nicht überein"
-    },
-    "attributes": {
-        "productTitle": "Produktattribute",
-        "variantTitle": "Variantenattribute",
-        "scopeProduct": "Produkt",
-        "scopeVariant": "Variante",
-        "subtitleProductShared": "Wird von allen Varianten dieses Produkts geteilt",
-        "subtitleProductInherited": "Vom übergeordneten Produkt geerbt (hier schreibgeschützt)",
-        "subtitleVariant": "Nur für diese Variante",
-        "editOnProduct": "Auf dem Produkt bearbeiten",
-        "emptyProduct": "Keine Produktattribute",
-        "emptySharedOnVariant": "Keine geteilten Attribute auf dem übergeordneten Produkt",
-        "emptyVariant": "Noch keine variantenspezifischen Attribute",
-        "selectProductFirst": "Wählen Sie zuerst ein Produkt, um dessen Attribute zu sehen",
-        "saveVariantFirst": "Speichern Sie die Variante zuerst, um Attribute hinzuzufügen",
-        "addProductAttribute": "Produktattribut hinzufügen",
-        "addVariantAttribute": "Variantenattribut hinzufügen",
-        "attributeLabel": "Attribut"
-    },
-    "variantList": {
-        "title": "Produktvarianten",
-        "subtitle": "Klicken, um zu einer anderen Variante zu wechseln",
-        "default": "Standard"
-    },
-    "validation": {
-        "required": "Erforderlich",
-        "minLength": "Mindestlänge {limit}",
-        "maxLength": "Maximale Länge {limit}",
-        "invalidFormat": "Ungültiges Format",
-        "min": "Min. {limit}",
-        "max": "Max. {limit}"
+    "forbidden": {
+      "title": "Zugriff verweigert",
+      "message": "Sie haben keine Berechtigung, auf \"{resource}\" zuzugreifen."
     }
+  },
+  "filter": {
+    "text": "{field} suchen",
+    "date": "{field} filtern",
+    "dateRange": "Datumsbereich",
+    "from": "Von",
+    "to": "Bis"
+  },
+  "field": {
+    "required": "Dieses Feld ist erforderlich",
+    "select": "{field} auswählen",
+    "enterText": "{field} eingeben",
+    "selectDate": "Datum auswählen"
+  },
+  "messages": {
+    "createSuccess": "{resource} erfolgreich erstellt",
+    "updateSuccess": "{resource} erfolgreich aktualisiert",
+    "deleteSuccess": "{resource} erfolgreich gelöscht",
+    "error": "Ein Fehler ist aufgetreten",
+    "loadingError": "Fehler beim Laden der Daten"
+  },
+  "boolean": {
+    "true": "Ja",
+    "false": "Nein"
+  },
+  "ai": {
+    "title": "KI-Assistent",
+    "newConversation": "Neue Konversation",
+    "copy": "Kopieren",
+    "thinking": "Denkt nach...",
+    "placeholder": "Frag mich alles...",
+    "error": "Entschuldigung, es ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "sendHint": "Shift+Enter zum Senden",
+    "recording": "Hört zu...",
+    "startRecording": "Spracheingabe starten",
+    "stopRecording": "Spracheingabe stoppen",
+    "speechNotSupported": "Spracherkennung wird von diesem Browser nicht unterstützt"
+  },
+  "help": {
+    "noResourceDoc": "Keine spezifische Dokumentation für {resource} verfügbar. Allgemeine Hilfe wird angezeigt."
+  },
+  "auth": {
+    "login": "Anmelden",
+    "logout": "Abmelden",
+    "email": "E-Mail",
+    "password": "Passwort",
+    "signIn": "Einloggen",
+    "invalidEmail": "Ungültige E-Mail-Adresse",
+    "invalidCredentials": "Ungültige Anmeldedaten"
+  },
+  "account": {
+    "title": "Mein Konto",
+    "firstName": "Vorname",
+    "lastName": "Nachname",
+    "email": "E-Mail",
+    "changePicture": "Bild ändern",
+    "saveSuccess": "Profil erfolgreich aktualisiert",
+    "fileTooLarge": "Datei zu groß. Maximale Größe: 5 MB",
+    "changePassword": "Passwort ändern",
+    "newPassword": "Neues Passwort",
+    "confirmPassword": "Passwort bestätigen",
+    "passwordMinLength": "Passwort muss mindestens 6 Zeichen lang sein",
+    "passwordMismatch": "Passwörter stimmen nicht überein"
+  },
+  "attributes": {
+    "productTitle": "Produktattribute",
+    "variantTitle": "Variantenattribute",
+    "scopeProduct": "Produkt",
+    "scopeVariant": "Variante",
+    "subtitleProductShared": "Wird von allen Varianten dieses Produkts geteilt",
+    "subtitleProductInherited": "Vom übergeordneten Produkt geerbt (hier schreibgeschützt)",
+    "subtitleVariant": "Nur für diese Variante",
+    "editOnProduct": "Auf dem Produkt bearbeiten",
+    "emptyProduct": "Keine Produktattribute",
+    "emptySharedOnVariant": "Keine geteilten Attribute auf dem übergeordneten Produkt",
+    "emptyVariant": "Noch keine variantenspezifischen Attribute",
+    "selectProductFirst": "Wählen Sie zuerst ein Produkt, um dessen Attribute zu sehen",
+    "saveVariantFirst": "Speichern Sie die Variante zuerst, um Attribute hinzuzufügen",
+    "addProductAttribute": "Produktattribut hinzufügen",
+    "addVariantAttribute": "Variantenattribut hinzufügen",
+    "attributeLabel": "Attribut"
+  },
+  "variantList": {
+    "title": "Produktvarianten",
+    "subtitle": "Klicken, um zu einer anderen Variante zu wechseln",
+    "default": "Standard"
+  },
+  "validation": {
+    "required": "Erforderlich",
+    "minLength": "Mindestlänge {limit}",
+    "maxLength": "Maximale Länge {limit}",
+    "invalidFormat": "Ungültiges Format",
+    "min": "Min. {limit}",
+    "max": "Max. {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

@@ -1,205 +1,244 @@
 {
-    "common": {
-        "home": "Accueil",
-        "resources": "Ressources",
-        "search": "Rechercher",
-        "clear": "Effacer",
-        "apply": "Appliquer",
-        "cancel": "Annuler",
-        "save": "Enregistrer",
-        "delete": "Supprimer",
-        "edit": "Modifier",
-        "create": "Créer",
-        "close": "Fermer",
-        "confirm": "Confirmer",
-        "actions": "Actions",
-        "loading": "Chargement...",
-        "refresh": "Actualiser",
-        "showFilters": "Afficher les filtres",
-        "hideFilters": "Masquer les filtres",
-        "createNew": "Créer nouveau",
-        "goHome": "Aller à l'accueil",
-        "back": "Retour",
-        "yes": "Oui",
-        "no": "Non",
-        "language": "Langue",
-        "translations": "Traductions",
-        "translationPlaceholder": "Saisir la traduction en {locale}",
-        "translate": "Traduire",
-        "unsavedChanges": "Modifications non enregistrées",
-        "stay": "Rester",
-        "leave": "Quitter",
-        "add": "Ajouter",
-        "readonly": "Lecture seule",
-        "showFull": "Tout afficher",
-        "showLess": "Réduire"
+  "common": {
+    "home": "Accueil",
+    "resources": "Ressources",
+    "search": "Rechercher",
+    "clear": "Effacer",
+    "apply": "Appliquer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "create": "Créer",
+    "close": "Fermer",
+    "confirm": "Confirmer",
+    "actions": "Actions",
+    "loading": "Chargement...",
+    "refresh": "Actualiser",
+    "showFilters": "Afficher les filtres",
+    "hideFilters": "Masquer les filtres",
+    "createNew": "Créer nouveau",
+    "goHome": "Aller à l'accueil",
+    "back": "Retour",
+    "yes": "Oui",
+    "no": "Non",
+    "language": "Langue",
+    "translations": "Traductions",
+    "translationPlaceholder": "Saisir la traduction en {locale}",
+    "translate": "Traduire",
+    "unsavedChanges": "Modifications non enregistrées",
+    "stay": "Rester",
+    "leave": "Quitter",
+    "add": "Ajouter",
+    "readonly": "Lecture seule",
+    "showFull": "Tout afficher",
+    "showLess": "Réduire"
+  },
+  "app": {
+    "title": "Admin API Platform",
+    "manageResources": "Gérez vos ressources"
+  },
+  "navigation": {
+    "home": "Accueil",
+    "resources": "Ressources"
+  },
+  "resource": {
+    "list": "Liste",
+    "create": "Créer {resource}",
+    "edit": "Modifier {resource}",
+    "show": "Voir {resource}",
+    "delete": "Supprimer {resource}",
+    "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce {resource} ?",
+    "itemsPerPage": "Éléments par page",
+    "pageText": "{start}-{end} sur {total}",
+    "pageOf": "sur",
+    "noData": "Aucune donnée disponible",
+    "searchFilters": "Filtres de recherche",
+    "advancedSearch": "Recherche avancée",
+    "notFound": {
+      "title": "Ressource non trouvée",
+      "message": "La ressource \"{resource}\" n'existe pas."
     },
-    "app": {
-        "title": "Admin API Platform",
-        "manageResources": "Gérez vos ressources"
-    },
-    "navigation": {
-        "home": "Accueil",
-        "resources": "Ressources"
-    },
-    "resource": {
-        "list": "Liste",
-        "create": "Créer {resource}",
-        "edit": "Modifier {resource}",
-        "show": "Voir {resource}",
-        "delete": "Supprimer {resource}",
-        "confirmDelete": "Êtes-vous sûr de vouloir supprimer ce {resource} ?",
-        "itemsPerPage": "Éléments par page",
-        "pageText": "{start}-{end} sur {total}",
-        "pageOf": "sur",
-        "noData": "Aucune donnée disponible",
-        "searchFilters": "Filtres de recherche",
-        "advancedSearch": "Recherche avancée",
-        "notFound": {
-            "title": "Ressource non trouvée",
-            "message": "La ressource \"{resource}\" n'existe pas."
-        },
-        "forbidden": {
-            "title": "Accès refusé",
-            "message": "Vous n'avez pas la permission d'accéder à \"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "Rechercher {field}",
-        "date": "Filtrer {field}",
-        "dateRange": "Plage de dates",
-        "from": "De",
-        "to": "À"
-    },
-    "field": {
-        "required": "Ce champ est requis",
-        "select": "Sélectionner {field}",
-        "enterText": "Saisir {field}",
-        "selectDate": "Sélectionner une date"
-    },
-    "messages": {
-        "createSuccess": "{resource} créé avec succès",
-        "updateSuccess": "{resource} mis à jour avec succès",
-        "deleteSuccess": "{resource} supprimé avec succès",
-        "error": "Une erreur s'est produite",
-        "loadingError": "Erreur lors du chargement des données",
-        "unsavedChangesWarning": "Vous avez des modifications non enregistrées. Êtes-vous sûr de vouloir quitter ?"
-    },
-    "boolean": {
-        "true": "Oui",
-        "false": "Non"
-    },
-    "ai": {
-        "title": "Assistant IA",
-        "newConversation": "Nouvelle conversation",
-        "copy": "Copier",
-        "thinking": "Réfléchit...",
-        "placeholder": "Posez-moi une question...",
-        "error": "Désolé, une erreur s'est produite. Veuillez réessayer.",
-        "sendHint": "Shift+Entrée pour envoyer",
-        "recording": "En écoute...",
-        "startRecording": "Démarrer la dictée",
-        "stopRecording": "Arrêter la dictée",
-        "speechNotSupported": "Reconnaissance vocale non supportée par ce navigateur"
-    },
-    "help": {
-        "noResourceDoc": "Aucune documentation spécifique disponible pour {resource}. Affichage de l'aide générale."
-    },
-    "auth": {
-        "login": "Connexion",
-        "logout": "Déconnexion",
-        "email": "Email",
-        "password": "Mot de passe",
-        "signIn": "Se connecter",
-        "invalidEmail": "Adresse email invalide",
-        "invalidCredentials": "Identifiants invalides"
-    },
-    "account": {
-        "title": "Mon Compte",
-        "firstName": "Prénom",
-        "lastName": "Nom",
-        "email": "Email",
-        "profileTab": "Profil",
-        "passwordTab": "Mot de passe",
-        "changePicture": "Changer la photo",
-        "saveSuccess": "Profil mis à jour avec succès",
-        "fileTooLarge": "Fichier trop volumineux. Taille maximale : 5 Mo",
-        "changePassword": "Changer le mot de passe",
-        "newPassword": "Nouveau mot de passe",
-        "confirmPassword": "Confirmer le mot de passe",
-        "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
-        "passwordMismatch": "Les mots de passe ne correspondent pas"
-    },
-    "locale": {
-        "editingIn": "Édition en",
-        "uiUnchanged": "L'interface reste dans votre langue"
-    },
-    "attributes": {
-        "translateAll": "Traduire dans toutes les langues",
-        "translateSaveFirst": "Enregistrez d'abord pour activer la traduction",
-        "productTitle": "Attributs du produit",
-        "variantTitle": "Attributs de la variante",
-        "scopeProduct": "Produit",
-        "scopeVariant": "Variante",
-        "subtitleProductShared": "Partagés entre toutes les variantes de ce produit",
-        "subtitleProductInherited": "Hérités du produit parent (lecture seule ici)",
-        "subtitleVariant": "Spécifiques à cette variante uniquement",
-        "editOnProduct": "Modifier sur le produit",
-        "emptyProduct": "Aucun attribut produit",
-        "emptySharedOnVariant": "Aucun attribut partagé sur le produit parent",
-        "emptyVariant": "Aucun attribut spécifique à cette variante",
-        "selectProductFirst": "Sélectionnez d'abord un produit pour voir ses attributs",
-        "saveVariantFirst": "Enregistrez d'abord la variante pour ajouter des attributs",
-        "addProductAttribute": "Ajouter un attribut produit",
-        "addVariantAttribute": "Ajouter un attribut variante",
-        "attributeLabel": "Attribut"
-    },
-    "variantList": {
-        "title": "Variantes du produit",
-        "subtitle": "Cliquez pour passer à une autre variante",
-        "default": "Par défaut"
-    },
-    "validation": {
-        "required": "Champ requis",
-        "minLength": "Longueur minimale {limit}",
-        "maxLength": "Longueur maximale {limit}",
-        "invalidFormat": "Format invalide",
-        "min": "Minimum {limit}",
-        "max": "Maximum {limit}"
-    },
-    "asset": {
-        "dragHint": "Glissez-déposez vos fichiers ici ou cliquez pour parcourir",
-        "dropHere": "Déposez les fichiers ici",
-        "supportedTypes": "Images, PDF, vidéos, documents",
-        "empty": "Aucun asset pour le moment — déposez des fichiers ci-dessus pour démarrer.",
-        "noPreview": "Aperçu non disponible",
-        "code": "Code",
-        "type": "Type",
-        "mimeType": "Type MIME",
-        "size": "Taille",
-        "dimensions": "Dimensions",
-        "duration": "Durée",
-        "flags": "Flags",
-        "duplicate": "Déjà présent dans la bibliothèque — asset existant réutilisé.",
-        "embeddingStatus": "Empreinte visuelle",
-        "status_pending": "en attente",
-        "status_ready": "prêt",
-        "status_failed": "échec",
-        "status_skipped": "non applicable",
-        "similarTitle": "Visuellement similaires",
-        "duplicateOfWarning": "Cet asset a été signalé comme probable doublon de #{id}.",
-        "viewOriginal": "Voir l'original",
-        "deleteDuplicate": "Supprimer ce doublon",
-        "deleteDuplicateTitle": "Supprimer ce doublon ?",
-        "deleteDuplicateBody": "Le fichier sera définitivement retiré du stockage. L'original #{id} est conservé.",
-        "tabDetails": "Détails",
-        "tabSimilar": "Similaires",
-        "noSimilar": "Aucun asset visuellement similaire trouvé.",
-        "flagsPlaceholder": "Ajouter des flags…",
-        "flagsDisabledHint": "Les flags se gèrent sur l'asset original.",
-        "showUpload": "Uploader",
-        "hideUpload": "Masquer l'upload",
-        "filename": "Nom du fichier",
-        "renameTooltip": "Renommer"
+    "forbidden": {
+      "title": "Accès refusé",
+      "message": "Vous n'avez pas la permission d'accéder à \"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "Rechercher {field}",
+    "date": "Filtrer {field}",
+    "dateRange": "Plage de dates",
+    "from": "De",
+    "to": "À"
+  },
+  "field": {
+    "required": "Ce champ est requis",
+    "select": "Sélectionner {field}",
+    "enterText": "Saisir {field}",
+    "selectDate": "Sélectionner une date"
+  },
+  "messages": {
+    "createSuccess": "{resource} créé avec succès",
+    "updateSuccess": "{resource} mis à jour avec succès",
+    "deleteSuccess": "{resource} supprimé avec succès",
+    "error": "Une erreur s'est produite",
+    "loadingError": "Erreur lors du chargement des données",
+    "unsavedChangesWarning": "Vous avez des modifications non enregistrées. Êtes-vous sûr de vouloir quitter ?"
+  },
+  "boolean": {
+    "true": "Oui",
+    "false": "Non"
+  },
+  "ai": {
+    "title": "Assistant IA",
+    "newConversation": "Nouvelle conversation",
+    "copy": "Copier",
+    "thinking": "Réfléchit...",
+    "placeholder": "Posez-moi une question...",
+    "error": "Désolé, une erreur s'est produite. Veuillez réessayer.",
+    "sendHint": "Shift+Entrée pour envoyer",
+    "recording": "En écoute...",
+    "startRecording": "Démarrer la dictée",
+    "stopRecording": "Arrêter la dictée",
+    "speechNotSupported": "Reconnaissance vocale non supportée par ce navigateur"
+  },
+  "help": {
+    "noResourceDoc": "Aucune documentation spécifique disponible pour {resource}. Affichage de l'aide générale."
+  },
+  "auth": {
+    "login": "Connexion",
+    "logout": "Déconnexion",
+    "email": "Email",
+    "password": "Mot de passe",
+    "signIn": "Se connecter",
+    "invalidEmail": "Adresse email invalide",
+    "invalidCredentials": "Identifiants invalides"
+  },
+  "account": {
+    "title": "Mon Compte",
+    "firstName": "Prénom",
+    "lastName": "Nom",
+    "email": "Email",
+    "profileTab": "Profil",
+    "passwordTab": "Mot de passe",
+    "changePicture": "Changer la photo",
+    "saveSuccess": "Profil mis à jour avec succès",
+    "fileTooLarge": "Fichier trop volumineux. Taille maximale : 5 Mo",
+    "changePassword": "Changer le mot de passe",
+    "newPassword": "Nouveau mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "passwordMinLength": "Le mot de passe doit contenir au moins 6 caractères",
+    "passwordMismatch": "Les mots de passe ne correspondent pas"
+  },
+  "locale": {
+    "editingIn": "Édition en",
+    "uiUnchanged": "L'interface reste dans votre langue"
+  },
+  "attributes": {
+    "translateAll": "Traduire dans toutes les langues",
+    "translateSaveFirst": "Enregistrez d'abord pour activer la traduction",
+    "productTitle": "Attributs du produit",
+    "variantTitle": "Attributs de la variante",
+    "scopeProduct": "Produit",
+    "scopeVariant": "Variante",
+    "subtitleProductShared": "Partagés entre toutes les variantes de ce produit",
+    "subtitleProductInherited": "Hérités du produit parent (lecture seule ici)",
+    "subtitleVariant": "Spécifiques à cette variante uniquement",
+    "editOnProduct": "Modifier sur le produit",
+    "emptyProduct": "Aucun attribut produit",
+    "emptySharedOnVariant": "Aucun attribut partagé sur le produit parent",
+    "emptyVariant": "Aucun attribut spécifique à cette variante",
+    "selectProductFirst": "Sélectionnez d'abord un produit pour voir ses attributs",
+    "saveVariantFirst": "Enregistrez d'abord la variante pour ajouter des attributs",
+    "addProductAttribute": "Ajouter un attribut produit",
+    "addVariantAttribute": "Ajouter un attribut variante",
+    "attributeLabel": "Attribut"
+  },
+  "variantList": {
+    "title": "Variantes du produit",
+    "subtitle": "Cliquez pour passer à une autre variante",
+    "default": "Par défaut"
+  },
+  "validation": {
+    "required": "Champ requis",
+    "minLength": "Longueur minimale {limit}",
+    "maxLength": "Longueur maximale {limit}",
+    "invalidFormat": "Format invalide",
+    "min": "Minimum {limit}",
+    "max": "Maximum {limit}"
+  },
+  "asset": {
+    "dragHint": "Glissez-déposez vos fichiers ici ou cliquez pour parcourir",
+    "dropHere": "Déposez les fichiers ici",
+    "supportedTypes": "Images, PDF, vidéos, documents",
+    "empty": "Aucun asset pour le moment — déposez des fichiers ci-dessus pour démarrer.",
+    "noPreview": "Aperçu non disponible",
+    "code": "Code",
+    "type": "Type",
+    "mimeType": "Type MIME",
+    "size": "Taille",
+    "dimensions": "Dimensions",
+    "duration": "Durée",
+    "flags": "Flags",
+    "duplicate": "Déjà présent dans la bibliothèque — asset existant réutilisé.",
+    "embeddingStatus": "Empreinte visuelle",
+    "status_pending": "en attente",
+    "status_ready": "prêt",
+    "status_failed": "échec",
+    "status_skipped": "non applicable",
+    "similarTitle": "Visuellement similaires",
+    "duplicateOfWarning": "Cet asset a été signalé comme probable doublon de #{id}.",
+    "viewOriginal": "Voir l'original",
+    "deleteDuplicate": "Supprimer ce doublon",
+    "deleteDuplicateTitle": "Supprimer ce doublon ?",
+    "deleteDuplicateBody": "Le fichier sera définitivement retiré du stockage. L'original #{id} est conservé.",
+    "tabDetails": "Détails",
+    "tabSimilar": "Similaires",
+    "noSimilar": "Aucun asset visuellement similaire trouvé.",
+    "flagsPlaceholder": "Ajouter des flags…",
+    "flagsDisabledHint": "Les flags se gèrent sur l'asset original.",
+    "showUpload": "Uploader",
+    "hideUpload": "Masquer l'upload",
+    "filename": "Nom du fichier",
+    "renameTooltip": "Renommer"
+  },
+  "preview": {
+    "title": "Prévisualisation",
+    "button": "Prévisualiser",
+    "loading": "Génération de la prévisualisation…",
+    "choose_asset": "Choisir un asset",
+    "change_asset": "Changer d'asset",
+    "no_asset_selected": "Sélectionnez un asset public pour prévisualiser la pipeline en cours.",
+    "rate_limited": "Trop de prévisualisations — réessayez dans {seconds}s.",
+    "asset_not_public": "Cet asset n'est pas public et ne peut pas être prévisualisé.",
+    "error_generic": "Échec de la prévisualisation."
+  },
+  "asset_picker": {
+    "title": "Sélectionner un asset",
+    "search_placeholder": "Rechercher un asset…",
+    "select": "Sélectionner",
+    "cancel": "Annuler"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Avertissements",
+      "chip": "Avertissement",
+      "remove-background-requires-png": "remove_background produit un canal alpha ; cibler une extension JPEG aplatit le résultat. Ajoutez un add_background après, ou changez l'extension de sortie pour png/webp.",
+      "alpha-flatten-on-jpeg": "Le canal alpha sera aplati à la sortie JPEG."
+    },
+    "steps": {
+      "add": "Ajouter une étape",
+      "remove": "Supprimer l'étape",
+      "drag": "Glisser pour réordonner",
+      "unknown_type": "Type d'étape inconnu : {type}",
+      "type": {
+        "resize": "Redimensionner",
+        "crop": "Recadrer",
+        "rotate": "Faire pivoter",
+        "format_convert": "Convertir le format",
+        "add_background": "Ajouter un arrière-plan",
+        "remove_background": "Supprimer l'arrière-plan"
+      }
+    }
+  }
 }

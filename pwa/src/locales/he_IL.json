@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "בית",
-        "resources": "משאבים",
-        "search": "חיפוש",
-        "clear": "נקה",
-        "apply": "החל",
-        "cancel": "ביטול",
-        "save": "שמור",
-        "delete": "מחק",
-        "edit": "ערוך",
-        "create": "צור",
-        "close": "סגור",
-        "confirm": "אשר",
-        "actions": "פעולות",
-        "loading": "טוען...",
-        "refresh": "רענן",
-        "showFilters": "הצג מסננים",
-        "hideFilters": "הסתר מסננים",
-        "createNew": "צור חדש",
-        "language": "שפה",
-        "add": "הוספה",
-        "readonly": "לקריאה בלבד",
-        "showFull": "הצג הכל",
-        "showLess": "הצג פחות"
+  "common": {
+    "home": "בית",
+    "resources": "משאבים",
+    "search": "חיפוש",
+    "clear": "נקה",
+    "apply": "החל",
+    "cancel": "ביטול",
+    "save": "שמור",
+    "delete": "מחק",
+    "edit": "ערוך",
+    "create": "צור",
+    "close": "סגור",
+    "confirm": "אשר",
+    "actions": "פעולות",
+    "loading": "טוען...",
+    "refresh": "רענן",
+    "showFilters": "הצג מסננים",
+    "hideFilters": "הסתר מסננים",
+    "createNew": "צור חדש",
+    "language": "שפה",
+    "add": "הוספה",
+    "readonly": "לקריאה בלבד",
+    "showFull": "הצג הכל",
+    "showLess": "הצג פחות"
+  },
+  "app": {
+    "title": "ניהול פלטפורמת API",
+    "manageResources": "נהל את המשאבים שלך"
+  },
+  "navigation": {
+    "home": "בית",
+    "resources": "משאבים"
+  },
+  "resource": {
+    "list": "רשימה",
+    "create": "צור {resource}",
+    "edit": "ערוך {resource}",
+    "delete": "מחק {resource}",
+    "confirmDelete": "האם אתה בטוח שברצונך למחוק {resource} זה?",
+    "itemsPerPage": "פריטים בעמוד",
+    "pageText": "{start}-{end} מתוך {total}",
+    "pageOf": "מתוך",
+    "noData": "אין נתונים זמינים",
+    "searchFilters": "מסנני חיפוש",
+    "advancedSearch": "חיפוש מתקדם",
+    "notFound": {
+      "title": "משאב לא נמצא",
+      "message": "המשאב \"{resource}\" לא קיים."
     },
-    "app": {
-        "title": "ניהול פלטפורמת API",
-        "manageResources": "נהל את המשאבים שלך"
-    },
-    "navigation": {
-        "home": "בית",
-        "resources": "משאבים"
-    },
-    "resource": {
-        "list": "רשימה",
-        "create": "צור {resource}",
-        "edit": "ערוך {resource}",
-        "delete": "מחק {resource}",
-        "confirmDelete": "האם אתה בטוח שברצונך למחוק {resource} זה?",
-        "itemsPerPage": "פריטים בעמוד",
-        "pageText": "{start}-{end} מתוך {total}",
-        "pageOf": "מתוך",
-        "noData": "אין נתונים זמינים",
-        "searchFilters": "מסנני חיפוש",
-        "advancedSearch": "חיפוש מתקדם",
-        "notFound": {
-            "title": "משאב לא נמצא",
-            "message": "המשאב \"{resource}\" לא קיים."
-        },
-        "forbidden": {
-            "title": "הגישה נדחתה",
-            "message": "אין לך הרשאה לגשת ל\"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "חפש {field}",
-        "date": "סנן {field}",
-        "dateRange": "טווח תאריכים",
-        "from": "מ",
-        "to": "עד"
-    },
-    "field": {
-        "required": "שדה זה נדרש",
-        "select": "בחר {field}",
-        "enterText": "הזן {field}",
-        "selectDate": "בחר תאריך"
-    },
-    "messages": {
-        "createSuccess": "{resource} נוצר בהצלחה",
-        "updateSuccess": "{resource} עודכן בהצלחה",
-        "deleteSuccess": "{resource} נמחק בהצלחה",
-        "error": "אירעה שגיאה",
-        "loadingError": "שגיאה בטעינת נתונים"
-    },
-    "boolean": {
-        "true": "כן",
-        "false": "לא"
-    },
-    "ai": {
-        "title": "עוזר AI",
-        "newConversation": "שיחה חדשה",
-        "copy": "העתק",
-        "thinking": "חושב...",
-        "placeholder": "שאל אותי כל דבר...",
-        "error": "מצטער, אירעה שגיאה. אנא נסה שוב.",
-        "sendHint": "Shift+Enter לשליחה",
-        "recording": "מקשיב...",
-        "startRecording": "התחל הכתבה",
-        "stopRecording": "עצור הכתבה",
-        "speechNotSupported": "זיהוי דיבור לא נתמך בדפדפן זה"
-    },
-    "help": {
-        "noResourceDoc": "אין תיעוד ספציפי עבור {resource}. מציג עזרה כללית."
-    },
-    "auth": {
-        "login": "התחברות",
-        "logout": "התנתקות",
-        "email": "אימייל",
-        "password": "סיסמה",
-        "signIn": "כניסה",
-        "invalidEmail": "כתובת אימייל לא חוקית",
-        "invalidCredentials": "פרטי התחברות שגויים"
-    },
-    "account": {
-        "title": "החשבון שלי",
-        "firstName": "שם פרטי",
-        "lastName": "שם משפחה",
-        "email": "אימייל",
-        "changePicture": "שנה תמונה",
-        "saveSuccess": "הפרופיל עודכן",
-        "fileTooLarge": "הקובץ גדול מדי. גודל מקסימלי: 5 MB",
-        "changePassword": "שנה סיסמה",
-        "newPassword": "סיסמה חדשה",
-        "confirmPassword": "אשר סיסמה",
-        "passwordMinLength": "הסיסמה חייבת להכיל לפחות 6 תווים",
-        "passwordMismatch": "הסיסמאות אינן תואמות"
-    },
-    "attributes": {
-        "productTitle": "מאפייני מוצר",
-        "variantTitle": "מאפייני וריאציה",
-        "scopeProduct": "מוצר",
-        "scopeVariant": "וריאציה",
-        "subtitleProductShared": "משותפים לכל הווריאציות של מוצר זה",
-        "subtitleProductInherited": "ירשו מהמוצר ההורה (לקריאה בלבד כאן)",
-        "subtitleVariant": "ייחודיים לווריאציה זו בלבד",
-        "editOnProduct": "ערוך במוצר",
-        "emptyProduct": "אין מאפייני מוצר",
-        "emptySharedOnVariant": "אין מאפיינים משותפים במוצר ההורה",
-        "emptyVariant": "עדיין אין מאפיינים ייחודיים לווריאציה זו",
-        "selectProductFirst": "בחר תחילה מוצר כדי לראות את מאפייניו",
-        "saveVariantFirst": "שמור תחילה את הווריאציה כדי להוסיף מאפיינים",
-        "addProductAttribute": "הוסף מאפיין מוצר",
-        "addVariantAttribute": "הוסף מאפיין וריאציה",
-        "attributeLabel": "מאפיין"
-    },
-    "variantList": {
-        "title": "וריאציות מוצר",
-        "subtitle": "לחץ כדי לעבור לווריאציה אחרת",
-        "default": "ברירת מחדל"
-    },
-    "validation": {
-        "required": "שדה חובה",
-        "minLength": "אורך מינימלי {limit}",
-        "maxLength": "אורך מקסימלי {limit}",
-        "invalidFormat": "פורמט לא תקין",
-        "min": "מינימום {limit}",
-        "max": "מקסימום {limit}"
+    "forbidden": {
+      "title": "הגישה נדחתה",
+      "message": "אין לך הרשאה לגשת ל\"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "חפש {field}",
+    "date": "סנן {field}",
+    "dateRange": "טווח תאריכים",
+    "from": "מ",
+    "to": "עד"
+  },
+  "field": {
+    "required": "שדה זה נדרש",
+    "select": "בחר {field}",
+    "enterText": "הזן {field}",
+    "selectDate": "בחר תאריך"
+  },
+  "messages": {
+    "createSuccess": "{resource} נוצר בהצלחה",
+    "updateSuccess": "{resource} עודכן בהצלחה",
+    "deleteSuccess": "{resource} נמחק בהצלחה",
+    "error": "אירעה שגיאה",
+    "loadingError": "שגיאה בטעינת נתונים"
+  },
+  "boolean": {
+    "true": "כן",
+    "false": "לא"
+  },
+  "ai": {
+    "title": "עוזר AI",
+    "newConversation": "שיחה חדשה",
+    "copy": "העתק",
+    "thinking": "חושב...",
+    "placeholder": "שאל אותי כל דבר...",
+    "error": "מצטער, אירעה שגיאה. אנא נסה שוב.",
+    "sendHint": "Shift+Enter לשליחה",
+    "recording": "מקשיב...",
+    "startRecording": "התחל הכתבה",
+    "stopRecording": "עצור הכתבה",
+    "speechNotSupported": "זיהוי דיבור לא נתמך בדפדפן זה"
+  },
+  "help": {
+    "noResourceDoc": "אין תיעוד ספציפי עבור {resource}. מציג עזרה כללית."
+  },
+  "auth": {
+    "login": "התחברות",
+    "logout": "התנתקות",
+    "email": "אימייל",
+    "password": "סיסמה",
+    "signIn": "כניסה",
+    "invalidEmail": "כתובת אימייל לא חוקית",
+    "invalidCredentials": "פרטי התחברות שגויים"
+  },
+  "account": {
+    "title": "החשבון שלי",
+    "firstName": "שם פרטי",
+    "lastName": "שם משפחה",
+    "email": "אימייל",
+    "changePicture": "שנה תמונה",
+    "saveSuccess": "הפרופיל עודכן",
+    "fileTooLarge": "הקובץ גדול מדי. גודל מקסימלי: 5 MB",
+    "changePassword": "שנה סיסמה",
+    "newPassword": "סיסמה חדשה",
+    "confirmPassword": "אשר סיסמה",
+    "passwordMinLength": "הסיסמה חייבת להכיל לפחות 6 תווים",
+    "passwordMismatch": "הסיסמאות אינן תואמות"
+  },
+  "attributes": {
+    "productTitle": "מאפייני מוצר",
+    "variantTitle": "מאפייני וריאציה",
+    "scopeProduct": "מוצר",
+    "scopeVariant": "וריאציה",
+    "subtitleProductShared": "משותפים לכל הווריאציות של מוצר זה",
+    "subtitleProductInherited": "ירשו מהמוצר ההורה (לקריאה בלבד כאן)",
+    "subtitleVariant": "ייחודיים לווריאציה זו בלבד",
+    "editOnProduct": "ערוך במוצר",
+    "emptyProduct": "אין מאפייני מוצר",
+    "emptySharedOnVariant": "אין מאפיינים משותפים במוצר ההורה",
+    "emptyVariant": "עדיין אין מאפיינים ייחודיים לווריאציה זו",
+    "selectProductFirst": "בחר תחילה מוצר כדי לראות את מאפייניו",
+    "saveVariantFirst": "שמור תחילה את הווריאציה כדי להוסיף מאפיינים",
+    "addProductAttribute": "הוסף מאפיין מוצר",
+    "addVariantAttribute": "הוסף מאפיין וריאציה",
+    "attributeLabel": "מאפיין"
+  },
+  "variantList": {
+    "title": "וריאציות מוצר",
+    "subtitle": "לחץ כדי לעבור לווריאציה אחרת",
+    "default": "ברירת מחדל"
+  },
+  "validation": {
+    "required": "שדה חובה",
+    "minLength": "אורך מינימלי {limit}",
+    "maxLength": "אורך מקסימלי {limit}",
+    "invalidFormat": "פורמט לא תקין",
+    "min": "מינימום {limit}",
+    "max": "מקסימום {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

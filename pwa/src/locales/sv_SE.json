@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "Hem",
-        "resources": "Resurser",
-        "search": "Sök",
-        "clear": "Rensa",
-        "apply": "Tillämpa",
-        "cancel": "Avbryt",
-        "save": "Spara",
-        "delete": "Radera",
-        "edit": "Redigera",
-        "create": "Skapa",
-        "close": "Stäng",
-        "confirm": "Bekräfta",
-        "actions": "Åtgärder",
-        "loading": "Laddar...",
-        "refresh": "Uppdatera",
-        "showFilters": "Visa filter",
-        "hideFilters": "Dölj filter",
-        "createNew": "Skapa ny",
-        "language": "Språk",
-        "add": "Lägg till",
-        "readonly": "Skrivskyddad",
-        "showFull": "Visa allt",
-        "showLess": "Visa mindre"
+  "common": {
+    "home": "Hem",
+    "resources": "Resurser",
+    "search": "Sök",
+    "clear": "Rensa",
+    "apply": "Tillämpa",
+    "cancel": "Avbryt",
+    "save": "Spara",
+    "delete": "Radera",
+    "edit": "Redigera",
+    "create": "Skapa",
+    "close": "Stäng",
+    "confirm": "Bekräfta",
+    "actions": "Åtgärder",
+    "loading": "Laddar...",
+    "refresh": "Uppdatera",
+    "showFilters": "Visa filter",
+    "hideFilters": "Dölj filter",
+    "createNew": "Skapa ny",
+    "language": "Språk",
+    "add": "Lägg till",
+    "readonly": "Skrivskyddad",
+    "showFull": "Visa allt",
+    "showLess": "Visa mindre"
+  },
+  "app": {
+    "title": "API Platform Admin",
+    "manageResources": "Hantera dina resurser"
+  },
+  "navigation": {
+    "home": "Hem",
+    "resources": "Resurser"
+  },
+  "resource": {
+    "list": "Lista",
+    "create": "Skapa {resource}",
+    "edit": "Redigera {resource}",
+    "delete": "Radera {resource}",
+    "confirmDelete": "Är du säker på att du vill radera denna {resource}?",
+    "itemsPerPage": "Objekt per sida",
+    "pageText": "{start}-{end} av {total}",
+    "pageOf": "av",
+    "noData": "Ingen data tillgänglig",
+    "searchFilters": "Sökfilter",
+    "advancedSearch": "Avancerad sökning",
+    "notFound": {
+      "title": "Resurs hittades inte",
+      "message": "Resursen \"{resource}\" finns inte."
     },
-    "app": {
-        "title": "API Platform Admin",
-        "manageResources": "Hantera dina resurser"
-    },
-    "navigation": {
-        "home": "Hem",
-        "resources": "Resurser"
-    },
-    "resource": {
-        "list": "Lista",
-        "create": "Skapa {resource}",
-        "edit": "Redigera {resource}",
-        "delete": "Radera {resource}",
-        "confirmDelete": "Är du säker på att du vill radera denna {resource}?",
-        "itemsPerPage": "Objekt per sida",
-        "pageText": "{start}-{end} av {total}",
-        "pageOf": "av",
-        "noData": "Ingen data tillgänglig",
-        "searchFilters": "Sökfilter",
-        "advancedSearch": "Avancerad sökning",
-        "notFound": {
-            "title": "Resurs hittades inte",
-            "message": "Resursen \"{resource}\" finns inte."
-        },
-        "forbidden": {
-            "title": "Åtkomst nekad",
-            "message": "Du har inte behörighet att komma åt \"{resource}\"."
-        }
-    },
-    "filter": {
-        "text": "Sök {field}",
-        "date": "Filtrera {field}",
-        "dateRange": "Datumintervall",
-        "from": "Från",
-        "to": "Till"
-    },
-    "field": {
-        "required": "Detta fält är obligatoriskt",
-        "select": "Välj {field}",
-        "enterText": "Ange {field}",
-        "selectDate": "Välj datum"
-    },
-    "messages": {
-        "createSuccess": "{resource} skapad",
-        "updateSuccess": "{resource} uppdaterad",
-        "deleteSuccess": "{resource} raderad",
-        "error": "Ett fel uppstod",
-        "loadingError": "Fel vid laddning av data"
-    },
-    "boolean": {
-        "true": "Ja",
-        "false": "Nej"
-    },
-    "ai": {
-        "title": "AI-assistent",
-        "newConversation": "Ny konversation",
-        "copy": "Kopiera",
-        "thinking": "Tänker...",
-        "placeholder": "Fråga mig vad som helst...",
-        "error": "Tyvärr uppstod ett fel. Försök igen.",
-        "sendHint": "Shift+Enter för att skicka",
-        "recording": "Lyssnar...",
-        "startRecording": "Starta diktering",
-        "stopRecording": "Stoppa diktering",
-        "speechNotSupported": "Taligenkänning stöds inte av denna webbläsare"
-    },
-    "help": {
-        "noResourceDoc": "Ingen specifik dokumentation tillgänglig för {resource}. Visar allmän hjälp."
-    },
-    "auth": {
-        "login": "Logga in",
-        "logout": "Logga ut",
-        "email": "E-post",
-        "password": "Lösenord",
-        "signIn": "Logga in",
-        "invalidEmail": "Ogiltig e-postadress",
-        "invalidCredentials": "Ogiltiga inloggningsuppgifter"
-    },
-    "account": {
-        "title": "Mitt Konto",
-        "firstName": "Förnamn",
-        "lastName": "Efternamn",
-        "email": "E-post",
-        "changePicture": "Ändra bild",
-        "saveSuccess": "Profil uppdaterad",
-        "fileTooLarge": "Filen är för stor. Maximal storlek: 5 MB",
-        "changePassword": "Ändra lösenord",
-        "newPassword": "Nytt lösenord",
-        "confirmPassword": "Bekräfta lösenord",
-        "passwordMinLength": "Lösenordet måste vara minst 6 tecken",
-        "passwordMismatch": "Lösenorden matchar inte"
-    },
-    "attributes": {
-        "productTitle": "Produktattribut",
-        "variantTitle": "Variantattribut",
-        "scopeProduct": "Produkt",
-        "scopeVariant": "Variant",
-        "subtitleProductShared": "Delas mellan alla varianter av denna produkt",
-        "subtitleProductInherited": "Ärvda från huvudprodukten (skrivskyddade här)",
-        "subtitleVariant": "Specifika för denna variant",
-        "editOnProduct": "Redigera på produkten",
-        "emptyProduct": "Inga produktattribut",
-        "emptySharedOnVariant": "Inga delade attribut på huvudprodukten",
-        "emptyVariant": "Inga variantspecifika attribut ännu",
-        "selectProductFirst": "Välj först en produkt för att se dess attribut",
-        "saveVariantFirst": "Spara varianten först för att lägga till attribut",
-        "addProductAttribute": "Lägg till produktattribut",
-        "addVariantAttribute": "Lägg till variantattribut",
-        "attributeLabel": "Attribut"
-    },
-    "variantList": {
-        "title": "Produktvarianter",
-        "subtitle": "Klicka för att byta till en annan variant",
-        "default": "Standard"
-    },
-    "validation": {
-        "required": "Obligatorisk",
-        "minLength": "Min. längd {limit}",
-        "maxLength": "Max. längd {limit}",
-        "invalidFormat": "Ogiltigt format",
-        "min": "Min. {limit}",
-        "max": "Max. {limit}"
+    "forbidden": {
+      "title": "Åtkomst nekad",
+      "message": "Du har inte behörighet att komma åt \"{resource}\"."
     }
+  },
+  "filter": {
+    "text": "Sök {field}",
+    "date": "Filtrera {field}",
+    "dateRange": "Datumintervall",
+    "from": "Från",
+    "to": "Till"
+  },
+  "field": {
+    "required": "Detta fält är obligatoriskt",
+    "select": "Välj {field}",
+    "enterText": "Ange {field}",
+    "selectDate": "Välj datum"
+  },
+  "messages": {
+    "createSuccess": "{resource} skapad",
+    "updateSuccess": "{resource} uppdaterad",
+    "deleteSuccess": "{resource} raderad",
+    "error": "Ett fel uppstod",
+    "loadingError": "Fel vid laddning av data"
+  },
+  "boolean": {
+    "true": "Ja",
+    "false": "Nej"
+  },
+  "ai": {
+    "title": "AI-assistent",
+    "newConversation": "Ny konversation",
+    "copy": "Kopiera",
+    "thinking": "Tänker...",
+    "placeholder": "Fråga mig vad som helst...",
+    "error": "Tyvärr uppstod ett fel. Försök igen.",
+    "sendHint": "Shift+Enter för att skicka",
+    "recording": "Lyssnar...",
+    "startRecording": "Starta diktering",
+    "stopRecording": "Stoppa diktering",
+    "speechNotSupported": "Taligenkänning stöds inte av denna webbläsare"
+  },
+  "help": {
+    "noResourceDoc": "Ingen specifik dokumentation tillgänglig för {resource}. Visar allmän hjälp."
+  },
+  "auth": {
+    "login": "Logga in",
+    "logout": "Logga ut",
+    "email": "E-post",
+    "password": "Lösenord",
+    "signIn": "Logga in",
+    "invalidEmail": "Ogiltig e-postadress",
+    "invalidCredentials": "Ogiltiga inloggningsuppgifter"
+  },
+  "account": {
+    "title": "Mitt Konto",
+    "firstName": "Förnamn",
+    "lastName": "Efternamn",
+    "email": "E-post",
+    "changePicture": "Ändra bild",
+    "saveSuccess": "Profil uppdaterad",
+    "fileTooLarge": "Filen är för stor. Maximal storlek: 5 MB",
+    "changePassword": "Ändra lösenord",
+    "newPassword": "Nytt lösenord",
+    "confirmPassword": "Bekräfta lösenord",
+    "passwordMinLength": "Lösenordet måste vara minst 6 tecken",
+    "passwordMismatch": "Lösenorden matchar inte"
+  },
+  "attributes": {
+    "productTitle": "Produktattribut",
+    "variantTitle": "Variantattribut",
+    "scopeProduct": "Produkt",
+    "scopeVariant": "Variant",
+    "subtitleProductShared": "Delas mellan alla varianter av denna produkt",
+    "subtitleProductInherited": "Ärvda från huvudprodukten (skrivskyddade här)",
+    "subtitleVariant": "Specifika för denna variant",
+    "editOnProduct": "Redigera på produkten",
+    "emptyProduct": "Inga produktattribut",
+    "emptySharedOnVariant": "Inga delade attribut på huvudprodukten",
+    "emptyVariant": "Inga variantspecifika attribut ännu",
+    "selectProductFirst": "Välj först en produkt för att se dess attribut",
+    "saveVariantFirst": "Spara varianten först för att lägga till attribut",
+    "addProductAttribute": "Lägg till produktattribut",
+    "addVariantAttribute": "Lägg till variantattribut",
+    "attributeLabel": "Attribut"
+  },
+  "variantList": {
+    "title": "Produktvarianter",
+    "subtitle": "Klicka för att byta till en annan variant",
+    "default": "Standard"
+  },
+  "validation": {
+    "required": "Obligatorisk",
+    "minLength": "Min. längd {limit}",
+    "maxLength": "Max. längd {limit}",
+    "invalidFormat": "Ogiltigt format",
+    "min": "Min. {limit}",
+    "max": "Max. {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }

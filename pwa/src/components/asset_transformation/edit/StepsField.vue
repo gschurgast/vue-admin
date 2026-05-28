@@ -78,6 +78,12 @@
         />
       </v-list>
     </v-menu>
+
+    <PreviewPanel
+      :steps="local"
+      :output-ext="resolvedExt"
+      :transformation-id="formData?.id ?? formData?.['@id'] ?? null"
+    />
   </div>
 </template>
 
@@ -93,6 +99,7 @@ import FormatConvertStepFields from './steps/FormatConvertStepFields.vue'
 import AddBackgroundStepFields from './steps/AddBackgroundStepFields.vue'
 import RemoveBackgroundStepFields from './steps/RemoveBackgroundStepFields.vue'
 import WarningBanner from './WarningBanner.vue'
+import PreviewPanel from './PreviewPanel.vue'
 
 import PageActionBtn from '@/components/common/PageActionBtn.vue'
 

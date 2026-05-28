@@ -1,150 +1,189 @@
 {
-    "common": {
-        "home": "主页",
-        "resources": "资源",
-        "search": "搜索",
-        "clear": "清除",
-        "apply": "应用",
-        "cancel": "取消",
-        "save": "保存",
-        "delete": "删除",
-        "edit": "编辑",
-        "create": "创建",
-        "close": "关闭",
-        "confirm": "确认",
-        "actions": "操作",
-        "loading": "加载中...",
-        "refresh": "刷新",
-        "showFilters": "显示筛选器",
-        "hideFilters": "隐藏筛选器",
-        "createNew": "创建新项",
-        "language": "语言",
-        "add": "添加",
-        "readonly": "只读",
-        "showFull": "显示全部",
-        "showLess": "收起"
+  "common": {
+    "home": "主页",
+    "resources": "资源",
+    "search": "搜索",
+    "clear": "清除",
+    "apply": "应用",
+    "cancel": "取消",
+    "save": "保存",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "close": "关闭",
+    "confirm": "确认",
+    "actions": "操作",
+    "loading": "加载中...",
+    "refresh": "刷新",
+    "showFilters": "显示筛选器",
+    "hideFilters": "隐藏筛选器",
+    "createNew": "创建新项",
+    "language": "语言",
+    "add": "添加",
+    "readonly": "只读",
+    "showFull": "显示全部",
+    "showLess": "收起"
+  },
+  "app": {
+    "title": "API平台管理",
+    "manageResources": "管理您的资源"
+  },
+  "navigation": {
+    "home": "主页",
+    "resources": "资源"
+  },
+  "resource": {
+    "list": "列表",
+    "create": "创建{resource}",
+    "edit": "编辑{resource}",
+    "delete": "删除{resource}",
+    "confirmDelete": "您确定要删除此{resource}吗？",
+    "itemsPerPage": "每页项目数",
+    "pageText": "{start}-{end} 共 {total}",
+    "pageOf": "共",
+    "noData": "无可用数据",
+    "searchFilters": "搜索筛选器",
+    "advancedSearch": "高级搜索",
+    "notFound": {
+      "title": "资源未找到",
+      "message": "资源\"{resource}\"不存在。"
     },
-    "app": {
-        "title": "API平台管理",
-        "manageResources": "管理您的资源"
-    },
-    "navigation": {
-        "home": "主页",
-        "resources": "资源"
-    },
-    "resource": {
-        "list": "列表",
-        "create": "创建{resource}",
-        "edit": "编辑{resource}",
-        "delete": "删除{resource}",
-        "confirmDelete": "您确定要删除此{resource}吗？",
-        "itemsPerPage": "每页项目数",
-        "pageText": "{start}-{end} 共 {total}",
-        "pageOf": "共",
-        "noData": "无可用数据",
-        "searchFilters": "搜索筛选器",
-        "advancedSearch": "高级搜索",
-        "notFound": {
-            "title": "资源未找到",
-            "message": "资源\"{resource}\"不存在。"
-        },
-        "forbidden": {
-            "title": "访问被拒绝",
-            "message": "您没有权限访问\"{resource}\"。"
-        }
-    },
-    "filter": {
-        "text": "搜索{field}",
-        "date": "筛选{field}",
-        "dateRange": "日期范围",
-        "from": "从",
-        "to": "到"
-    },
-    "field": {
-        "required": "此字段为必填项",
-        "select": "选择{field}",
-        "enterText": "输入{field}",
-        "selectDate": "选择日期"
-    },
-    "messages": {
-        "createSuccess": "{resource}创建成功",
-        "updateSuccess": "{resource}更新成功",
-        "deleteSuccess": "{resource}删除成功",
-        "error": "发生错误",
-        "loadingError": "加载数据时出错"
-    },
-    "boolean": {
-        "true": "是",
-        "false": "否"
-    },
-    "ai": {
-        "title": "AI助手",
-        "newConversation": "新对话",
-        "copy": "复制",
-        "thinking": "思考中...",
-        "placeholder": "随便问我...",
-        "error": "抱歉，遇到错误。请重试。",
-        "sendHint": "Shift+Enter发送",
-        "recording": "录音中...",
-        "startRecording": "开始语音输入",
-        "stopRecording": "停止语音输入",
-        "speechNotSupported": "此浏览器不支持语音识别"
-    },
-    "help": {
-        "noResourceDoc": "{resource}没有特定文档。显示通用帮助。"
-    },
-    "auth": {
-        "login": "登录",
-        "logout": "退出",
-        "email": "电子邮件",
-        "password": "密码",
-        "signIn": "登录",
-        "invalidEmail": "无效的电子邮件地址",
-        "invalidCredentials": "无效的凭据"
-    },
-    "account": {
-        "title": "我的账户",
-        "firstName": "名",
-        "lastName": "姓",
-        "email": "电子邮件",
-        "changePicture": "更换头像",
-        "saveSuccess": "个人资料已更新",
-        "fileTooLarge": "文件过大。最大尺寸：5 MB",
-        "changePassword": "修改密码",
-        "newPassword": "新密码",
-        "confirmPassword": "确认密码",
-        "passwordMinLength": "密码至少需要6个字符",
-        "passwordMismatch": "密码不匹配"
-    },
-    "attributes": {
-        "productTitle": "产品属性",
-        "variantTitle": "变体属性",
-        "scopeProduct": "产品",
-        "scopeVariant": "变体",
-        "subtitleProductShared": "在此产品的所有变体之间共享",
-        "subtitleProductInherited": "从父产品继承（此处只读）",
-        "subtitleVariant": "此变体特有",
-        "editOnProduct": "在产品上编辑",
-        "emptyProduct": "没有产品属性",
-        "emptySharedOnVariant": "父产品上没有共享属性",
-        "emptyVariant": "尚无此变体特有的属性",
-        "selectProductFirst": "请先选择产品以查看其属性",
-        "saveVariantFirst": "请先保存变体以添加属性",
-        "addProductAttribute": "添加产品属性",
-        "addVariantAttribute": "添加变体属性",
-        "attributeLabel": "属性"
-    },
-    "variantList": {
-        "title": "产品变体",
-        "subtitle": "点击切换到其他变体",
-        "default": "默认"
-    },
-    "validation": {
-        "required": "必填",
-        "minLength": "最小长度 {limit}",
-        "maxLength": "最大长度 {limit}",
-        "invalidFormat": "格式无效",
-        "min": "最小 {limit}",
-        "max": "最大 {limit}"
+    "forbidden": {
+      "title": "访问被拒绝",
+      "message": "您没有权限访问\"{resource}\"。"
     }
+  },
+  "filter": {
+    "text": "搜索{field}",
+    "date": "筛选{field}",
+    "dateRange": "日期范围",
+    "from": "从",
+    "to": "到"
+  },
+  "field": {
+    "required": "此字段为必填项",
+    "select": "选择{field}",
+    "enterText": "输入{field}",
+    "selectDate": "选择日期"
+  },
+  "messages": {
+    "createSuccess": "{resource}创建成功",
+    "updateSuccess": "{resource}更新成功",
+    "deleteSuccess": "{resource}删除成功",
+    "error": "发生错误",
+    "loadingError": "加载数据时出错"
+  },
+  "boolean": {
+    "true": "是",
+    "false": "否"
+  },
+  "ai": {
+    "title": "AI助手",
+    "newConversation": "新对话",
+    "copy": "复制",
+    "thinking": "思考中...",
+    "placeholder": "随便问我...",
+    "error": "抱歉，遇到错误。请重试。",
+    "sendHint": "Shift+Enter发送",
+    "recording": "录音中...",
+    "startRecording": "开始语音输入",
+    "stopRecording": "停止语音输入",
+    "speechNotSupported": "此浏览器不支持语音识别"
+  },
+  "help": {
+    "noResourceDoc": "{resource}没有特定文档。显示通用帮助。"
+  },
+  "auth": {
+    "login": "登录",
+    "logout": "退出",
+    "email": "电子邮件",
+    "password": "密码",
+    "signIn": "登录",
+    "invalidEmail": "无效的电子邮件地址",
+    "invalidCredentials": "无效的凭据"
+  },
+  "account": {
+    "title": "我的账户",
+    "firstName": "名",
+    "lastName": "姓",
+    "email": "电子邮件",
+    "changePicture": "更换头像",
+    "saveSuccess": "个人资料已更新",
+    "fileTooLarge": "文件过大。最大尺寸：5 MB",
+    "changePassword": "修改密码",
+    "newPassword": "新密码",
+    "confirmPassword": "确认密码",
+    "passwordMinLength": "密码至少需要6个字符",
+    "passwordMismatch": "密码不匹配"
+  },
+  "attributes": {
+    "productTitle": "产品属性",
+    "variantTitle": "变体属性",
+    "scopeProduct": "产品",
+    "scopeVariant": "变体",
+    "subtitleProductShared": "在此产品的所有变体之间共享",
+    "subtitleProductInherited": "从父产品继承（此处只读）",
+    "subtitleVariant": "此变体特有",
+    "editOnProduct": "在产品上编辑",
+    "emptyProduct": "没有产品属性",
+    "emptySharedOnVariant": "父产品上没有共享属性",
+    "emptyVariant": "尚无此变体特有的属性",
+    "selectProductFirst": "请先选择产品以查看其属性",
+    "saveVariantFirst": "请先保存变体以添加属性",
+    "addProductAttribute": "添加产品属性",
+    "addVariantAttribute": "添加变体属性",
+    "attributeLabel": "属性"
+  },
+  "variantList": {
+    "title": "产品变体",
+    "subtitle": "点击切换到其他变体",
+    "default": "默认"
+  },
+  "validation": {
+    "required": "必填",
+    "minLength": "最小长度 {limit}",
+    "maxLength": "最大长度 {limit}",
+    "invalidFormat": "格式无效",
+    "min": "最小 {limit}",
+    "max": "最大 {limit}"
+  },
+  "preview": {
+    "title": "Preview",
+    "button": "Preview",
+    "loading": "Generating preview…",
+    "choose_asset": "Choose an asset",
+    "change_asset": "Change asset",
+    "no_asset_selected": "Pick a public asset to preview the current pipeline.",
+    "rate_limited": "Too many previews — retry in {seconds}s.",
+    "asset_not_public": "This asset is not public and cannot be previewed.",
+    "error_generic": "Preview failed."
+  },
+  "asset_picker": {
+    "title": "Select an asset",
+    "search_placeholder": "Search assets…",
+    "select": "Select",
+    "cancel": "Cancel"
+  },
+  "asset_transformation": {
+    "warnings": {
+      "title": "Warnings",
+      "chip": "Warning",
+      "remove-background-requires-png": "remove_background outputs an alpha channel; targeting a JPEG extension flattens the result. Add an add_background step after it, or change the output extension to png/webp.",
+      "alpha-flatten-on-jpeg": "Alpha channel will be flattened on JPEG output."
+    },
+    "steps": {
+      "add": "Add a step",
+      "remove": "Remove step",
+      "drag": "Drag to reorder",
+      "unknown_type": "Unknown step type: {type}",
+      "type": {
+        "resize": "Resize",
+        "crop": "Crop",
+        "rotate": "Rotate",
+        "format_convert": "Format convert",
+        "add_background": "Add background",
+        "remove_background": "Remove background"
+      }
+    }
+  }
 }
