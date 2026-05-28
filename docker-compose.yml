@@ -61,6 +61,9 @@ services:
   worker:
     # Reuses the api image; runs a long-lived messenger consumer.
     # --time-limit recycles the process every hour to avoid memory creep.
+    # Plan 05-02 / OPS-04: CLIP `async` transport, intouché — only worker for
+    # ComputeEmbeddingMessage. Sibling workers below handle the
+    # transformations* transports.
     image: antigravity-api
     volumes:
       - ./api:/app
@@ -76,6 +79,53 @@ services:
       - redis
       - embedder
     command: php bin/console messenger:consume async --time-limit=3600 --memory-limit=512M -vv
+    restart: unless-stopped
+
+  worker-transformations:
+    # Plan 05-02 / OPS-04 — live warmup consumer.
+    # Consumes WarmupTransformationVariantMessage from the `transformations`
+    # transport (Redis Streams). APP_CACHE_DIR is per-worker (T-05-11) to
+    # avoid Symfony cache-pool lock contention with the `worker` (async) and
+    # `worker-transformations-backfill` siblings sharing the same image.
+    image: antigravity-api
+    volumes:
+      - ./api:/app
+    environment:
+      APP_RUNTIME: Symfony\Component\Runtime\SymfonyRuntime
+      APP_SECRET: "ChangeMe123"
+      APP_CACHE_DIR: "/tmp/cache-transformations"
+      DATABASE_URL: "postgresql://app:ChangeMe123@database:5432/app?serverVersion=16&charset=utf8"
+      REDIS_URL: "redis://redis:6379"
+      MESSENGER_TRANSPORT_DSN: "redis://redis:6379/messages"
+      EMBEDDER_URL: "http://embedder:8000"
+    depends_on:
+      - api
+      - redis
+      - embedder
+    command: php bin/console messenger:consume transformations --time-limit=3600 --memory-limit=512M -vv
+    restart: unless-stopped
+
+  worker-transformations-backfill:
+    # Plan 05-02 / OPS-04 — bulk/purge consumer.
+    # Consumes PurgeTransformationVariantsMessage (Phase 1) and future bulk
+    # warm jobs from the `transformations_backfill` transport. Distinct
+    # APP_CACHE_DIR (T-05-11).
+    image: antigravity-api
+    volumes:
+      - ./api:/app
+    environment:
+      APP_RUNTIME: Symfony\Component\Runtime\SymfonyRuntime
+      APP_SECRET: "ChangeMe123"
+      APP_CACHE_DIR: "/tmp/cache-transformations-backfill"
+      DATABASE_URL: "postgresql://app:ChangeMe123@database:5432/app?serverVersion=16&charset=utf8"
+      REDIS_URL: "redis://redis:6379"
+      MESSENGER_TRANSPORT_DSN: "redis://redis:6379/messages"
+      EMBEDDER_URL: "http://embedder:8000"
+    depends_on:
+      - api
+      - redis
+      - embedder
+    command: php bin/console messenger:consume transformations_backfill --time-limit=3600 --memory-limit=512M -vv
     restart: unless-stopped
 
 volumes:

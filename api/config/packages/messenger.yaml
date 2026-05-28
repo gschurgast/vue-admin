@@ -1,26 +1,54 @@
 framework:
     messenger:
-        failure_transport: failed
+        # Each transport now carries its OWN dedicated `failure_transport`
+        # (per-transport DLQ — OPS-04). The top-level `failure_transport` key
+        # is intentionally omitted: it would silently apply as a fallback and
+        # mask routing mistakes on new message classes.
 
         transports:
-            # Asynchronous transport for heavy work (image embedding, etc.).
-            # Backed by Redis Streams — already running in our Docker stack.
+            # ----------------------------------------------------------------
+            # `async` — CLIP image embedding (Phase 1). INTOUCHÉ apart from the
+            # `failure_transport` addition (Plan 05-02 / T-05-10). Keep DSN and
+            # retry strategy exactly as they were.
+            # ----------------------------------------------------------------
             async:
                 dsn: '%env(MESSENGER_TRANSPORT_DSN)%'
+                failure_transport: async_failed
                 retry_strategy:
                     max_retries: 3
                     delay: 2000        # ms
                     multiplier: 2
                     max_delay: 60000
 
-            # Phase 1 — dedicated transport for bulk/backfill jobs.
-            # Currently routes PurgeTransformationVariantsMessage only.
-            # Phases 3 and 5 will introduce sibling transports `transformations`
-            # and `transformations_ai`.
+            # ----------------------------------------------------------------
+            # `transformations` — warmup live (Plan 05-02 / OPS-03).
+            # Routes WarmupTransformationVariantMessage. Tighter max_delay
+            # (30s) than the backfill transport: live warmup is user-driven
+            # and we want it to either succeed quickly or be visible in the
+            # failed queue.
+            # ----------------------------------------------------------------
+            transformations:
+                dsn: 'redis://redis:6379/messages_transformations'
+                options:
+                    group: transformations
+                failure_transport: transformations_failed
+                retry_strategy:
+                    max_retries: 3
+                    delay: 2000
+                    multiplier: 2
+                    max_delay: 30000
+
+            # ----------------------------------------------------------------
+            # `transformations_backfill` — bulk / purge (Phase 1 + Plan 05-02).
+            # Routes PurgeTransformationVariantsMessage and future bulk warm
+            # jobs. Longer max_delay (2min) because backfill is batch and
+            # tolerates higher latency.
+            # ----------------------------------------------------------------
             transformations_backfill:
                 dsn: 'redis://redis:6379/messages_transformations_backfill'
                 options:
                     group: transformations_backfill
+                failure_transport: transformations_backfill_failed
                 retry_strategy:
                     max_retries: 3
                     delay: 5000
@@ -30,11 +58,18 @@ framework:
             # Sync fallback for messages we don't want async.
             sync: 'sync://'
 
-            # Dead-letter queue for jobs that exhausted retries.
-            failed: 'redis://redis:6379/messages_failed'
+            # ----------------------------------------------------------------
+            # Dead-letter queues (OPS-04). One per active transport, distinct
+            # Redis streams so `messenger:failed:show --transport=<name>` and
+            # replay can target each transport in isolation.
+            # ----------------------------------------------------------------
+            async_failed: 'redis://redis:6379/messages_async_failed'
+            transformations_failed: 'redis://redis:6379/messages_transformations_failed'
+            transformations_backfill_failed: 'redis://redis:6379/messages_transformations_backfill_failed'
 
         routing:
             App\Message\ComputeEmbeddingMessage: async
+            App\Message\WarmupTransformationVariantMessage: transformations
             App\Message\PurgeTransformationVariantsMessage: transformations_backfill
 
 when@test:
@@ -42,4 +77,8 @@ when@test:
         messenger:
             transports:
                 async: 'in-memory://'
+                transformations: 'in-memory://'
                 transformations_backfill: 'in-memory://'
+                async_failed: 'in-memory://?serialize=false'
+                transformations_failed: 'in-memory://?serialize=false'
+                transformations_backfill_failed: 'in-memory://?serialize=false'
