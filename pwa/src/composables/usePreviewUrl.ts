@@ -81,7 +81,7 @@ export function usePreviewUrl() {
     try {
       const response = await apiPlatform.client.post(
         '/api/asset_transformations/preview',
-        { assetId: payload.assetId, ext: payload.ext, steps: payload.steps },
+        { assetId: Number(payload.assetId), ext: String(payload.ext), steps: payload.steps },
         { responseType: 'blob' },
       )
       const blobUrl = URL.createObjectURL(response.data as Blob)
@@ -98,7 +98,19 @@ export function usePreviewUrl() {
       } else if (status === 404) {
         error.value = { status: 404 }
       } else {
-        error.value = { status, message: (e as Error).message }
+        // Server response may be a Blob (responseType:'blob'). Decode it to extract validation detail.
+        let message = (e as Error).message
+        const responseData = (e as { response?: { data?: unknown } }).response?.data
+        if (responseData instanceof Blob) {
+          try {
+            const text = await responseData.text()
+            const parsed = JSON.parse(text)
+            message = parsed.detail || parsed['hydra:description'] || parsed.message || text
+          } catch {
+            // keep generic message
+          }
+        }
+        error.value = { status, message }
       }
       url.value = null
     } finally {
