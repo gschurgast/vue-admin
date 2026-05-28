@@ -33,6 +33,8 @@ use Symfony\Component\Validator\Constraints as Assert;
             security: "is_granted('ROLE_USER')",
             normalizationContext: ['groups' => ['preview:read']],
             denormalizationContext: ['groups' => ['preview:write']],
+            inputFormats: ['json' => ['application/json'], 'jsonld' => ['application/ld+json']],
+            outputFormats: ['json' => ['application/json'], 'jsonld' => ['application/ld+json']],
         ),
     ],
 )]
