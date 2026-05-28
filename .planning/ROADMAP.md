@@ -16,7 +16,7 @@ Decimal phases appear between their surrounding integers in numeric order.
 - [x] **Phase 2: Python Image Service (classical endpoints)** - Pillow/OpenCV : resize, crop, rotate, format_convert, add_background (color/asset) (completed 2026-05-27)
 - [x] **Phase 3: PHP Orchestrator + Public Route + Cache + Lock (sync-only)** - StepHandlerInterface, PipelineRunner, route `/t/*`, cache S3, Redis lock, sync-first 8s sans AI (completed 2026-05-27)
 - [x] **Phase 4: BiRefNet Endpoint + remove_background — DEPLOY GATE** - `/img/remove-background` (BiRefNet MIT) + step PHP remove_background sync (completed 2026-05-27)
-- [ ] **Phase 5: Editor PWA, Warmup, GC, Observability** - Éditeur drag-and-drop + preview + commandes ops + métriques
+- [x] **Phase 5: Editor PWA, Warmup, GC, Observability** - Éditeur drag-and-drop + preview + commandes ops + métriques (completed 2026-05-28)
 
 ## Phase Details
 
@@ -122,4 +122,4 @@ Phases execute in numeric order: 1 → 2 → 3 → 4 → 5
 | 2. Python Image Service (classical endpoints) | 5/5 | Complete | 2026-05-27 |
 | 3. PHP Orchestrator + Public Route + Cache + Lock | 3/3 | Complete | 2026-05-27 |
 | 4. BiRefNet Endpoint + remove_background — DEPLOY GATE | 5/5 | Complete | 2026-05-27 |
-| 5. Editor PWA, Warmup, GC, Observability | 0/5 | Not started | - |
+| 5. Editor PWA, Warmup, GC, Observability | 5/5 | Complete   | 2026-05-28 |
