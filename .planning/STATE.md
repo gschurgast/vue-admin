@@ -2,16 +2,16 @@
 gsd_state_version: 1.0
 milestone: v1.0
 milestone_name: milestone
-status: planning
-stopped_at: Roadmap restructured — dropped Phase 5 (SD) + Phase 6 (ai_prompt), renumbered Phase 7 → Phase 5 (Editor PWA + Warmup + GC + Observability)
-last_updated: "2026-05-27T16:00:00.000Z"
-last_activity: 2026-05-27
+status: Ready to discuss/plan
+stopped_at: Phase 5 context gathered
+last_updated: "2026-05-28T07:22:37.912Z"
+last_activity: 2026-05-27 — roadmap restructurée, AI reportée hors v1.0
 progress:
   total_phases: 5
   completed_phases: 4
   total_plans: 18
   completed_plans: 18
-  percent: 80
+  percent: 100
 ---
 
 # Project State
@@ -104,6 +104,6 @@ None yet.
 
 ## Session Continuity
 
-Last session: 2026-05-27T16:00:00.000Z
-Stopped at: Roadmap restructured — dropped Phase 5 (SD) + Phase 6 (ai_prompt), renumbered Phase 7 → Phase 5
-Resume file: None
+Last session: 2026-05-28T07:22:37.904Z
+Stopped at: Phase 5 context gathered
+Resume file: .planning/phases/05-editor-pwa-warmup-gc-observability/05-CONTEXT.md
