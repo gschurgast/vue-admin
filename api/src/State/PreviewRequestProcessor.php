@@ -26,7 +26,8 @@ use Symfony\Component\HttpKernel\Exception\BadRequestHttpException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\HttpKernel\Exception\TooManyRequestsHttpException;
-use Symfony\Component\RateLimiter\RateLimiterFactory;
+use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Symfony\Component\RateLimiter\RateLimiterFactoryInterface;
 
 /**
  * Phase 5 / Plan 05-01 — POST /api/asset_transformations/preview processor.
@@ -52,7 +53,8 @@ final class PreviewRequestProcessor implements ProcessorInterface
         private readonly EntityManagerInterface $em,
         private readonly FilesystemOperator $assetsStorage,
         private readonly PipelineRunner $runner,
-        private readonly RateLimiterFactory $previewEndpointLimiter,
+        #[Autowire(service: 'limiter.preview_endpoint')]
+        private readonly RateLimiterFactoryInterface $previewEndpointLimiter,
         private readonly RequestStack $requestStack,
         private readonly LoggerInterface $logger,
     ) {
