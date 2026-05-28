@@ -1,0 +1,39 @@
+# Phase 5 / Plan 05-05 (D-22, D-24) — Channel dédié pour les métriques structurées
+# de la pipeline AssetTransformation.
+#
+# La façade App\Service\TransformationMetrics injecte le logger de ce channel
+# (monolog.logger.transformations_metrics) et émet des logs JSON sur stderr.
+# Docker logging driver remonte stderr vers la stack obs cible (Datadog Logs,
+# Loki, etc.). Le shipper côté Webfacto branchera l'ingestion plus tard.
+#
+# Channel séparé pour pouvoir router/filtrer indépendamment du logger applicatif
+# par défaut (qui reste sur main).
+monolog:
+    channels: ['transformations_metrics']
+
+when@dev:
+    monolog:
+        handlers:
+            transformations_metrics:
+                type: stream
+                path: 'php://stderr'
+                level: info
+                channels: ['transformations_metrics']
+                formatter: monolog.formatter.json
+
+when@prod:
+    monolog:
+        handlers:
+            transformations_metrics:
+                type: stream
+                path: 'php://stderr'
+                level: info
+                channels: ['transformations_metrics']
+                formatter: monolog.formatter.json
+
+when@test:
+    monolog:
+        handlers:
+            transformations_metrics:
+                type: test
+                channels: ['transformations_metrics']
