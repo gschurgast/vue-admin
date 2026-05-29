@@ -35,11 +35,14 @@
     </template>
 
     <template v-else>
-      <NumberField
-        :model-value="(modelValue.aspectRatio as number | null | undefined) ?? null"
+      <v-text-field
+        :model-value="(modelValue.aspectRatio as string | null | undefined) ?? ''"
         :label="t('asset_transformation.step.crop.aspect_ratio')"
-        :step="'any'"
-        @update:model-value="set('aspectRatio', $event)"
+        placeholder="16:9"
+        hint="Format W:H (ex. 16:9, 4:3, 1:1)"
+        persistent-hint
+        :rules="[(v: string) => !v || /^\d+:\d+$/.test(v) || 'Format attendu : W:H (entiers, ex. 16:9)']"
+        @update:model-value="set('aspectRatio', $event || null)"
       />
       <EnumField
         :model-value="(modelValue.anchor as string | null | undefined) ?? 'center'"

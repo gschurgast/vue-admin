@@ -182,7 +182,54 @@
         "rotate": "Rotate",
         "format_convert": "Format convert",
         "add_background": "Add background",
-        "remove_background": "Remove background"
+        "remove_background": "Remove background",
+        "symmetry": "Symmetry / Flip"
+      }
+    },
+    "step": {
+      "symmetry": {
+        "axis": "Axis",
+        "axis_horizontal": "Horizontal (left ↔ right)",
+        "axis_vertical": "Vertical (top ↕ bottom)",
+        "label": "Symmetry / Flip"
+      },
+      "resize": {
+        "label": "Resize",
+        "width": "Width (px)",
+        "height": "Height (px)",
+        "mode": "Mode",
+        "upscale": "Allow upscale"
+      },
+      "crop": {
+        "label": "Crop",
+        "x": "X (px)",
+        "y": "Y (px)",
+        "width": "Width (px)",
+        "height": "Height (px)",
+        "anchor": "Anchor",
+        "aspect_ratio": "Aspect ratio (W:H, e.g. 16:9)",
+        "mode": "Mode"
+      },
+      "rotate": {
+        "label": "Rotate",
+        "angle": "Angle (degrees)",
+        "background": "Background color (#rrggbb)"
+      },
+      "format_convert": {
+        "label": "Convert format",
+        "format": "Format",
+        "quality": "Quality (1-100)"
+      },
+      "add_background": {
+        "label": "Add background",
+        "type": "Type",
+        "color": "Color (#rrggbb)",
+        "asset_id": "Asset ID"
+      },
+      "remove_background": {
+        "label": "Remove background",
+        "model": "Model",
+        "fallback_on_timeout": "Fallback on timeout"
       }
     }
   }

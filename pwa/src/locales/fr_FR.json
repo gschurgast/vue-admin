@@ -237,7 +237,54 @@
         "rotate": "Faire pivoter",
         "format_convert": "Convertir le format",
         "add_background": "Ajouter un arrière-plan",
-        "remove_background": "Supprimer l'arrière-plan"
+        "remove_background": "Supprimer l'arrière-plan",
+        "symmetry": "Symétrie / Miroir"
+      }
+    },
+    "step": {
+      "symmetry": {
+        "axis": "Axe",
+        "axis_horizontal": "Horizontal (gauche ↔ droite)",
+        "axis_vertical": "Vertical (haut ↕ bas)",
+        "label": "Symétrie / Miroir"
+      },
+      "resize": {
+        "label": "Redimensionner",
+        "width": "Largeur (px)",
+        "height": "Hauteur (px)",
+        "mode": "Mode",
+        "upscale": "Autoriser l'agrandissement"
+      },
+      "crop": {
+        "label": "Recadrer",
+        "x": "X (px)",
+        "y": "Y (px)",
+        "width": "Largeur (px)",
+        "height": "Hauteur (px)",
+        "anchor": "Point d'ancrage",
+        "aspect_ratio": "Ratio (W:H, ex. 16:9)",
+        "mode": "Mode"
+      },
+      "rotate": {
+        "label": "Faire pivoter",
+        "angle": "Angle (degrés)",
+        "background": "Couleur de fond (#rrggbb)"
+      },
+      "format_convert": {
+        "label": "Convertir le format",
+        "format": "Format",
+        "quality": "Qualité (1-100)"
+      },
+      "add_background": {
+        "label": "Ajouter un arrière-plan",
+        "type": "Type",
+        "color": "Couleur (#rrggbb)",
+        "asset_id": "ID de l'asset"
+      },
+      "remove_background": {
+        "label": "Supprimer l'arrière-plan",
+        "model": "Modèle",
+        "fallback_on_timeout": "Repli en cas de timeout"
       }
     }
   }

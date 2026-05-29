@@ -44,6 +44,7 @@ final class StepParamsFactory
             StepType::FORMAT_CONVERT    => FormatConvertStepParams::class,
             StepType::ADD_BACKGROUND    => AddBackgroundStepParams::class,
             StepType::REMOVE_BACKGROUND => RemoveBackgroundStepParams::class, // Phase 4 (BiRefNet, BGREMOVE-06).
+            StepType::SYMMETRY          => SymmetryStepParams::class,
             default                     => throw new UnsupportedStepTypeException($type),
         };
 

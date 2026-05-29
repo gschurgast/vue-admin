@@ -98,6 +98,7 @@ import RotateStepFields from './steps/RotateStepFields.vue'
 import FormatConvertStepFields from './steps/FormatConvertStepFields.vue'
 import AddBackgroundStepFields from './steps/AddBackgroundStepFields.vue'
 import RemoveBackgroundStepFields from './steps/RemoveBackgroundStepFields.vue'
+import SymmetryStepFields from './steps/SymmetryStepFields.vue'
 import WarningBanner from './WarningBanner.vue'
 import PreviewPanel from './PreviewPanel.vue'
 
@@ -116,6 +117,7 @@ type StepType =
   | 'format_convert'
   | 'add_background'
   | 'remove_background'
+  | 'symmetry'
 
 interface Props {
   modelValue?: TransformationStep[]
@@ -145,16 +147,19 @@ const componentRegistry: Record<StepType, unknown> = {
   resize: ResizeStepFields,
   crop: CropStepFields,
   rotate: RotateStepFields,
-  format_convert: FormatConvertStepFields,
+  format_convert: FormatConvertStepFields, // kept for legacy transformations still carrying this step
   add_background: AddBackgroundStepFields,
   remove_background: RemoveBackgroundStepFields,
+  symmetry: SymmetryStepFields,
 }
 
+// User-facing picker — format_convert exclu : l'extension d'URL gère la conversion
+// implicitement (virtual format_convert appended par PipelineRunner côté API).
 const stepTypes: StepType[] = [
   'resize',
   'crop',
   'rotate',
-  'format_convert',
+  'symmetry',
   'add_background',
   'remove_background',
 ]

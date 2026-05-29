@@ -30,6 +30,8 @@ parameters:
     # 6000ms = 5s Python hard cap (D-05) + 1s network margin.
     embedder_default_rmbg_ms: '6000'
     transformations.embedder_timeout_remove_background_ms: '%env(int:default:embedder_default_rmbg_ms:EMBEDDER_TIMEOUT_REMOVE_BACKGROUND_MS)%'
+    embedder_default_symmetry_ms: '2000'
+    transformations.embedder_timeout_symmetry_ms: '%env(int:default:embedder_default_symmetry_ms:EMBEDDER_TIMEOUT_SYMMETRY_MS)%'
 
     # Phase 03 — Public route feature flag (Plan 03-03, D-12). Default OFF in
     # prod (uses `transformations.public_route.enabled_default`).

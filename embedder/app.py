@@ -41,6 +41,7 @@ from routers import (  # noqa: E402
     img_format_convert,
     img_add_background,
     img_remove_background,
+    img_symmetry,
 )
 
 app.include_router(img_resize.router)
@@ -49,6 +50,7 @@ app.include_router(img_rotate.router)
 app.include_router(img_format_convert.router)
 app.include_router(img_add_background.router)
 app.include_router(img_remove_background.router)
+app.include_router(img_symmetry.router)
 
 # Loaded on the first request OR at boot via the startup hook below.
 _model: SentenceTransformer | None = None

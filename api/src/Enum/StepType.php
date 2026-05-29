@@ -10,6 +10,7 @@ enum StepType: string
     case FORMAT_CONVERT = 'format_convert';
     case ADD_BACKGROUND = 'add_background';
     case REMOVE_BACKGROUND = 'remove_background';
+    case SYMMETRY = 'symmetry';
 
     public function label(): string
     {
@@ -20,6 +21,7 @@ enum StepType: string
             self::FORMAT_CONVERT => 'Convertir le format',
             self::ADD_BACKGROUND => 'Ajouter un arrière-plan',
             self::REMOVE_BACKGROUND => 'Supprimer l\'arrière-plan',
+            self::SYMMETRY => 'Symétrie',
         };
     }
 
