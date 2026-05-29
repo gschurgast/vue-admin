@@ -56,6 +56,9 @@ services:
     # Uncomment the ports stanza for local debugging via curl.
     # ports:
     #   - "8001:8000"
+    environment:
+      # Dev: laisse BiRefNet finir sur CPU local. Prod = 5.0 (D-05 hard cap).
+      BIREFNET_TIMEOUT_S: "30.0"
     restart: unless-stopped
 
   worker:

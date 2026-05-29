@@ -3,6 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import io
+import os
 import time
 from typing import Literal
 
@@ -19,7 +20,8 @@ router = APIRouter()
 
 MAX_DIM = 4096            # D-07
 DOWNSCALE_LONG_EDGE = 2048
-BIREFNET_TIMEOUT_S = 5.0  # D-05
+# D-05: 5s hard cap en prod. Override via env BIREFNET_TIMEOUT_S pour dev CPU sous-dimensionné.
+BIREFNET_TIMEOUT_S = float(os.environ.get("BIREFNET_TIMEOUT_S", "5.0"))
 
 
 class RemoveBgParams(BaseModel):
