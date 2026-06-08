@@ -59,6 +59,20 @@ const searchQuery = ref('')
 const searchTimeout = ref<ReturnType<typeof setTimeout> | null>(null)
 const { locale } = useI18n()
 
+// Legacy PAV values may store the raw relation id (e.g. "236") instead of the
+// full IRI ("/api/taxonomies/236"). Normalize on read so the picker can fetch
+// and select the entity; emitted values always use the IRI form.
+function normalizeToIri(value: string | null | undefined): string | null {
+  if (!value) return null
+  const str = String(value)
+  if (str.startsWith('/api/')) return str
+  if (!props.endpoint) return str
+  if (/^\d+$/.test(str)) return `${props.endpoint.replace(/\/$/, '')}/${str}`
+  return str
+}
+
+const normalizedModelValue = computed(() => normalizeToIri(props.modelValue))
+
 const noDataText = computed(() => {
   if (!props.endpoint) return 'No endpoint configured'
   if (loading.value) return 'Loading...'
@@ -114,9 +128,10 @@ async function searchItems(query: string) {
     items.value = response.data || []
 
     // If current value is not in results, try to fetch it separately
-    if (props.modelValue && !items.value.find((i: any) => i['@id'] === props.modelValue)) {
+    const currentIri = normalizedModelValue.value
+    if (currentIri && !items.value.find((i: any) => i['@id'] === currentIri)) {
       try {
-        const currentItem = await apiPlatform.getByIri(props.modelValue)
+        const currentItem = await apiPlatform.getByIri(currentIri)
         if (currentItem) {
           items.value = [currentItem, ...items.value]
         }
@@ -164,20 +179,21 @@ async function loadInitialData() {
     items.value = response.data || []
 
     // If we have a current value, try to load it
-    if (props.modelValue) {
-      const existingItem = items.value.find((i: any) => i['@id'] === props.modelValue)
+    const currentIri = normalizedModelValue.value
+    if (currentIri) {
+      const existingItem = items.value.find((i: any) => i['@id'] === currentIri)
       if (existingItem) {
         selectedValue.value = existingItem
       } else {
         try {
-          const currentItem = await apiPlatform.getByIri(props.modelValue)
+          const currentItem = await apiPlatform.getByIri(currentIri)
           if (currentItem) {
             items.value = [currentItem, ...items.value]
             selectedValue.value = currentItem
           }
         } catch {
           // If item doesn't exist, just show the IRI
-          selectedValue.value = { '@id': props.modelValue, [props.displayField]: props.modelValue }
+          selectedValue.value = { '@id': currentIri, [props.displayField]: currentIri }
         }
       }
     }
@@ -196,7 +212,7 @@ watch(() => props.endpoint, () => {
 })
 
 // Watch for external value changes
-watch(() => props.modelValue, async (newValue) => {
+watch(() => normalizedModelValue.value, async (newValue) => {
   if (!newValue) {
     selectedValue.value = null
     return

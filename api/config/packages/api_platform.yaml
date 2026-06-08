@@ -7,6 +7,8 @@ api_platform:
         stateless: true
         cache_headers:
             vary: ['Content-Type', 'Authorization', 'Origin']
+        pagination_client_items_per_page: true
+        pagination_maximum_items_per_page: 1000
     resource_class_directories:
         - '%kernel.project_dir%/src/Entity'
         - '%kernel.project_dir%/src/ApiResource'
